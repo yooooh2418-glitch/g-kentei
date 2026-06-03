@@ -1,0 +1,60 @@
+# G検定 完全攻略問題集 300 (PWA)
+
+JDLA G検定対策の300問インタラクティブ問題集。スマホのホーム画面に追加してオフラインアプリとして使えます。
+
+## ファイル構成
+```
+g-kentei-pwa/
+├── index.html              ← アプリ本体（300問入り）
+├── manifest.json           ← PWA設定
+├── sw.js                   ← Service Worker（オフライン対応）
+├── icon-192.png            ← アイコン
+├── icon-512.png
+├── icon-maskable-512.png   ← Android用（角丸自動切り抜き対応）
+├── apple-touch-icon.png    ← iOS用
+└── .nojekyll               ← GitHub Pagesの最適化回避
+```
+
+## GitHub Pages で公開する手順
+
+### A. ブラウザだけで完結する方法（最短）
+1. GitHub にログイン →「New repository」
+   - Repository name: 例 `g-kentei`（公開URLに入ります）
+   - Public を選択 → Create
+2. リポジトリ画面の「uploading an existing file」をクリック
+3. このフォルダの**中身を全部**ドラッグ＆ドロップ → Commit
+4. 「Settings」→ 左メニュー「Pages」
+5. Branch を `main` / フォルダ `/ (root)` に設定 → Save
+6. 1〜2分待つと公開URLが表示されます：
+   ```
+   https://<あなたのID>.github.io/g-kentei/
+   ```
+
+### B. コマンドで上げる方法
+```bash
+cd g-kentei-pwa
+git init
+git add .
+git commit -m "G検定300 PWA"
+git branch -M main
+git remote add origin https://github.com/<あなたのID>/g-kentei.git
+git push -u origin main
+# その後、Settings > Pages で main / root を有効化
+```
+
+## スマホでアプリとして追加する
+
+- **iPhone (Safari)**：公開URLを開く → 下の共有ボタン → 「ホーム画面に追加」
+- **Android (Chrome)**：公開URLを開く → 画面に出る「📲 アプリとして追加」ボタン、
+  または右上メニュー →「アプリをインストール」
+
+一度追加すれば、機内モードでも問題演習・進捗保存が動きます。
+
+## 進捗データについて
+学習の正誤履歴はブラウザの localStorage（キー: `g_kentei_quiz_v1`）に保存されます。
+端末・ブラウザごとに保存され、サーバーには送信されません。
+アプリ内の設定からJSONエクスポートでバックアップできます。
+
+## 更新方法
+内容を直したら `sw.js` の `const CACHE = 'gkentei300-v1';` の番号を上げて
+（例 `v2`）push してください。次回アクセス時に上部へ更新バーが出ます。

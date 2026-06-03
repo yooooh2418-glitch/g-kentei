@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>G検定 完全攻略問題集 300 — Anorois</title>
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0a0c">
+<meta name="description" content="JDLA G検定対策の300問インタラクティブ問題集。章別演習・進捗保存・復習機能。">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<!-- iOS ホーム画面対応 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="G検定300">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root {
+  --bg: #0a0a0c;
+  --bg-elev: #14141a;
+  --bg-card: #1a1a22;
+  --border: #2a2a35;
+  --border-bright: #3a3a48;
+  --text: #e8e8ec;
+  --text-dim: #8a8a98;
+  --text-mute: #5a5a68;
+  --accent: #ffb84d;
+  --accent-dim: #c98e3b;
+  --accent-glow: rgba(255, 184, 77, 0.12);
+  --success: #6bcf7f;
+  --warn: #ff7a59;
+  --danger: #ff5470;
+  --info: #4fc3f7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "Helvetica Neue", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  font-feature-settings: "palt";
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+body {
+  background:
+    radial-gradient(ellipse at top, rgba(255, 184, 77, 0.05), transparent 60%),
+    var(--bg);
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+h1 {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+h1 .accent {
+  color: var(--accent);
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.8em;
+}
+.subtitle {
+  color: var(--text-dim);
+  font-size: 12px;
+  margin-top: 6px;
+  font-family: "SF Mono", monospace;
+}
+
+.controls {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.mode-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.mode-btn {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mode-btn:hover { color: var(--text); border-color: var(--border-bright); }
+.mode-btn.active {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.chapter-filter {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.ch-chip {
+  background: var(--bg-elev);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: "SF Mono", monospace;
+}
+.ch-chip.selected {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.action-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+.btn-primary:hover { background: var(--accent-dim); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--border-bright); }
+
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-mini {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  border-radius: 3px;
+}
+.stat-mini-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.stat-mini-val {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 4px;
+  letter-spacing: -0.02em;
+}
+.stat-mini-val.accent { color: var(--accent); }
+.stat-mini-val.success { color: var(--success); }
+.stat-mini-val.danger { color: var(--danger); }
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px;
+  margin-bottom: 16px;
+}
+.q-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.q-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.q-num {
+  background: var(--accent-glow);
+  color: var(--accent);
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-family: "SF Mono", monospace;
+  font-weight: 600;
+  font-size: 11px;
+}
+.q-chapter {
+  font-family: "SF Mono", monospace;
+  color: var(--info);
+  font-size: 11px;
+}
+.q-difficulty {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+.q-difficulty.easy { color: var(--success); border-color: var(--success); }
+.q-difficulty.normal { color: var(--info); border-color: var(--info); }
+.q-difficulty.hard { color: var(--warn); border-color: var(--warn); }
+
+.q-text {
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 22px;
+  font-weight: 500;
+}
+.choices {
+  display: grid;
+  gap: 8px;
+}
+.choice {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 13px;
+  line-height: 1.6;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.choice:hover { border-color: var(--border-bright); background: #1e1e28; }
+.choice-letter {
+  font-family: "SF Mono", monospace;
+  color: var(--text-dim);
+  font-weight: 600;
+  flex-shrink: 0;
+  min-width: 16px;
+}
+.choice.selected {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+.choice.correct {
+  border-color: var(--success);
+  background: rgba(107, 207, 127, 0.1);
+}
+.choice.correct .choice-letter { color: var(--success); }
+.choice.incorrect {
+  border-color: var(--danger);
+  background: rgba(255, 84, 112, 0.08);
+}
+.choice.incorrect .choice-letter { color: var(--danger); }
+.choice.disabled { cursor: default; }
+
+.explanation {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.expl-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.expl-correct {
+  background: rgba(107, 207, 127, 0.08);
+  border-left: 3px solid var(--success);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 0 3px 3px 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.expl-wrong {
+  background: rgba(255, 122, 89, 0.05);
+  border-left: 2px solid var(--warn);
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  border-radius: 0 3px 3px 0;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+.expl-wrong strong {
+  color: var(--warn);
+  font-family: "SF Mono", monospace;
+  margin-right: 6px;
+}
+.expl-keyword {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--bg-elev);
+  border-radius: 3px;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.expl-keyword strong { color: var(--info); display: block; margin-bottom: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.progress-track {
+  height: 4px;
+  background: var(--bg-elev);
+  border-radius: 2px;
+  margin: 14px 0;
+  overflow: hidden;
+}
+.progress-track-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+  transition: width 0.3s;
+}
+
+.score-screen {
+  text-align: center;
+  padding: 60px 20px;
+}
+.score-big {
+  font-size: 72px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+  line-height: 1;
+}
+.score-label {
+  color: var(--text-dim);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 14px;
+}
+.score-detail {
+  margin-top: 30px;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+.score-detail strong { color: var(--text); font-family: "SF Mono", monospace; }
+
+.start-screen {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.start-screen h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.start-screen p {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+
+.hide { display: none !important; }
+
+footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-mute);
+  font-family: "SF Mono", monospace;
+  text-align: center;
+}
+
+/* =====================================================================
+   POP & MOBILE-FIRST OVERRIDE  ―  スマホ縦画面に完全対応 + ポップに
+   既存の構造/JSは保持し、見た目だけ上書きします。
+   ===================================================================== */
+:root{
+  --pink:#ff5d8f;
+  --cyan:#4de2ff;
+  --lime:#9dff5d;
+  --purple:#b66dff;
+  --accent:#ffb84d;
+  --accent2:#ff9d2e;
+  --accent-glow:rgba(255,184,77,.18);
+  --radius:18px;
+  --radius-sm:13px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+
+/* 背景：複数のネオングローでポップな空気感 */
+body{
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255,93,143,.10), transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(77,226,255,.10), transparent 42%),
+    radial-gradient(circle at 50% 100%, rgba(182,109,255,.08), transparent 50%),
+    var(--bg) !important;
+  padding:16px 14px calc(28px + var(--safe-b)) !important;
+  -webkit-text-size-adjust:100%;
+}
+
+/* ---------- ヘッダー ---------- */
+header{ margin-bottom:18px !important; padding-bottom:16px !important; border-bottom:1px solid var(--border) !important; }
+h1{
+  font-size:clamp(22px,6vw,30px) !important; font-weight:800 !important;
+  line-height:1.15 !important;
+}
+h1 .accent{
+  display:inline-block; font-size:.62em !important;
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.subtitle{ font-size:11px !important; letter-spacing:.02em; }
+
+/* ---------- カード共通：大きな角丸 + 浮遊感 ---------- */
+.controls,.question-card,.start-screen,.stat-mini{
+  border-radius:var(--radius) !important;
+  border:1px solid var(--border) !important;
+  box-shadow:0 10px 30px rgba(0,0,0,.35) !important;
+}
+.controls{ padding:18px 16px !important; margin-bottom:16px !important; }
+
+/* ---------- セクション見出し風ラベル ---------- */
+.controls > div::before{ }
+
+/* ---------- モードボタン：丸ピル + アクティブでグロー ---------- */
+.mode-row{ gap:8px !important; margin-bottom:14px !important; }
+.mode-btn{
+  flex:1 1 auto; min-width:calc(50% - 4px);
+  padding:13px 12px !important; border-radius:var(--radius-sm) !important;
+  font-size:13.5px !important; font-weight:700 !important;
+  border:1.5px solid var(--border) !important; color:var(--text-dim) !important;
+  -webkit-tap-highlight-color:transparent;
+}
+.mode-btn.active{
+  background:var(--accent-glow) !important; color:var(--accent) !important;
+  border-color:var(--accent) !important;
+  box-shadow:0 0 0 1px var(--accent), 0 6px 18px rgba(255,184,77,.25) !important;
+}
+
+/* ---------- 章チップ：見やすい大きさ + 選択で色付き ---------- */
+.chapter-filter{ gap:7px !important; margin-bottom:16px !important; }
+.ch-chip{
+  padding:9px 13px !important; border-radius:999px !important;
+  font-size:12.5px !important; font-weight:600 !important;
+  background:var(--bg-elev) !important; border:1.5px solid var(--border) !important;
+  color:var(--text-dim) !important; letter-spacing:0 !important;
+  -webkit-tap-highlight-color:transparent;
+}
+.ch-chip.selected{
+  background:linear-gradient(135deg,var(--accent),var(--accent2)) !important;
+  color:#1a1300 !important; border-color:transparent !important; font-weight:800 !important;
+  box-shadow:0 4px 14px rgba(255,184,77,.35) !important;
+}
+
+/* ---------- アクション行：STARTを主役に ---------- */
+.action-row{ gap:10px !important; }
+.btn-primary{
+  flex:1 1 100%; padding:16px 22px !important; border-radius:var(--radius-sm) !important;
+  font-size:16px !important; font-weight:800 !important; letter-spacing:.04em !important;
+  background:linear-gradient(135deg,#ffce7a,var(--accent)) !important; color:#1a1300 !important;
+  box-shadow:0 8px 24px rgba(255,184,77,.4) !important;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-primary:active{ transform:translateY(1px) scale(.99); }
+.btn-ghost{
+  flex:1 1 calc(50% - 5px);
+  padding:13px 16px !important; border-radius:var(--radius-sm) !important;
+  font-size:13px !important; font-weight:600 !important; border:1.5px solid var(--border) !important;
+  text-align:center; -webkit-tap-highlight-color:transparent;
+}
+
+/* ---------- 統計：2列でカラフルに ---------- */
+.stats-bar{
+  grid-template-columns:1fr 1fr !important; gap:10px !important; margin-bottom:16px !important;
+}
+.stat-mini{ padding:14px 16px !important; border-radius:var(--radius-sm) !important; }
+.stat-mini-label{ font-size:10px !important; }
+.stat-mini-val{ font-size:30px !important; font-weight:800 !important; }
+.stat-mini-val.accent{ color:var(--accent) !important; }
+.stat-mini-val.success{ color:var(--lime) !important; }
+.stat-mini-val.danger{ color:var(--pink) !important; }
+
+/* ---------- 問題カード ---------- */
+.question-card{ padding:20px 17px !important; }
+.q-header{ margin-bottom:16px !important; gap:8px; flex-wrap:wrap; }
+.q-num{
+  background:linear-gradient(135deg,var(--accent),var(--accent2)) !important;
+  color:#1a1300 !important; font-weight:800 !important; font-size:12px !important;
+  padding:5px 12px !important; border-radius:999px !important;
+}
+.q-chapter{ color:var(--cyan) !important; font-size:12px !important; font-weight:600; }
+.q-difficulty{ border-radius:999px !important; border-width:1.5px !important; font-size:10px !important; padding:3px 10px !important; }
+.q-text{
+  font-size:17px !important; line-height:1.72 !important; font-weight:600 !important;
+  margin-bottom:20px !important;
+}
+
+/* ---------- 選択肢：タップしやすく、状態が一目で分かる ---------- */
+.choices{ gap:10px !important; }
+.choice{
+  padding:15px 16px !important; border-radius:var(--radius-sm) !important;
+  font-size:15px !important; line-height:1.6 !important;
+  border:1.5px solid var(--border) !important; background:var(--bg-elev) !important;
+  gap:13px !important; -webkit-tap-highlight-color:transparent;
+}
+.choice:active{ transform:scale(.995); }
+.choice-letter{
+  min-width:26px !important; height:26px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg-card); color:var(--text-dim) !important; font-size:13px !important;
+}
+.choice.selected{ border-color:var(--accent) !important; background:var(--accent-glow) !important; }
+.choice.correct{
+  border-color:var(--lime) !important; background:rgba(157,255,93,.12) !important;
+}
+.choice.correct .choice-letter{ background:var(--lime); color:#0a2400 !important; }
+.choice.incorrect{
+  border-color:var(--pink) !important; background:rgba(255,93,143,.12) !important;
+}
+.choice.incorrect .choice-letter{ background:var(--pink); color:#3a0014 !important; }
+
+/* ---------- 解説 ---------- */
+.explanation{ margin-top:20px !important; padding-top:18px !important; }
+.expl-label{ color:var(--accent) !important; font-size:11px !important; }
+.expl-correct{
+  border-radius:var(--radius-sm) !important; border-left:4px solid var(--lime) !important;
+  background:rgba(157,255,93,.08) !important; padding:14px 16px !important; font-size:14px !important;
+}
+.expl-wrong{
+  border-radius:var(--radius-sm) !important; border-left:3px solid var(--warn) !important;
+  background:rgba(255,122,89,.06) !important; padding:12px 14px !important; font-size:13px !important;
+}
+.expl-keyword{ border-radius:var(--radius-sm) !important; font-size:13px !important; padding:12px 14px !important; }
+.expl-keyword strong{ color:var(--cyan) !important; }
+
+/* ---------- ナビゲーション ---------- */
+.nav-row{ gap:10px !important; margin-top:18px !important; }
+.nav-row .btn-ghost, .nav-row .btn-primary{ flex:1 1 calc(50% - 5px); }
+
+/* ---------- 進捗バー：太く + グラデ ---------- */
+.progress-track{ height:8px !important; border-radius:999px !important; margin:14px 0 !important; }
+.progress-track-fill{
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan)) !important;
+}
+
+/* ---------- スコア画面 ---------- */
+.score-screen{ padding:48px 16px !important; }
+.score-big{
+  font-size:clamp(64px,22vw,88px) !important; font-weight:800 !important;
+  background:linear-gradient(135deg,var(--accent),var(--pink),var(--purple));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+
+/* ---------- スタート画面 ---------- */
+.start-screen{ padding:36px 18px !important; border-radius:var(--radius) !important; }
+.start-screen h2{ font-size:20px !important; font-weight:800 !important; }
+
+/* ---------- フッター ---------- */
+footer{ margin-top:32px !important; }
+
+/* ===== 細い端末（iPhone SE 等）向けの微調整 ===== */
+@media (max-width:380px){
+  .mode-btn{ min-width:100%; }
+  .q-text{ font-size:16px !important; }
+  .choice{ font-size:14.5px !important; }
+}
+
+/* ===== 横向き/タブレットでは中央寄せして広がりすぎ防止 ===== */
+@media (min-width:560px){
+  body{ max-width:680px !important; padding:24px 20px !important; }
+  .mode-btn{ min-width:auto; flex:0 1 auto; }
+  .btn-primary{ flex:0 1 auto; }
+  .stats-bar{ grid-template-columns:repeat(4,1fr) !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>G検定 完全攻略 <span class="accent">// 300_QUESTIONS</span></h1>
+  <div class="subtitle">Anorois Edition — JDLA Deep Learning for GENERAL 2026 シラバス準拠</div>
+</header>
+
+<div class="controls">
+  <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Mode</div>
+  <div class="mode-row">
+    <button class="mode-btn active" data-mode="sequential">順番に解く</button>
+    <button class="mode-btn" data-mode="random">ランダム</button>
+    <button class="mode-btn" data-mode="weak">苦手のみ（誤答履歴）</button>
+    <button class="mode-btn" data-mode="unanswered">未回答のみ</button>
+    <button class="mode-btn" data-mode="mock">模試モード（30問）</button>
+  </div>
+
+  <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Chapters</div>
+  <div class="chapter-filter" id="chapter-filter"></div>
+
+  <div class="action-row">
+    <button class="btn-primary" onclick="startSession()">▶ START</button>
+    <button class="btn-ghost" onclick="resetHistory()">履歴リセット</button>
+    <button class="btn-ghost" onclick="exportProgress()">Export</button>
+    <span style="margin-left:auto;font-size:11px;color:var(--text-dim);font-family:'SF Mono',monospace;" id="filter-info">— questions ready</span>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-mini">
+    <div class="stat-mini-label">Answered</div>
+    <div class="stat-mini-val accent" id="stat-answered">0</div>
+  </div>
+  <div class="stat-mini">
+    <div class="stat-mini-label">Correct</div>
+    <div class="stat-mini-val success" id="stat-correct">0</div>
+  </div>
+  <div class="stat-mini">
+    <div class="stat-mini-label">Wrong</div>
+    <div class="stat-mini-val danger" id="stat-wrong">0</div>
+  </div>
+  <div class="stat-mini">
+    <div class="stat-mini-label">Accuracy</div>
+    <div class="stat-mini-val" id="stat-accuracy">—</div>
+  </div>
+</div>
+
+<div id="start-screen" class="start-screen">
+  <h2>準備完了</h2>
+  <p>モードと範囲を選んで START を押してください。<br>進捗・誤答履歴はこのブラウザに自動保存されます。</p>
+</div>
+
+<div id="quiz-area" class="hide">
+  <div class="progress-track">
+    <div class="progress-track-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div id="question-container"></div>
+  <div class="nav-row">
+    <button class="btn-ghost" onclick="endSession()">セッション終了</button>
+    <button class="btn-primary hide" id="next-btn" onclick="nextQuestion()">次の問題 →</button>
+  </div>
+</div>
+
+<div id="score-area" class="hide">
+  <div class="score-screen">
+    <div class="score-big" id="score-pct">—</div>
+    <div class="score-label">セッション正答率</div>
+    <div class="score-detail" id="score-detail"></div>
+    <div style="margin-top:30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="backToStart()">スタート画面に戻る</button>
+      <button class="btn-ghost" onclick="reviewSession()">誤答を見直す</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Local storage. データはブラウザに保存されます。Export を定期的に。/ v1.0 / 2026.05
+</footer>
+
+<!-- 問題データは別途読み込み -->
+<script>
+const QUESTIONS = [{"id":1,"chapter":"Ch1","q":"「人工知能（AI）」という言葉が初めて使われた1956年の会議として正しいものはどれか。","choices":["ダートマス会議","ジュネーブ会議","チューリングシンポジウム","ウィーン円卓会議"],"answer":0,"explanation":"ダートマス会議は1956年にジョン・マッカーシーらが主催した会議で、ここで初めて「Artificial Intelligence」という用語が公式に使用された。AI研究の出発点とされる歴史的な会議。","wrongReasons":{"1":"ジュネーブ会議は外交・国際関係の会議でAIとは無関係。","2":"このような会議は存在しない。","3":"このような会議は存在しない。"},"keyword":"ジョン・マッカーシー、マービン・ミンスキー、クロード・シャノン、ナサニエル・ロチェスター","difficulty":"easy"},{"id":2,"chapter":"Ch1","q":"「AI効果」とは何を指すか。最も適切なものを選べ。","choices":["AIが社会全体に与える経済的効果","AIで実現された技術が当たり前になり、もはやAIとは呼ばれなくなる現象","AIが学習効率を高める仕組み","AIのバイアスが社会に与える負の影響"],"answer":1,"explanation":"AI効果（AI effect）は、ある技術がAIで実現されたとしても、そのメカニズムが解明されると「これはAIではなく、ただの自動計算だ」と見なされてしまう現象。OCRやチェスのコンピュータなどが該当例。","wrongReasons":{"0":"これは経済的影響であり、AI効果の定義ではない。","2":"学習効率の話ではない。","3":"これはAIバイアスの話題で、AI効果とは別概念。"},"keyword":"OCR、チェスソフト、機械翻訳など、実現された途端に「AIではない」と扱われがちな技術","difficulty":"easy"},{"id":3,"chapter":"Ch1","q":"AIを分類する際の「特化型AI」と「汎用型AI」の関係について、正しい記述はどれか。","choices":["特化型AIは汎用型AIの一部である","汎用型AIはまだ実現されていない","現在実用化されているAIの多くは汎用型AIである","特化型AIと汎用型AIは同じ意味である"],"answer":1,"explanation":"汎用型AI（Artificial General Intelligence: AGI）は、人間のように様々なタスクをこなせるAIを指すが、現時点では実現されていない。現在実用化されているのは特定タスクに特化した特化型AI（Narrow AI）。","wrongReasons":{"0":"包含関係ではなく、別カテゴリーとして整理される。","2":"現在実用化されているのは特化型AIである。","3":"両者は明確に区別される異なる概念。"},"keyword":"AGI（汎用人工知能）、ANI（特化型）、ASI（超知能）","difficulty":"easy"},{"id":4,"chapter":"Ch1","q":"「強いAI」と「弱いAI」の議論を提唱した哲学者は誰か。","choices":["アラン・チューリング","ジョン・サール","マービン・ミンスキー","ノーバート・ウィーナー"],"answer":1,"explanation":"ジョン・サールが「中国語の部屋」の思考実験とともに「強いAI（意識を持つAI）」と「弱いAI（道具としてのAI）」を提唱した。","wrongReasons":{"0":"チューリングは「チューリングテスト」を提唱した別の人物。","2":"ミンスキーはAI研究の重鎮だが、強い/弱いAIの命名者ではない。","3":"ウィーナーはサイバネティクスの提唱者。"},"keyword":"中国語の部屋、機能主義批判、意識のハードプロブレム","difficulty":"normal"},{"id":5,"chapter":"Ch1","q":"チューリングテストの説明として最も適切なものはどれか。","choices":["AIの計算速度を測定するテスト","AIが人間と区別がつかないかを判定する模倣ゲーム","AIの記憶容量を測定するベンチマーク","AIの倫理性を評価する試験"],"answer":1,"explanation":"チューリングテストは1950年にアラン・チューリングが提案した、機械が知能を持つかを判定するテスト。審査員が会話相手が人間か機械か判別できなければ機械は知能を持つとみなす。","wrongReasons":{"0":"性能ベンチマークではない。","2":"記憶容量とは無関係。","3":"倫理性ではなく、知能の有無を扱う。"},"keyword":"イミテーションゲーム、ローブナー賞、Eugene Goostman","difficulty":"easy"},{"id":6,"chapter":"Ch1","q":"「シンギュラリティ（技術的特異点）」について、関係の深い人物は誰か。","choices":["レイ・カーツワイル","ヤン・ルカン","ジェフリー・ヒントン","ヨシュア・ベンジオ"],"answer":0,"explanation":"レイ・カーツワイルは『シンギュラリティは近い』の著者で、2045年ごろにAIが人間の知能を超える特異点が訪れると予想した。","wrongReasons":{"1":"ヤン・ルカンはCNN開発で著名なDLの研究者。","2":"ヒントンはDLの父、バックプロパゲーションの研究で著名。","3":"ベンジオはDL研究者、3人合わせて2018年チューリング賞受賞。"},"keyword":"ムーアの法則、収穫加速の法則、2045年問題","difficulty":"easy"},{"id":7,"chapter":"Ch1","q":"AIの分類において「レベル1」と呼ばれる最も単純なAIの例として適切なものはどれか。","choices":["温度センサーと連動して動作するエアコン","ディープラーニングを用いた画像認識","ChatGPTのような大規模言語モデル","自動運転車のレベル4システム"],"answer":0,"explanation":"AIのレベル分類（東京大学・松尾豊らの整理）でレベル1は「制御プログラム」であり、入力に対し決まった動作を返すシンプルな仕組み（家電など）が該当。","wrongReasons":{"1":"これはレベル3〜4の機械学習を含むAIに相当。","2":"これはレベル4の最先端AI。","3":"これも高度なAIで、レベル1ではない。"},"keyword":"レベル1=制御、レベル2=古典的AI、レベル3=機械学習、レベル4=ディープラーニング","difficulty":"normal"},{"id":8,"chapter":"Ch1","q":"「フレーム問題」とは何か。","choices":["AIが画像認識で対象物の境界を識別できない問題","AIが現実世界で起こりうる事象を有限の枠組みで処理しきれない問題","ニューラルネットの学習が収束しない問題","AIの倫理的判断における枠組みの問題"],"answer":1,"explanation":"フレーム問題は1969年にマッカーシーとヘイズが提起した古典的なAI問題。AIに行動の結果を考えさせると、世の中で起こりうる無限の事象を考慮しきれず処理が破綻する問題。","wrongReasons":{"0":"画像認識の境界問題ではない。","2":"学習の収束問題ではない。","3":"倫理的判断とは別の概念。"},"keyword":"ダニエル・デネット、ロボットの思考実験、現実世界の複雑性","difficulty":"normal"},{"id":9,"chapter":"Ch1","q":"「シンボルグラウンディング問題」の説明として正しいものはどれか。","choices":["記号と実世界の対象を結びつけられない問題","数学記号の処理が遅い問題","プログラミング言語の選択問題","暗号化記号の解読問題"],"answer":0,"explanation":"シンボルグラウンディング問題は、AIが扱う記号（シンボル）が実世界の意味と結びつけられない問題。例：AIが「リンゴ」という記号を見ても、実物のリンゴ（色、形、味）と結びつかない。","wrongReasons":{"1":"処理速度の話ではない。","2":"言語選択ではない。","3":"暗号とは無関係。"},"keyword":"スティーブン・ハルナッド、記号接地問題、身体性","difficulty":"normal"},{"id":10,"chapter":"Ch1","q":"AIの「身体性（embodiment）」アプローチで、知能には何が必要だと主張されるか。","choices":["大規模な計算資源","物理的な身体と環境との相互作用","膨大なデータセット","高度な数学的能力"],"answer":1,"explanation":"身体性アプローチでは、知能は物理的身体と環境との相互作用を通じて生まれると主張される。ロドニー・ブルックスのサブサンプションアーキテクチャなどが代表例。","wrongReasons":{"0":"計算資源は知能の必要条件ではないと考える。","2":"データだけでは身体性は得られない。","3":"数学的能力ではなく、感覚運動経験が重視される。"},"keyword":"ロドニー・ブルックス、サブサンプション、認知ロボティクス","difficulty":"hard"},{"id":11,"chapter":"Ch1","q":"ELIZA（イライザ）とは何か。","choices":["世界初のチェスAI","1960年代に開発された対話システム（カウンセラーの模倣）","音声認識システムのプロトタイプ","画像認識の初期システム"],"answer":1,"explanation":"ELIZAは1966年にジョセフ・ワイゼンバウムが開発した対話プログラム。ロジャーズ派の心療カウンセラーを模倣し、パターンマッチングで応答した。「ELIZA効果」の語源にもなった。","wrongReasons":{"0":"チェスAIではない。","2":"音声認識ではなく、テキスト対話。","3":"画像認識ではない。"},"keyword":"パターンマッチング、ロジャーズ療法、ELIZA効果","difficulty":"normal"},{"id":12,"chapter":"Ch1","q":"「エキスパートシステム」が活躍したのはAIの第何次ブームか。","choices":["第1次AIブーム","第2次AIブーム","第3次AIブーム","現在の第4次AIブーム"],"answer":1,"explanation":"第2次AIブーム（1980年代）の中心はエキスパートシステム。専門家の知識をルールとして記述し推論を行う。MYCIN（医療診断）などが有名。","wrongReasons":{"0":"第1次（1950-60年代）は探索と推論が中心。","2":"第3次はディープラーニング。","3":"通常「第4次」とは呼ばない。"},"keyword":"MYCIN、DENDRAL、知識工学、Cycプロジェクト","difficulty":"easy"},{"id":13,"chapter":"Ch1","q":"MYCINシステムの主な用途はどれか。","choices":["飛行機の自動操縦","医療診断（細菌感染症の診断と処方）","音声認識","画像処理"],"answer":1,"explanation":"MYCINは1970年代スタンフォード大学で開発された、細菌感染症の診断と抗生物質処方を行うエキスパートシステム。専門家の知識をルール化し推論した。","wrongReasons":{"0":"航空関連ではない。","2":"音声認識ではない。","3":"画像処理ではない。"},"keyword":"後ろ向き推論、不確実性の扱い、医療AI黎明期","difficulty":"normal"},{"id":14,"chapter":"Ch1","q":"知識のボトルネック問題とは何か。","choices":["知識を計算機に入力する速度の限界","専門家の暗黙知をルール化することの困難さ","メモリ容量の制約","ネットワーク帯域の制約"],"answer":1,"explanation":"知識獲得のボトルネックとは、エキスパートシステムを構築する際、専門家の持つ暗黙知を明示的なルールとして抽出・記述することが極めて困難な問題。第2次AIブーム冬の時代の主因の一つ。","wrongReasons":{"0":"入力速度の問題ではない。","2":"ハードウェア制約ではない。","3":"通信の問題ではない。"},"keyword":"暗黙知、形式知、知識工学、Cycプロジェクトの教訓","difficulty":"normal"},{"id":15,"chapter":"Ch1","q":"「Cyc（サイク）プロジェクト」の目的は何か。","choices":["世界中の常識を体系的に記述する","ニューラルネットの高速化","音声認識の精度向上","ロボットの運動制御"],"answer":0,"explanation":"Cycプロジェクトは1984年にダグラス・レナートが開始した、人間が持つ常識すべてを記号的に記述しようとする壮大なプロジェクト。膨大な労力にもかかわらず完成には至っていない。","wrongReasons":{"1":"ニューラルネットではなく、シンボリックAI。","2":"音声ではない。","3":"ロボット制御ではない。"},"keyword":"ダグラス・レナート、常識推論、シンボリックAI","difficulty":"normal"},{"id":16,"chapter":"Ch1","q":"第3次AIブームを牽引した技術として最も重要なものはどれか。","choices":["エキスパートシステム","ディープラーニング","ファジィ理論","遺伝的アルゴリズム"],"answer":1,"explanation":"第3次AIブーム（2010年代〜）はディープラーニングによる成功（画像認識ImageNet、音声認識、自然言語処理）で牽引された。","wrongReasons":{"0":"エキスパートシステムは第2次ブームの主役。","2":"ファジィ理論は別系統の技術。","3":"遺伝的アルゴリズムも別系統。"},"keyword":"ImageNet 2012、AlexNet、ヒントン、ルカン、ベンジオ","difficulty":"easy"},{"id":17,"chapter":"Ch1","q":"ヒントン、ルカン、ベンジオの3名が2018年に受賞した賞は何か。","choices":["ノーベル賞","チューリング賞","フィールズ賞","アーベル賞"],"answer":1,"explanation":"チューリング賞（ACM A.M. Turing Award）はコンピュータ科学のノーベル賞と呼ばれる賞。2018年にディープラーニングへの貢献で3名が受賞。","wrongReasons":{"0":"ノーベル賞ではない。","2":"フィールズ賞は数学者向け。","3":"アーベル賞は数学者向け。"},"keyword":"ジェフリー・ヒントン、ヤン・ルカン、ヨシュア・ベンジオ、DL Godfathers","difficulty":"easy"},{"id":18,"chapter":"Ch1","q":"ジェフリー・ヒントンが2024年に受賞したノーベル賞の分野は何か。","choices":["化学賞","物理学賞","経済学賞","生理学・医学賞"],"answer":1,"explanation":"ヒントンはホップフィールドとともに2024年のノーベル物理学賞を受賞。人工ニューラルネットによる機械学習の基礎研究が評価された。","wrongReasons":{"0":"化学賞ではない。","2":"経済学ではない。","3":"医学ではない。"},"keyword":"ホップフィールドネットワーク、ボルツマンマシン、2024年ノーベル賞","difficulty":"normal"},{"id":19,"chapter":"Ch1","q":"AIの「冬の時代」とは何か。","choices":["AIが特に冬季に活発化する現象","期待が外れて研究予算が削減された停滞期","ハードウェアの冷却問題","学術論文の少ない時期"],"answer":1,"explanation":"AIの冬は、AIへの期待が過剰だったため成果が伴わず、研究資金や産業界の関心が減少した停滞期。1970年代と1980年代末〜90年代の2回が代表的。","wrongReasons":{"0":"季節とは無関係。","2":"冷却問題ではない。","3":"論文数の問題ではない。"},"keyword":"Lighthill報告、第5世代コンピュータ、Hyper-cycle","difficulty":"easy"},{"id":20,"chapter":"Ch1","q":"現在のAIブーム（第3次）に対して、これも冬の時代に向かうとの議論で指摘される主要なリスクとして適切でないものはどれか。","choices":["過剰な期待によるバブル化","倫理・法規制による開発抑制","ハルシネーション等の実用上の限界","計算機の物理サイズの限界"],"answer":3,"explanation":"計算機の物理サイズの限界はAI停滞の直接的主要因として一般的に挙げられない。一方、過剰期待、規制、ハルシネーション等の実用課題はよく議論される。","wrongReasons":{"0":"バブル化はリスクとして頻繁に議論される。","1":"AI規制（EU AI Actなど）の影響は議論されている。","2":"幻覚（ハルシネーション）は実用上の大きな課題。"},"keyword":"ガートナーのハイプサイクル、過熱期、幻滅期","difficulty":"hard"},{"id":21,"chapter":"Ch2","q":"「探索木」を用いて1950〜60年代のAIで盛んに研究された問題はどれか。","choices":["大規模言語モデルの学習","迷路や数学パズルの解法","画像生成","音声合成"],"answer":1,"explanation":"第1次AIブームでは、状態を木構造で表現し探索する手法が中心。迷路、ハノイの塔、チェッカーなどのパズル問題で成果が出た。","wrongReasons":{"0":"LLMは現代の技術。","2":"画像生成は近年の技術。","3":"音声合成も後年の発展。"},"keyword":"幅優先探索、深さ優先探索、ヒューリスティック探索、A*アルゴリズム","difficulty":"easy"},{"id":22,"chapter":"Ch2","q":"ミニマックス法はどのような場面で使われるか。","choices":["教師あり学習の損失最小化","2人ゲームの最適手の探索","次元削減","クラスタリング"],"answer":1,"explanation":"ミニマックス法は2人ゼロサムゲーム（チェス、オセロなど）で、自分は最大化・相手は最小化を仮定して最適手を探索する古典的アルゴリズム。","wrongReasons":{"0":"学習アルゴリズムではない。","2":"次元削減とは別。","3":"クラスタリングではない。"},"keyword":"αβ枝刈り、モンテカルロ木探索、ゲーム木","difficulty":"normal"},{"id":23,"chapter":"Ch2","q":"「αβ法（アルファベータ法）」は何のために用いられるか。","choices":["ニューラルネットの学習率調整","ゲーム木探索の効率化（枝刈り）","クラスタリングの初期化","正則化の手法"],"answer":1,"explanation":"αβ法はミニマックス法における不要な枝を刈り取ることで探索効率を上げる手法。最終結果は変わらないが計算量を削減できる。","wrongReasons":{"0":"学習率とは無関係。","2":"クラスタリングではない。","3":"正則化ではない。"},"keyword":"枝刈り、ゲーム木、αカット、βカット","difficulty":"normal"},{"id":24,"chapter":"Ch2","q":"AlphaGoが用いた中核技術として最も適切な組み合わせはどれか。","choices":["決定木 + SVM","モンテカルロ木探索 + ディープラーニング","Q学習のみ","遺伝的アルゴリズム + ルールベース"],"answer":1,"explanation":"AlphaGo（2016年に李セドルに勝利）は、モンテカルロ木探索（MCTS）と方策・価値ネットワーク（CNN）を組み合わせた構成。","wrongReasons":{"0":"これらは古典機械学習で、AlphaGoの中核ではない。","2":"Q学習だけでは不十分。","3":"GAやルールベースではない。"},"keyword":"MCTS、Policy Network、Value Network、AlphaZero","difficulty":"easy"},{"id":25,"chapter":"Ch2","q":"AlphaGo Zeroが従来のAlphaGoと異なる最大のポイントは何か。","choices":["より大きなニューラルネットを使った","人間の棋譜データを一切使わず自己対戦のみで学習した","クラウドで動作する","オープンソースで公開された"],"answer":1,"explanation":"AlphaGo Zero（2017）は人間の対局データを使わず、自己対戦による強化学習のみでAlphaGoを上回る強さを獲得した。","wrongReasons":{"0":"主な革新点ではない。","2":"クラウドの話ではない。","3":"OSSの話ではない。"},"keyword":"セルフプレイ、強化学習、知識ゼロからの学習","difficulty":"normal"},{"id":26,"chapter":"Ch2","q":"「ディープブルー」は何のシステムか。","choices":["IBMが開発したチェスAI","Googleの音声認識システム","MicrosoftのチャットAI","AppleのSiriの前身"],"answer":0,"explanation":"ディープブルーはIBMが開発したチェス専用AI。1997年にチェス世界王者ガルリ・カスパロフを破った。","wrongReasons":{"1":"Googleの音声システムではない。","2":"Microsoftの製品ではない。","3":"Siriとは無関係。"},"keyword":"1997年、カスパロフ、専用ハードウェア、ブルートフォース探索","difficulty":"easy"},{"id":27,"chapter":"Ch2","q":"IBM Watsonがクイズ番組「Jeopardy!」で人間チャンピオンを破ったのは何年か。","choices":["2009年","2011年","2013年","2015年"],"answer":1,"explanation":"2011年、IBM Watsonは米国のクイズ番組Jeopardy!で人間のチャンピオンを破った。自然言語処理と知識検索の総合力が示された。","wrongReasons":{"0":"2009年ではない。","2":"2013年ではない。","3":"2015年ではない。"},"keyword":"自然言語理解、知識ベース、IBM Watson Health","difficulty":"normal"},{"id":28,"chapter":"Ch2","q":"ImageNet画像認識コンテスト（ILSVRC）でAlexNetが圧勝した年は？","choices":["2010年","2011年","2012年","2014年"],"answer":2,"explanation":"2012年のILSVRCでヒントン研究室のAlexNet（クリジェフスキーら）がエラー率を大幅に低下させて圧勝。深層学習の第3次AIブーム到来を決定づけた。","wrongReasons":{"0":"2010年は従来手法が主流。","1":"2011年も従来手法。","3":"2014年はVGG/GoogLeNetが活躍。"},"keyword":"AlexNet、Krizhevsky、GPU活用、ReLU、Dropout","difficulty":"easy"},{"id":29,"chapter":"Ch2","q":"Transformerが提案された論文は次のうちどれか。","choices":["Attention Is All You Need","Deep Residual Learning","ImageNet Classification with Deep CNN","Generative Adversarial Networks"],"answer":0,"explanation":"Transformerは2017年Vaswaniらの論文「Attention Is All You Need」で提案された。自己注意機構を中心とした構造で、RNNを使わずに系列処理を実現。","wrongReasons":{"1":"これはResNetの論文（He et al.）。","2":"これはAlexNetの論文。","3":"これはGANの論文（Goodfellow）。"},"keyword":"Self-Attention、Multi-Head Attention、Positional Encoding","difficulty":"easy"},{"id":30,"chapter":"Ch2","q":"GPT（Generative Pre-trained Transformer）を最初に提案した組織はどこか。","choices":["Google","OpenAI","Meta","Anthropic"],"answer":1,"explanation":"GPTシリーズはOpenAIが開発・公開している大規模言語モデル。GPT-1（2018）から始まりGPT-4、GPT-4o、GPT-5へと発展。","wrongReasons":{"0":"Googleが提案したのはBERT、Gemini、PaLMなど。","2":"MetaはLlamaシリーズ。","3":"AnthropicはClaudeシリーズ。"},"keyword":"OpenAI、GPT-1〜GPT-5、Sam Altman","difficulty":"easy"},{"id":31,"chapter":"Ch2","q":"BERTの最大の特徴を1つ選べ。","choices":["GPTより大きなモデルである","双方向（Bidirectional）の文脈を考慮する","強化学習で訓練される","音声処理に特化している"],"answer":1,"explanation":"BERT（Bidirectional Encoder Representations from Transformers, 2018, Google）は左右双方向の文脈を同時に考慮するTransformerエンコーダ。","wrongReasons":{"0":"大きさは特徴ではなく方向性が特徴。","2":"BERTは事前学習＋ファインチューニング、強化学習ではない。","3":"BERTは音声特化ではない。"},"keyword":"Masked Language Model、Next Sentence Prediction、Encoderモデル","difficulty":"normal"},{"id":32,"chapter":"Ch2","q":"「Diffusion Model（拡散モデル）」が主に使われる用途として適切なものはどれか。","choices":["時系列予測","画像生成","強化学習の方策更新","クラスタリング"],"answer":1,"explanation":"拡散モデルは画像にノイズを徐々に加える順方向プロセスと、その逆向きにノイズを除去して画像を生成する逆方向プロセスを学習する画像生成モデル。Stable Diffusion、DALL-E 2などで採用。","wrongReasons":{"0":"時系列予測ではない。","2":"強化学習ではない。","3":"クラスタリングではない。"},"keyword":"DDPM、Stable Diffusion、潜在拡散モデル、Score-based generative model","difficulty":"normal"},{"id":33,"chapter":"Ch2","q":"RLHF（人間のフィードバックによる強化学習）が主に使われる文脈として正しいものはどれか。","choices":["大規模言語モデルを人間の好みに沿わせるための調整","画像分類モデルのデータ拡張","深層強化学習の探索効率化","ニューラルアーキテクチャ探索"],"answer":0,"explanation":"RLHF（Reinforcement Learning from Human Feedback）はChatGPT等のLLMを人間の好む応答に沿わせるための手法。報酬モデルを人間評価で訓練し、PPOなどで方策をfine-tune。","wrongReasons":{"1":"データ拡張ではない。","2":"探索効率化ではない。","3":"NASではない。"},"keyword":"報酬モデル、PPO、アライメント、InstructGPT","difficulty":"normal"},{"id":34,"chapter":"Ch2","q":"「基盤モデル（Foundation Model）」の特徴として最も適切なものはどれか。","choices":["特定タスク向けに小規模に学習されたモデル","大規模データで事前学習され、多様な下流タスクに転用可能なモデル","ルールベースで動作するモデル","人間の脳を完全に模倣したモデル"],"answer":1,"explanation":"基盤モデルは大規模・多様なデータで事前学習され、ファインチューニングやプロンプトで様々な下流タスクに転用される汎用モデル。スタンフォードCRFMが2021年に概念提唱。","wrongReasons":{"0":"小規模ではなく大規模。","2":"ニューラル系であり、ルールベースではない。","3":"脳の完全模倣ではない。"},"keyword":"Pre-training, Fine-tuning, Few-shot、Stanford CRFM","difficulty":"normal"},{"id":35,"chapter":"Ch2","q":"ChatGPTが一般公開されたのは何年か。","choices":["2020年","2021年","2022年","2023年"],"answer":2,"explanation":"ChatGPTは2022年11月にOpenAIから一般公開され、急速に世界中に普及した。","wrongReasons":{"0":"2020年はGPT-3公開。","1":"2021年ではない。","3":"2023年はGPT-4の年。"},"keyword":"2022年11月30日、GPT-3.5ベース","difficulty":"easy"},{"id":36,"chapter":"Ch2","q":"マルチモーダルAIの説明として最も適切なものはどれか。","choices":["複数のニューラルネットを並列実行するAI","テキスト・画像・音声など複数種類の入出力を扱うAI","マルチプロセッサで動作するAI","複数の言語に対応したAI"],"answer":1,"explanation":"マルチモーダルAIはテキスト・画像・音声・動画など複数の異なるモダリティ（情報の形式）を統合的に扱うAI。GPT-4o、Gemini、Claude 3など。","wrongReasons":{"0":"並列実行の意味ではない。","2":"プロセッサの話ではない。","3":"多言語対応とは別概念。"},"keyword":"GPT-4o、Gemini、CLIP、マルチモーダル基盤モデル","difficulty":"easy"},{"id":37,"chapter":"Ch2","q":"「CLIP」モデルの特徴として正しいものはどれか。","choices":["画像と自然言語を共通の埋め込み空間で対応付ける","音声を高速にテキスト化する","強化学習の探索を効率化する","ニューラルアーキテクチャを自動探索する"],"answer":0,"explanation":"CLIP（Contrastive Language-Image Pre-training, OpenAI 2021）は画像とテキストを対比学習で同じ埋め込み空間に配置するモデル。ゼロショット画像分類などに応用。","wrongReasons":{"1":"音声ではない。","2":"強化学習ではない。","3":"NASではない。"},"keyword":"Contrastive Learning、ゼロショット、テキスト埋め込み、画像埋め込み","difficulty":"normal"},{"id":38,"chapter":"Ch2","q":"「Stable Diffusion」を開発・公開した組織はどれか。","choices":["OpenAI","Stability AI","Google","Meta"],"answer":1,"explanation":"Stable DiffusionはStability AIが2022年に公開した拡散モデルベースの画像生成AI。オープンソースとして広く普及。","wrongReasons":{"0":"OpenAIはDALL-E。","2":"GoogleはImagen。","3":"MetaはMake-A-Sceneなど。"},"keyword":"Latent Diffusion、LAION-5B、オープンソース画像生成","difficulty":"easy"},{"id":39,"chapter":"Ch2","q":"「Sora」はOpenAIが発表した何のためのモデルか。","choices":["テキスト生成","画像生成","動画生成","音声合成"],"answer":2,"explanation":"SoraはOpenAIが2024年に発表したテキストから動画を生成するモデル。Diffusion Transformerをベースとしている。","wrongReasons":{"0":"テキスト生成はGPTシリーズ。","1":"画像生成はDALL-E。","3":"音声合成は別モデル。"},"keyword":"Text-to-Video、Diffusion Transformer、2024年","difficulty":"normal"},{"id":40,"chapter":"Ch2","q":"「特徴量エンジニアリング」とディープラーニングの関係として正しい記述はどれか。","choices":["DLは特徴量エンジニアリングを必須とする","DLは特徴量を自動的に学習で獲得するため、手動の特徴量エンジニアリングへの依存が下がる","両者は無関係である","DLは特徴量エンジニアリングをより複雑にする"],"answer":1,"explanation":"ディープラーニングの最大の革新の一つは、生データから階層的に有用な特徴を自動学習する点。従来の機械学習では人手で特徴量を設計する必要があった。","wrongReasons":{"0":"必須ではなく、むしろ依存が減る。","2":"密接に関係している。","3":"複雑化させるのではなく、軽減する。"},"keyword":"表現学習、End-to-End学習、自動特徴抽出","difficulty":"normal"},{"id":41,"chapter":"Ch2","q":"「自然言語処理（NLP）」分野で、Transformer以前に主流だったアーキテクチャはどれか。","choices":["CNN","RNN（特にLSTM）","オートエンコーダ","GAN"],"answer":1,"explanation":"Transformer登場（2017）以前のNLP系列モデルはRNN（とくにLSTM、GRU）が主流。長距離依存と並列計算のしにくさが課題で、それをTransformerが解決した。","wrongReasons":{"0":"CNNは画像が主、NLPでも一部使われたが主流ではない。","2":"オートエンコーダは別目的。","3":"GANは画像生成が主。"},"keyword":"LSTM、Seq2Seq、Encoder-Decoder","difficulty":"easy"},{"id":42,"chapter":"Ch2","q":"「Vision Transformer (ViT)」の特徴として正しいものはどれか。","choices":["CNNと組み合わせて使うのが必須","画像をパッチに分割しTransformerで処理する","RNNを画像に応用したもの","強化学習を画像に適用したもの"],"answer":1,"explanation":"ViT（Google 2020）は画像を固定サイズパッチに分割し、各パッチを系列としてTransformerに入力する。CNNを使わずに画像分類を達成。","wrongReasons":{"0":"CNN必須ではない。","2":"RNNではない。","3":"強化学習ではない。"},"keyword":"Patch Embedding、Class Token、画像のTransformer応用","difficulty":"normal"},{"id":43,"chapter":"Ch2","q":"「LLM（大規模言語モデル）」のスケーリング則（Scaling Laws）が示唆することは何か。","choices":["モデルサイズを大きくしても性能は頭打ちになる","計算量・データ量・パラメータ数を増やすほど性能が予測的に向上する","学習率を下げるほど性能が良くなる","層を浅くするほど性能が良くなる"],"answer":1,"explanation":"OpenAIのKaplanら（2020）の研究で、LLMの損失は計算量・データ量・モデルサイズに対しべき乗則で予測可能に減少することが示された。これがGPT-3以降の超大規模化の根拠。","wrongReasons":{"0":"頭打ちではなく、予測的に向上する。","2":"学習率は別問題。","3":"層は深くする方向。"},"keyword":"Kaplan et al. 2020、Chinchilla則、計算最適性","difficulty":"hard"},{"id":44,"chapter":"Ch2","q":"「創発的能力（Emergent Abilities）」とは何か。","choices":["小さいモデルで起こる能力低下","あるサイズを超えたモデルで突然出現する能力","学習データの偏りで起こる現象","ファインチューニングで失われる能力"],"answer":1,"explanation":"創発的能力は、モデル規模を一定以上に大きくしたとき、それまで全くできなかったタスクが突然できるようになる現象。In-context learning、推論などで観察される。","wrongReasons":{"0":"逆。","2":"バイアスの話ではない。","3":"破滅的忘却とは別。"},"keyword":"Few-shot learning、Chain-of-Thought、Phase transition","difficulty":"hard"},{"id":45,"chapter":"Ch2","q":"「In-context Learning」とは何か。","choices":["モデルの重みを更新する学習","プロンプト内の例示だけでタスクを実行する能力","オンライン学習の一種","強化学習の一手法"],"answer":1,"explanation":"In-context Learning（ICL）はLLMがプロンプト内で示されたいくつかの例（few-shot examples）からパターンを学び、重み更新なしに新タスクを実行する能力。","wrongReasons":{"0":"重み更新は伴わない。","2":"オンライン学習ではない。","3":"強化学習ではない。"},"keyword":"Few-shot prompting、Zero-shot、GPT-3で注目","difficulty":"normal"},{"id":46,"chapter":"Ch2","q":"「Chain-of-Thought（CoT）プロンプティング」の効果として正しいものはどれか。","choices":["LLMの推論精度（特に算術・論理）が向上する","LLMの学習速度が上がる","LLMの省電力化が進む","LLMの応答速度が上がる"],"answer":0,"explanation":"CoTは「ステップバイステップで考えなさい」と促すことで、LLMが中間推論ステップを出力し、複雑な算術・論理問題の正答率を大きく向上させる手法（Wei et al. 2022）。","wrongReasons":{"1":"学習速度ではなく推論精度の話。","2":"省電力とは無関係。","3":"応答速度は遅くなる場合が多い。"},"keyword":"Let's think step by step、推論能力、Wei et al.","difficulty":"normal"},{"id":47,"chapter":"Ch2","q":"「RAG（Retrieval-Augmented Generation）」の意義として最も適切なものはどれか。","choices":["LLMのパラメータ数を増やす","外部知識源を検索し参照しながら生成することでハルシネーションを抑える","LLMの学習速度を上げる","LLMの倫理性を高める"],"answer":1,"explanation":"RAGはLLMが回答生成時に外部知識ベース（文書、データベース）を検索し参照する手法。最新情報を反映できる、ハルシネーションを抑えられる、出典を示せるなどの利点。","wrongReasons":{"0":"パラメータ数とは無関係。","2":"学習速度ではない。","3":"倫理性とは別の目的。"},"keyword":"ベクトルDB、Embedding、ハイブリッド検索、引用付き生成","difficulty":"easy"},{"id":48,"chapter":"Ch2","q":"「ファインチューニング」と「プロンプトエンジニアリング」の違いとして正しい記述はどれか。","choices":["両者は同じものを指す","ファインチューニングはモデルの重みを更新するが、プロンプトエンジニアリングは更新しない","プロンプトエンジニアリングは重みを更新し、ファインチューニングはしない","両者ともモデルの重みを更新しない"],"answer":1,"explanation":"ファインチューニングは事前学習モデルの重みを追加データで更新する。プロンプトエンジニアリングは重みを変えず、入力テキストの設計で出力を制御する手法。","wrongReasons":{"0":"異なる手法。","2":"逆。","3":"ファインチューニングは更新する。"},"keyword":"LoRA、PEFT、Instruction tuning、Few-shot","difficulty":"easy"},{"id":49,"chapter":"Ch2","q":"「LoRA（Low-Rank Adaptation）」はどのような技術か。","choices":["大規模モデルを少ないパラメータ更新で効率的にファインチューニングする手法","学習データを圧縮する手法","推論を高速化する量子化手法","新しい活性化関数"],"answer":0,"explanation":"LoRAはモデル全体ではなく、低ランクの行列を追加してそれだけを学習することで、少ない計算資源・データで大規模モデルを適応させる手法。","wrongReasons":{"1":"データ圧縮ではない。","2":"量子化とは別。","3":"活性化関数ではない。"},"keyword":"PEFT、Adapter、Parameter Efficient Fine-Tuning","difficulty":"normal"},{"id":50,"chapter":"Ch2","q":"「AIエージェント」の定義として最も適切なものはどれか。","choices":["人間が操作する自動化スクリプト","環境を観測し、ツールを使い、目標達成のために自律的に行動するAIシステム","単純なチャットボット","音声アシスタント全般"],"answer":1,"explanation":"AIエージェントは目標を与えると、自ら計画を立て、ツール（検索、計算、API、コード実行など）を使いながら、観測・行動を繰り返して目標達成を目指す自律的AIシステム。","wrongReasons":{"0":"自動化スクリプトとは異なる。","2":"チャットボットより自律的。","3":"音声アシスタントの定義ではない。"},"keyword":"ReAct、Tool use、Function Calling、Multi-step reasoning","difficulty":"easy"},{"id":51,"chapter":"Ch3","q":"機械学習における「教師あり学習」の説明として最も適切なものはどれか。","choices":["正解ラベル付きデータで入出力の対応を学習する","報酬を最大化する行動を学習する","ラベルなしデータからパターンを抽出する","人間の指示なしに自律的に学習する"],"answer":0,"explanation":"教師あり学習は入力データとそれに対応する正解ラベル（教師信号）のペアで学習し、未知の入力に対する出力を予測する。回帰と分類が代表的。","wrongReasons":{"1":"これは強化学習の説明。","2":"これは教師なし学習の説明。","3":"教師信号があるので「教師あり」。"},"keyword":"回帰、分類、訓練データ、テストデータ","difficulty":"easy"},{"id":52,"chapter":"Ch3","q":"次のうち「教師なし学習」のタスクはどれか。","choices":["スパムメール分類","住宅価格の予測","顧客のクラスタリング","画像の手書き数字認識"],"answer":2,"explanation":"クラスタリングは正解ラベルなしでデータの自然なグループを発見する教師なし学習の代表タスク。他はすべて教師ありに該当する。","wrongReasons":{"0":"スパム分類は教師あり（spam/ham）。","1":"価格予測は教師あり回帰。","3":"数字認識は教師あり分類。"},"keyword":"k-means、階層的クラスタリング、DBSCAN","difficulty":"easy"},{"id":53,"chapter":"Ch3","q":"「強化学習」と他の学習パラダイムの違いとして適切なものはどれか。","choices":["強化学習は教師ありデータを必要とする","強化学習はエージェントが環境と相互作用し、報酬を最大化する方策を学ぶ","強化学習は教師なし学習と同じである","強化学習はラベル付きデータが必須である"],"answer":1,"explanation":"強化学習はエージェントが環境と試行錯誤的に相互作用し、得られる報酬を最大化する方策（policy）を学習する。AlphaGoや自動運転、ロボティクスで活躍。","wrongReasons":{"0":"教師ありデータは不要、報酬信号が代わり。","2":"異なるパラダイム。","3":"ラベル付きデータは不要。"},"keyword":"Agent、Environment、Reward、Policy、Value","difficulty":"easy"},{"id":54,"chapter":"Ch3","q":"「半教師あり学習」の特徴として正しいものはどれか。","choices":["少量のラベル付きデータと大量のラベルなしデータを組み合わせる","正解ラベルが半分だけ間違っているデータで学習する","半分は教師、半分は強化学習で行う","教師の半分が人間、半分がAIで構成される"],"answer":0,"explanation":"半教師あり学習は少量のラベル付きデータと多量のラベルなしデータを併用することで、ラベル付けコストを抑えつつ高性能なモデルを得る手法。","wrongReasons":{"1":"間違いの話ではない。","2":"パラダイム混合ではない。","3":"人物構成の話ではない。"},"keyword":"Self-training、Co-training、Pseudo-labeling","difficulty":"normal"},{"id":55,"chapter":"Ch3","q":"「自己教師あり学習（Self-Supervised Learning）」の例として最も適切なものはどれか。","choices":["人手でラベル付けされたImageNetでの学習","BERTにおけるマスクされた単語の予測","強化学習のQ学習","決定木の構築"],"answer":1,"explanation":"自己教師あり学習はラベルなしデータから自動的にタスクを作って学習する手法。BERTのマスク言語モデル、画像の回転予測、対比学習などが代表例。","wrongReasons":{"0":"これは通常の教師あり学習。","2":"強化学習は別カテゴリ。","3":"決定木は教師あり。"},"keyword":"MLM、SimCLR、対比学習、プレテキストタスク","difficulty":"normal"},{"id":56,"chapter":"Ch3","q":"線形回帰モデル y = wx + b における w と b は何と呼ばれるか。","choices":["特徴量と教師","重みとバイアス（パラメータ）","活性化関数と損失","正則化と最適化"],"answer":1,"explanation":"w（slope, 重み）と b（intercept, バイアス）は線形回帰のパラメータ。これらを学習データに当てはめて損失を最小化する。","wrongReasons":{"0":"特徴量・教師は別概念。","2":"活性化や損失とは別。","3":"正則化・最適化とは別。"},"keyword":"Slope、Intercept、最小二乗法","difficulty":"easy"},{"id":57,"chapter":"Ch3","q":"ロジスティック回帰の出力範囲はどれか。","choices":["[-∞, ∞]","[0, 1]","[-1, 1]","[0, ∞)"],"answer":1,"explanation":"ロジスティック回帰はシグモイド関数で出力を [0, 1] に圧縮し、確率として解釈できる。二値分類に広く使われる。","wrongReasons":{"0":"-∞〜∞は通常の線形回帰の出力範囲。","2":"-1〜1はtanhの出力範囲。","3":"0以上はReLUなど。"},"keyword":"シグモイド、対数オッズ、最尤推定、二項分布","difficulty":"easy"},{"id":58,"chapter":"Ch3","q":"サポートベクターマシン（SVM）が分類で最大化するものは何か。","choices":["訓練誤差","マージン（境界面とサポートベクトルの距離）","テスト誤差","活性化値"],"answer":1,"explanation":"SVMはクラス間のマージン（決定境界とサポートベクトルの距離）を最大化する分類器。汎化性能が高いとされる。","wrongReasons":{"0":"誤差は最小化対象。","2":"テスト誤差は直接の最適化対象ではない。","3":"SVMに活性化はない。"},"keyword":"サポートベクトル、ハードマージン、ソフトマージン、カーネルトリック","difficulty":"normal"},{"id":59,"chapter":"Ch3","q":"SVMで非線形分類を可能にする「カーネルトリック」の役割は何か。","choices":["データを低次元に圧縮する","データを高次元空間に写像し線形分離可能にする","学習を高速化する","ノイズを除去する"],"answer":1,"explanation":"カーネルトリックは入力データを暗黙的に高次元特徴空間に写像することで、元の空間では非線形な境界を線形に扱えるようにする手法。","wrongReasons":{"0":"圧縮ではなく拡張。","2":"高速化ではない（むしろ計算が増える）。","3":"ノイズ除去ではない。"},"keyword":"RBFカーネル、多項式カーネル、再生核ヒルベルト空間","difficulty":"normal"},{"id":60,"chapter":"Ch3","q":"決定木の説明として正しいものはどれか。","choices":["特徴量で再帰的にデータを分割し、葉ノードでクラスを予測するモデル","ニューラルネットの一種である","線形分類器の集合である","確率的勾配降下法で学習される"],"answer":0,"explanation":"決定木は特徴量に基づく条件分岐でデータを再帰的に分割し、葉でラベルを予測する。解釈性が高く、ID3、CART、C4.5などのアルゴリズムがある。","wrongReasons":{"1":"NNとは別系統。","2":"線形分類器集合とは異なる。","3":"SGDで学習しない（情報利得などで分割）。"},"keyword":"情報利得、ジニ不純度、エントロピー、CART","difficulty":"easy"},{"id":61,"chapter":"Ch3","q":"ランダムフォレストはどのような手法か。","choices":["複数の決定木を独立に学習しその予測を平均/多数決する","1本の決定木を非常に深く成長させる","決定木と線形回帰を組み合わせる","強化学習で決定木を選ぶ"],"answer":0,"explanation":"ランダムフォレストは複数の決定木をブートストラップサンプルとランダムな特徴量サブセットで独立に学習し、結果を集約するアンサンブル手法（バギング）。","wrongReasons":{"1":"単一木ではなくアンサンブル。","2":"異種混合ではない。","3":"強化学習は不要。"},"keyword":"Bagging、ブートストラップ、特徴量サンプリング","difficulty":"easy"},{"id":62,"chapter":"Ch3","q":"「ブースティング」と「バギング」の違いとして正しいものはどれか。","choices":["どちらも並列に弱学習器を学習する","ブースティングは前の学習器の誤りを次が補うように逐次学習する、バギングは並列で独立に学習する","両者は同じ手法である","バギングは単一モデル、ブースティングはアンサンブル"],"answer":1,"explanation":"ブースティング（AdaBoost、Gradient Boosting）は逐次的に弱学習器を追加し、前の学習器の誤分類を重視。バギング（Random Forest）は並列独立学習。","wrongReasons":{"0":"バギングは並列、ブースティングは逐次。","2":"異なる手法。","3":"両方ともアンサンブル。"},"keyword":"XGBoost、LightGBM、AdaBoost、Gradient Boosting","difficulty":"normal"},{"id":63,"chapter":"Ch3","q":"「XGBoost」「LightGBM」「CatBoost」が共通して属する手法カテゴリは何か。","choices":["ニューラルネット","勾配ブースティング決定木（GBDT）","K-means拡張","ベイズ推定"],"answer":1,"explanation":"XGBoost、LightGBM、CatBoostはいずれも勾配ブースティング決定木（Gradient Boosting Decision Trees）の実装。Kaggleなど構造化データで強力。","wrongReasons":{"0":"NNではない。","2":"クラスタリングではない。","3":"ベイズではない。"},"keyword":"Kaggle、表データ、構造化データ最強手法","difficulty":"easy"},{"id":64,"chapter":"Ch3","q":"K-meansクラスタリングで決める必要のあるハイパーパラメータは何か。","choices":["学習率","クラスタ数 K","正則化係数","層の数"],"answer":1,"explanation":"K-meansは事前にクラスタ数Kを指定する必要がある。エルボー法やシルエット分析で最適なKを推定することが多い。","wrongReasons":{"0":"学習率はない。","2":"正則化はない。","3":"層はない。"},"keyword":"エルボー法、シルエット係数、k-means++初期化","difficulty":"easy"},{"id":65,"chapter":"Ch3","q":"次のうち「次元削減」の手法として最も代表的なものはどれか。","choices":["k-means","主成分分析（PCA）","ロジスティック回帰","決定木"],"answer":1,"explanation":"PCA（Principal Component Analysis）は分散を最大化する直交軸（主成分）にデータを射影することで次元を削減する代表的手法。","wrongReasons":{"0":"k-meansはクラスタリング。","2":"ロジスティック回帰は分類。","3":"決定木は分類/回帰。"},"keyword":"固有値分解、特異値分解、t-SNE、UMAP","difficulty":"easy"},{"id":66,"chapter":"Ch3","q":"t-SNEの主な用途は何か。","choices":["時系列予測","高次元データの低次元（2D/3D）可視化","強化学習","音声認識"],"answer":1,"explanation":"t-SNE（t-distributed Stochastic Neighbor Embedding）は高次元データを2D/3Dに非線形写像して可視化する手法。クラスタの確認に多用される。","wrongReasons":{"0":"時系列ではない。","2":"強化学習ではない。","3":"音声ではない。"},"keyword":"Perplexity、UMAP、可視化、近傍保存","difficulty":"normal"},{"id":67,"chapter":"Ch3","q":"「過学習（オーバーフィッティング）」が起こっている状態の典型例はどれか。","choices":["訓練データ・テストデータ両方で誤差が大きい","訓練データで誤差が小さく、テストデータで誤差が大きい","訓練データで誤差が大きく、テストデータで誤差が小さい","両方で誤差が等しく小さい"],"answer":1,"explanation":"過学習は訓練データに過剰に適合し、未知データ（テスト）で性能が出ない現象。訓練誤差は小さいがテスト誤差は大きい。","wrongReasons":{"0":"これは未学習（underfitting）。","2":"通常起こらない。","3":"これが理想的な状態。"},"keyword":"汎化誤差、バリアンス、正則化、Early Stopping","difficulty":"easy"},{"id":68,"chapter":"Ch3","q":"次のうち過学習を抑える手法として誤っているものはどれか。","choices":["L2正則化（Ridge）","Dropout","訓練データを増やす","モデルの複雑度をさらに高める"],"answer":3,"explanation":"モデルの複雑度を高めるとさらに過学習しやすくなる。過学習対策は逆に正則化、ドロップアウト、データ拡張、Early Stopping、複雑度の抑制などを行う。","wrongReasons":{"0":"L2正則化は有効な手法。","1":"Dropoutは有効。","2":"データ増加は有効。"},"keyword":"L1/L2正則化、Dropout、Early Stopping、Data Augmentation","difficulty":"easy"},{"id":69,"chapter":"Ch3","q":"L1正則化とL2正則化の違いとして正しいものはどれか。","choices":["L1は重みをスパース（0が多い）にしやすく、L2は重みを全体に小さくする","L1とL2は同じ効果である","L1は過学習を促進する","L2は重みをスパースにする"],"answer":0,"explanation":"L1正則化（Lasso）は重みの絶対値の和をペナルティとし、不要な重みをちょうど0にすることでスパース性をもたらす。L2（Ridge）は二乗和で全体的に重みを小さく抑える。","wrongReasons":{"1":"効果は異なる。","2":"逆。","3":"L2ではなくL1がスパースにする。"},"keyword":"Lasso、Ridge、Elastic Net、特徴選択","difficulty":"normal"},{"id":70,"chapter":"Ch3","q":"「バイアス・バリアンスのトレードオフ」で、バリアンスが高い状態の特徴は何か。","choices":["モデルが単純すぎてどんなデータにも当てはまらない","モデルが訓練データに過剰に反応し、テストデータで性能が安定しない","バイアスもバリアンスも低い理想状態","そもそもトレードオフは存在しない"],"answer":1,"explanation":"バリアンスが高い＝過学習傾向。訓練データの違いに敏感に反応し、汎化性能が低い。バイアスが高い＝未学習傾向。","wrongReasons":{"0":"これは高バイアス（未学習）。","2":"理想状態の説明ではない。","3":"トレードオフは実在する。"},"keyword":"高バイアス=Underfit、高バリアンス=Overfit","difficulty":"normal"},{"id":71,"chapter":"Ch3","q":"次の分類評価指標のうち「適合率（Precision）」の定義として正しいものはどれか。","choices":["正解中の正検出割合","Positive予測のうち実際にPositiveの割合","全予測中の正解割合","F1の半分"],"answer":1,"explanation":"Precision（適合率）= TP / (TP + FP)。陽性と予測したもののうち実際に陽性の割合。スパム判定など「誤検出を避けたい」場面で重視。","wrongReasons":{"0":"これはRecall（再現率）。","2":"これはAccuracy（正解率）。","3":"そのような定義はない。"},"keyword":"TP/FP/TN/FN、混同行列、Recall、F1","difficulty":"normal"},{"id":72,"chapter":"Ch3","q":"「再現率（Recall）」を重視すべき場面として最も適切なものはどれか。","choices":["がん検診の見逃しを避けたい","スパムを正常メールと誤判定したくない","計算速度を上げたい","モデルを軽くしたい"],"answer":0,"explanation":"Recallは「実際の陽性をどれだけ取りこぼさないか」を表す。がん検診のような「見逃しが命取り」となる場面で重視される。","wrongReasons":{"1":"これはPrecisionを重視するケース。","2":"速度の話ではない。","3":"軽量化の話ではない。"},"keyword":"TP/(TP+FN)、感度、Sensitivity","difficulty":"normal"},{"id":73,"chapter":"Ch3","q":"F1スコアの定義として正しいものはどれか。","choices":["PrecisionとRecallの相加平均","PrecisionとRecallの調和平均","Accuracyの2倍","AUCの半分"],"answer":1,"explanation":"F1 = 2PR/(P+R)は精度と再現率の調和平均。両者のバランスを取りたいときに使う。","wrongReasons":{"0":"算術平均ではない。","2":"無関係。","3":"AUCとは別物。"},"keyword":"調和平均、Macro/Micro F1","difficulty":"easy"},{"id":74,"chapter":"Ch3","q":"ROC曲線とAUCに関する説明として誤っているものはどれか。","choices":["AUCは0〜1の値を取る","AUC=0.5はランダム予測と同等","AUCが大きいほど性能が良い","AUCはRecall一つの値で決まる"],"answer":3,"explanation":"AUC（Area Under the ROC Curve）は閾値を変えながらTPR（再現率）とFPR（偽陽性率）の関係をプロットしたROC曲線の下面積。単一閾値ではなく閾値全体での性能を測る。","wrongReasons":{"0":"0〜1で正しい。","1":"0.5はランダム。","2":"大きいほど良い。"},"keyword":"TPR、FPR、Sensitivity、Specificity","difficulty":"normal"},{"id":75,"chapter":"Ch3","q":"回帰タスクの評価指標として「MSE」が表すものはどれか。","choices":["平均絶対誤差","平均二乗誤差","相対誤差","対数誤差"],"answer":1,"explanation":"MSE（Mean Squared Error）= 平均二乗誤差 = 1/n Σ(y - ŷ)²。大きい誤差を強く罰する性質を持つ。","wrongReasons":{"0":"これはMAE。","2":"これはRelative Error。","3":"これはMSLEなど。"},"keyword":"RMSE、MAE、R²、決定係数","difficulty":"easy"},{"id":76,"chapter":"Ch3","q":"決定係数 R² が示す内容として正しいものはどれか。","choices":["モデルの計算速度","観測値の分散のうちモデルで説明できる割合","誤差の絶対値","ハイパーパラメータの数"],"answer":1,"explanation":"R²（決定係数）はモデルが目的変数の分散をどれだけ説明できているかを表す。1に近いほど良い当てはまり。","wrongReasons":{"0":"速度とは無関係。","2":"絶対値ではない。","3":"パラメータ数ではない。"},"keyword":"Coefficient of Determination、回帰評価","difficulty":"normal"},{"id":77,"chapter":"Ch3","q":"ホールドアウト検証とk-fold交差検証の違いとして正しいものはどれか。","choices":["k-foldはデータを訓練/テストに1回だけ分ける","k-foldはデータをk分割し各分割をテストにする操作をk回行って平均する","ホールドアウトはk回繰り返す","両者は同じ手法"],"answer":1,"explanation":"k-fold交差検証はデータをk分割し、各回1つをテスト、残りを訓練として使う。これをk回繰り返して評価を平均化することで、評価のブレを小さくできる。","wrongReasons":{"0":"これはホールドアウト。","2":"ホールドアウトは1回。","3":"異なる手法。"},"keyword":"5-fold、10-fold、Leave-One-Out、Stratified","difficulty":"easy"},{"id":78,"chapter":"Ch3","q":"層化抽出（Stratified Sampling）の目的は何か。","choices":["データを完全にランダムに分けること","各分割でクラスの比率を元データと同じに保つこと","計算速度を上げること","ハイパーパラメータを自動調整すること"],"answer":1,"explanation":"層化抽出は各分割でクラスラベルの割合を母集団と同じに保つことで、不均衡データでの評価の信頼性を上げる。","wrongReasons":{"0":"ただのランダムサンプリングとは異なる。","2":"速度の話ではない。","3":"ハイパーパラメータ調整ではない。"},"keyword":"Imbalanced Dataset、StratifiedKFold","difficulty":"normal"},{"id":79,"chapter":"Ch3","q":"勾配降下法（Gradient Descent）の基本的なアイデアは何か。","choices":["損失関数の勾配方向にパラメータを更新して損失を減らす","ランダムにパラメータを変えて最善を選ぶ","全データを一度に解析して最適解を求める","決定木を構築する"],"answer":0,"explanation":"勾配降下法は損失関数のパラメータに対する勾配を計算し、その負の方向に少しずつパラメータを更新して損失を最小化する。学習率がステップサイズ。","wrongReasons":{"1":"ランダム探索ではない。","2":"閉形式解を求めるわけではない。","3":"決定木とは無関係。"},"keyword":"学習率、Step size、Loss landscape","difficulty":"easy"},{"id":80,"chapter":"Ch3","q":"「SGD（確率的勾配降下法）」がバッチ勾配降下法と比べて持つ利点は何か。","choices":["勾配計算が常に最適解に直進する","1サンプル（または小バッチ）で勾配を計算するため大規模データで現実的に動く","メモリ消費が大きい","学習が必ず速い"],"answer":1,"explanation":"SGDは1サンプルもしくは小バッチで勾配を計算するため、大規模データセットで現実的な計算量で学習できる。確率性が局所解からの脱出にも寄与する。","wrongReasons":{"0":"直進ではなくノイジー。","2":"メモリは少なく済む。","3":"必ず速いとは限らない。"},"keyword":"Mini-batch SGD、ノイズ、確率的最適化","difficulty":"easy"},{"id":81,"chapter":"Ch3","q":"「ミニバッチ」サイズが大きい場合の傾向として正しいものはどれか。","choices":["勾配の推定が安定するがメモリ消費が増える","勾配がノイジーになるがメモリ消費が減る","学習が必ず遅くなる","結果に影響しない"],"answer":0,"explanation":"大きいミニバッチは勾配推定が安定するがGPUメモリを多く使う。小さいバッチは更新がノイジーで、汎化に良い影響を与えることもある。","wrongReasons":{"1":"これは小バッチの特徴。","2":"必ずしも遅くなるとは限らない。","3":"影響は大きい。"},"keyword":"Batch size、GPU memory、Generalization","difficulty":"normal"},{"id":82,"chapter":"Ch3","q":"学習率（learning rate）が大きすぎる場合に起こる問題は何か。","choices":["学習が遅すぎる","損失が発散する、または振動して収束しない","メモリ使用量が増える","モデルが小さくなる"],"answer":1,"explanation":"学習率が大きいとパラメータ更新の幅が大きすぎ、最適解を跨ぎ続けて発散・振動する。逆に小さすぎると収束が極端に遅くなる。","wrongReasons":{"0":"これは学習率が小さい場合。","2":"無関係。","3":"無関係。"},"keyword":"Learning rate schedule、Warmup、Cosine decay","difficulty":"easy"},{"id":83,"chapter":"Ch3","q":"次の最適化手法のうち、Adamの説明として正しいものはどれか。","choices":["過去の勾配の指数移動平均と二乗の移動平均を併用する適応的最適化","勾配を毎回ランダムに変える","L1正則化の一種","ベイズ最適化の一種"],"answer":0,"explanation":"Adam（Adaptive Moment Estimation）は勾配の1次モーメント（平均）と2次モーメント（分散）の指数移動平均を使ってパラメータごとに適応的に学習率を調整する。","wrongReasons":{"1":"ランダムではない。","2":"正則化ではない。","3":"ベイズ最適化ではない。"},"keyword":"Momentum、RMSprop、AdaGrad、AdamW","difficulty":"normal"},{"id":84,"chapter":"Ch3","q":"「Momentum」を使った勾配降下法の利点として正しいものはどれか。","choices":["局所的な振動を抑え、谷沿いに加速できる","メモリ使用量を激減させる","ハイパーパラメータを自動調整する","層を自動追加する"],"answer":0,"explanation":"Momentumは過去の勾配を慣性として加えることで、勾配が一貫した方向では加速し、振動方向では打ち消し合って収束を安定化・高速化する。","wrongReasons":{"1":"メモリの話ではない。","2":"自動調整ではない。","3":"層数の話ではない。"},"keyword":"Nesterov、慣性、Heavy ball","difficulty":"normal"},{"id":85,"chapter":"Ch3","q":"「Early Stopping」とは何か。","choices":["訓練時間を強制的に短くすること","検証損失が悪化し始めた時点で学習を止めて過学習を防ぐ手法","推論を途中で打ち切ること","学習率を急減させること"],"answer":1,"explanation":"Early Stoppingは検証データの損失を監視し、改善が止まった時点で学習を打ち切ることで過学習を防ぐ実用的手法。","wrongReasons":{"0":"強制的な短縮ではない。","2":"推論ではなく学習。","3":"学習率調整とは別。"},"keyword":"Validation loss、Patience、過学習対策","difficulty":"easy"},{"id":86,"chapter":"Ch3","q":"「データリーケージ（Data Leakage）」とは何か。","choices":["訓練データが実運用に流出するセキュリティ事故","本来テスト時には得られない情報が訓練に混入し、見かけ上の性能が異常に高くなる現象","学習データが量的に不足すること","勾配が消失する現象"],"answer":1,"explanation":"データリーケージは未来情報やテストの答えに相当する特徴量が訓練に混入することで、評価が過大評価される深刻な問題。例：未来の値を使った特徴量、テストデータでのスケーリング統計の使用など。","wrongReasons":{"0":"セキュリティの話ではない（誤解しやすい）。","2":"不足の話ではない。","3":"勾配消失とは別。"},"keyword":"Target leakage、Train-test leakage、CV分割の注意","difficulty":"normal"},{"id":87,"chapter":"Ch3","q":"クラス不均衡データへの対策として誤っているものはどれか。","choices":["オーバーサンプリング（SMOTE等）","アンダーサンプリング","クラス重みの調整","テストデータでもオーバーサンプリングする"],"answer":3,"explanation":"テストデータをサンプリングで操作すると評価が歪み、現実の性能を反映しない。サンプリングは訓練データにのみ適用する。","wrongReasons":{"0":"SMOTEは有効。","1":"アンダーサンプリングも一手段。","2":"クラス重みは有効。"},"keyword":"SMOTE、Class weight、Imbalanced-learn","difficulty":"normal"},{"id":88,"chapter":"Ch3","q":"「正解率（Accuracy）」が不均衡データで誤解を生む例として最も適切なものはどれか。","choices":["陽性10%のデータで「常に陰性」と予測すれば90%の正解率になる","Accuracyは常に信頼できる","AccuracyはF1と完全に一致する","Accuracyは0〜100%以外の値を取る"],"answer":0,"explanation":"陽性が10%しかないデータでは、何も学習せず「全て陰性」と予測するだけで90%の正解率になってしまう。不均衡データでは精度・再現率・F1・AUC等を併用すべき。","wrongReasons":{"1":"不均衡データで誤解を生む。","2":"一致しない。","3":"通常0〜1または0〜100%。"},"keyword":"Class imbalance、F1、ROC-AUC、Precision-Recall曲線","difficulty":"easy"},{"id":89,"chapter":"Ch3","q":"特徴量スケーリングが必要なアルゴリズムとして適切なものはどれか。","choices":["決定木","ランダムフォレスト","k-NN や SVM、ニューラルネット","ルールベース"],"answer":2,"explanation":"距離計算や勾配計算を伴うアルゴリズム（k-NN、SVM、NN、k-means、PCA）はスケールの違いに敏感なため、標準化や正規化が重要。決定木系は不要。","wrongReasons":{"0":"決定木は不要。","1":"ランダムフォレストも不要。","3":"ルールベースは不要。"},"keyword":"Standardization、Min-Max、StandardScaler","difficulty":"normal"},{"id":90,"chapter":"Ch3","q":"「ワンホットエンコーディング」が向く特徴量はどれか。","choices":["連続値（身長、体重）","順序のないカテゴリ変数（色、都道府県）","順序のあるカテゴリ変数（学年）","テキストの全文"],"answer":1,"explanation":"ワンホットエンコーディングは順序のないカテゴリ変数を 0/1のベクトルに変換する手法。順序ありはOrdinal Encoding、テキストはトークン化・Embeddingが適切。","wrongReasons":{"0":"連続値は不要。","2":"順序ありは別手法（Ordinal）。","3":"テキスト全文は別の手法。"},"keyword":"One-hot、Label Encoding、Embedding","difficulty":"easy"},{"id":91,"chapter":"Ch3","q":"「ベイズの定理」を表す式として正しいものはどれか。","choices":["P(A|B) = P(A) + P(B)","P(A|B) = P(B|A) * P(A) / P(B)","P(A|B) = P(B|A) - P(A)","P(A|B) = P(B|A) * P(B) / P(A)"],"answer":1,"explanation":"ベイズの定理：P(A|B) = P(B|A) × P(A) / P(B)。事前確率P(A)を新たな証拠Bで更新して事後確率P(A|B)を得る基本式。","wrongReasons":{"0":"加算ではない。","2":"減算ではない。","3":"P(A)とP(B)が逆。"},"keyword":"事前確率、事後確率、尤度、ナイーブベイズ","difficulty":"easy"},{"id":92,"chapter":"Ch3","q":"「ナイーブベイズ分類器」の「ナイーブ」とは何の仮定を指すか。","choices":["特徴量同士の独立性を仮定すること","確率を扱わないこと","ニューラルネットを使わないこと","教師なしであること"],"answer":0,"explanation":"ナイーブベイズはクラス条件下で特徴量同士が条件付き独立であると仮定する。現実には成り立たないことが多いが、テキスト分類で高速・実用的に機能。","wrongReasons":{"1":"確率ベース。","2":"NNとは別だが理由ではない。","3":"教師ありである。"},"keyword":"条件付き独立、スパム判定、Multinomial NB","difficulty":"normal"},{"id":93,"chapter":"Ch3","q":"k-NN（k近傍法）の「k」を大きくしすぎるとどうなるか。","choices":["過学習が進む","決定境界が滑らかになり、未学習傾向になる","メモリ消費が減る","学習が速くなる"],"answer":1,"explanation":"kを大きくすると遠い点の影響も入り、境界が滑らかになる。極端に大きいと全てを多数クラスに分類してしまう未学習状態に。","wrongReasons":{"0":"小さいkで過学習しやすい。","2":"メモリは変わらない。","3":"推論はkに依存。"},"keyword":"Bias-Variance、Lazy Learning、距離尺度","difficulty":"normal"},{"id":94,"chapter":"Ch3","q":"「混同行列」の対角要素が表すものは何か。","choices":["誤分類の数","正しく分類された数","学習率","正則化係数"],"answer":1,"explanation":"混同行列の対角要素はTrue Positive（クラスごとに正しく分類された）件数。非対角は誤分類を表す。","wrongReasons":{"0":"非対角が誤分類。","2":"学習率ではない。","3":"正則化ではない。"},"keyword":"TP/FP/TN/FN、多クラス混同行列","difficulty":"easy"},{"id":95,"chapter":"Ch3","q":"「ハイパーパラメータチューニング」の手法として典型的でないものはどれか。","choices":["グリッドサーチ","ランダムサーチ","ベイズ最適化","サンプル数を増やす"],"answer":3,"explanation":"サンプル数を増やすのはデータの話で、ハイパーパラメータチューニングではない。Grid/Random/Bayesian/Optunaなどが代表的チューニング手法。","wrongReasons":{"0":"Grid Searchは典型。","1":"Random Searchも典型。","2":"Bayesian Optimizationも典型。"},"keyword":"Grid Search、Optuna、Hyperopt、Successive Halving","difficulty":"easy"},{"id":96,"chapter":"Ch3","q":"ベイズ最適化が他のチューニング手法より優れる点は何か。","choices":["完全にランダムに探索する","過去の試行結果を利用して次に試す点を決める","全組み合わせを試す","ハイパーパラメータが不要"],"answer":1,"explanation":"ベイズ最適化は過去の評価結果から代理モデル（ガウス過程など）を構築し、獲得関数で次の探索点を効率的に選ぶ。","wrongReasons":{"0":"逆。","2":"これはGrid Search。","3":"ハイパーパラメータは存在する。"},"keyword":"Gaussian Process、Acquisition Function、Expected Improvement","difficulty":"hard"},{"id":97,"chapter":"Ch3","q":"「PCA」の主な目的として誤っているものはどれか。","choices":["次元削減","可視化","ノイズ除去","クラス分類そのもの"],"answer":3,"explanation":"PCAは教師なし手法で次元削減・可視化・ノイズ除去に使われるが、それ自体は分類器ではない。前処理として分類器に渡すことはある。","wrongReasons":{"0":"主目的。","1":"低次元への投影で可視化に利用。","2":"主成分以外を捨ててノイズ除去にも使える。"},"keyword":"Principal Component、固有値、寄与率","difficulty":"normal"},{"id":98,"chapter":"Ch3","q":"「異常検知」のアプローチとして適切でないものはどれか。","choices":["One-Class SVM","オートエンコーダの再構成誤差","Isolation Forest","k-meansで全データを1クラスタにまとめる"],"answer":3,"explanation":"k-meansで全データを1クラスタにすると異常も正常も区別できない。異常検知ではOne-Class SVM、Isolation Forest、オートエンコーダ、Local Outlier Factorなどが用いられる。","wrongReasons":{"0":"One-Class SVMは異常検知の定番。","1":"AEの再構成誤差は実用的。","2":"Isolation Forestも代表手法。"},"keyword":"Anomaly Detection、Outlier、LOF、OC-SVM","difficulty":"normal"},{"id":99,"chapter":"Ch3","q":"強化学習における「方策（Policy）」と「価値関数（Value Function）」の違いとして正しい記述はどれか。","choices":["両者は同じものを指す","方策は状態における行動の選び方を表し、価値関数は状態または状態-行動の期待リターンを表す","価値関数は方策を含むが逆は成り立たない","方策は決定論的でなければならない"],"answer":1,"explanation":"方策π(a|s)は状態sでの行動aの選び方（確率/決定論）。価値関数V(s)やQ(s,a)はその方策下での期待累積報酬。両者は別概念だが密接に関係する。","wrongReasons":{"0":"異なるもの。","2":"逆ではない。","3":"確率的方策も存在する。"},"keyword":"π、V、Q、Bellman方程式","difficulty":"normal"},{"id":100,"chapter":"Ch3","q":"Q学習はどのカテゴリの強化学習に属するか。","choices":["方策ベース","価値ベース（モデルフリー、Off-policy）","モデルベース","ベイズ強化学習"],"answer":1,"explanation":"Q学習はQ(s,a)関数を学習する価値ベース・モデルフリー・Off-policy手法。最適行動価値関数を更新規則で逐次推定する。","wrongReasons":{"0":"方策ベースはPolicy Gradient系。","2":"環境モデルを学習しないのでモデルフリー。","3":"ベイズ強化学習は別系統。"},"keyword":"Bellman最適、Off-policy、DQN","difficulty":"hard"},{"id":101,"chapter":"Ch4","q":"ニューラルネットワークの「単純パーセプトロン」が解けない有名な問題はどれか。","choices":["AND問題","OR問題","XOR問題","NOT問題"],"answer":2,"explanation":"単層パーセプトロンは線形分離可能な問題しか解けない。XORは線形分離不可能で、ミンスキーらが1969年に指摘し、第1次AIブームの終焉の一因に。多層化（MLP）で解決された。","wrongReasons":{"0":"ANDは線形分離可能。","1":"ORも線形分離可能。","3":"NOTも線形分離可能。"},"keyword":"ミンスキー、線形分離不可能、多層パーセプトロンによる解決","difficulty":"easy"},{"id":102,"chapter":"Ch4","q":"「多層パーセプトロン（MLP）」が単層と本質的に異なる点は何か。","choices":["重みを使わない","中間（隠れ）層と非線形活性化関数を持ち、非線形な決定境界を学習できる","出力層を持たない","教師なし学習である"],"answer":1,"explanation":"MLPは入力層・隠れ層（複数可）・出力層からなり、各層の間に非線形活性化関数（ReLU、Sigmoid等）を挟むことで非線形関数を表現できる。","wrongReasons":{"0":"重みは使う。","2":"出力層は持つ。","3":"教師ありの代表例。"},"keyword":"Universal Approximation Theorem、Fully Connected","difficulty":"easy"},{"id":103,"chapter":"Ch4","q":"「誤差逆伝播法（Backpropagation）」の役割として正しいものはどれか。","choices":["損失関数の各パラメータに対する勾配を効率的に計算する","推論を高速化する","データを前処理する","学習率を自動調整する"],"answer":0,"explanation":"誤差逆伝播法は連鎖律を使ってネットワーク全体の損失に対する各パラメータの勾配を効率的に計算する手法。1986年Rumelhartらの普及論文で広まった。","wrongReasons":{"1":"推論の話ではない。","2":"前処理ではない。","3":"学習率調整は別。"},"keyword":"Chain Rule、計算グラフ、自動微分","difficulty":"easy"},{"id":104,"chapter":"Ch4","q":"「活性化関数」の役割として最も適切なものはどれか。","choices":["損失を計算する","ニューロンの出力に非線形性を導入する","重みを初期化する","バッチサイズを決める"],"answer":1,"explanation":"活性化関数（ReLU、Sigmoid、tanh、Softmaxなど）は線形変換の出力に非線形変換を施し、ネットワーク全体を非線形関数として表現可能にする。","wrongReasons":{"0":"損失計算は別。","2":"初期化は別。","3":"バッチサイズは別。"},"keyword":"ReLU、Sigmoid、tanh、Softmax、GELU","difficulty":"easy"},{"id":105,"chapter":"Ch4","q":"ReLU活性化関数の式として正しいものはどれか。","choices":["f(x) = 1 / (1 + exp(-x))","f(x) = max(0, x)","f(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))","f(x) = x"],"answer":1,"explanation":"ReLU（Rectified Linear Unit）: f(x) = max(0, x)。正なら恒等、負なら0。シンプルで勾配消失しにくく、計算が軽いためDLで標準。","wrongReasons":{"0":"これはSigmoid。","2":"これはtanh。","3":"これは恒等関数。"},"keyword":"Leaky ReLU、PReLU、GELU、Swish","difficulty":"easy"},{"id":106,"chapter":"Ch4","q":"Softmax関数が主に使われる場面はどれか。","choices":["回帰タスクの出力層","多クラス分類の出力層（クラス確率を出す）","中間層","正則化"],"answer":1,"explanation":"Softmaxは多クラス分類の出力層で使われ、全クラスの確率（合計1）を出力する。クロスエントロピー損失と組み合わされる。","wrongReasons":{"0":"回帰では恒等関数や線形が一般的。","2":"中間層では通常使わない。","3":"正則化ではない。"},"keyword":"クロスエントロピー、確率分布、温度パラメータ","difficulty":"easy"},{"id":107,"chapter":"Ch4","q":"「勾配消失問題」とは何か。","choices":["勾配の絶対値が大きすぎて学習が不安定になる","逆伝播で深い層に勾配が伝わるにつれて小さくなり、層が更新されなくなる現象","勾配が完全になくなる物理現象","学習データの勾配がなくなる"],"answer":1,"explanation":"勾配消失問題は逆伝播時、深い層で勾配が指数的に小さくなる現象。Sigmoid/tanhの飽和、深いネットで深刻化。ReLU、ResNet、Batch Norm、適切な初期化で緩和。","wrongReasons":{"0":"これは勾配爆発。","2":"物理ではない。","3":"データの問題ではない。"},"keyword":"Vanishing Gradient、ReLU、Residual Connection","difficulty":"normal"},{"id":108,"chapter":"Ch4","q":"「勾配爆発」を防ぐ手法として代表的なものはどれか。","choices":["勾配クリッピング","学習率を上げる","層を深くする","正則化を外す"],"answer":0,"explanation":"勾配クリッピング（Gradient Clipping）は勾配のノルムが閾値を超えたら縮小する手法。RNNなど勾配爆発しやすいネットで有効。","wrongReasons":{"1":"学習率を上げると逆に爆発しやすい。","2":"深いほうが起こりやすい。","3":"正則化は別の対策。"},"keyword":"Gradient Norm Clipping、Value Clipping","difficulty":"normal"},{"id":109,"chapter":"Ch4","q":"「Xavier初期化（Glorot初期化）」が主に意図するものは何か。","choices":["重みを完全に0で初期化する","順伝播・逆伝播で分散を保ち勾配消失/爆発を緩和する","重みを大きな値で初期化して学習を加速する","重みをランダム整数にする"],"answer":1,"explanation":"Xavier初期化は入力・出力次元から計算した分散で重みを初期化し、層間で信号と勾配の分散を保つことで深いネットの学習を安定化する。Sigmoid/tanh向け。ReLUにはHe初期化が向く。","wrongReasons":{"0":"0初期化は対称性で学習不能。","2":"大きい値は爆発を招く。","3":"整数化は不適。"},"keyword":"He初期化、Glorot、活性化関数別の初期化","difficulty":"normal"},{"id":110,"chapter":"Ch4","q":"「Dropout」の動作と効果を正しく説明しているものはどれか。","choices":["訓練時にニューロンをランダムに無効化することで過学習を防ぐ","推論時にも一部を無効化する","重みを完全に0にする","層を増やす"],"answer":0,"explanation":"Dropoutは訓練時に各ニューロンを確率pで無効化することで、特定の経路への過剰依存を防ぎ汎化性能を高める。推論時は通常全ノードを使い、出力をスケール調整する。","wrongReasons":{"1":"推論時は通常無効化しない。","2":"重みは保持される。","3":"層数の話ではない。"},"keyword":"Inverted Dropout、Bernoulli、Hinton","difficulty":"easy"},{"id":111,"chapter":"Ch4","q":"「バッチ正規化（Batch Normalization）」の主な効果として正しいものはどれか。","choices":["学習を加速し、勾配消失を緩和し、内部共変量シフトを抑える","推論速度を必ず大幅に向上させる","学習データを増やす","勾配を完全に消す"],"answer":0,"explanation":"Batch Normは各ミニバッチで層の入力を正規化（平均0・分散1）し、学習可能なスケール・シフトを適用する。学習加速、正則化効果、勾配消失緩和、学習率を大きく取れるなどの利点。","wrongReasons":{"1":"推論速度は変わらないか若干遅くなる。","2":"データは増えない。","3":"勾配を消すわけではない。"},"keyword":"BN、内部共変量シフト、LN、Group Norm","difficulty":"easy"},{"id":112,"chapter":"Ch4","q":"「Layer Normalization」と「Batch Normalization」の違いとして正しいものはどれか。","choices":["LNはバッチ全体、BNは層内で正規化する","BNはバッチ次元で、LNは特徴量次元で正規化する","LNはRNNやTransformerで不向き","両者は同一手法"],"answer":1,"explanation":"BNはミニバッチ内のサンプルで統計を計算（バッチ依存）。LNは各サンプル内の特徴量で計算（バッチ非依存）。RNNやTransformerなどバッチサイズが変動するモデルでLNがよく使われる。","wrongReasons":{"0":"逆。","2":"LNはTransformerで標準。","3":"異なる。"},"keyword":"LN、Group Norm、Instance Norm","difficulty":"normal"},{"id":113,"chapter":"Ch4","q":"ニューラルネットの「順伝播（Forward Propagation）」とは何か。","choices":["入力から出力へデータが流れ出力を計算する処理","勾配を計算する処理","重みを初期化する処理","学習データを生成する処理"],"answer":0,"explanation":"順伝播は入力をネットワークの各層に通して最終出力を計算する処理。推論時はこれのみ実行する。学習時はこのあと損失と逆伝播が続く。","wrongReasons":{"1":"これは逆伝播。","2":"初期化は別。","3":"データ生成ではない。"},"keyword":"Forward、Inference、推論、Prediction","difficulty":"easy"},{"id":114,"chapter":"Ch4","q":"「交差エントロピー損失（Cross Entropy Loss）」が使われる典型的なタスクはどれか。","choices":["回帰","分類","クラスタリング","次元削減"],"answer":1,"explanation":"交差エントロピーは分類タスクで標準的な損失関数。Softmax出力と組み合わせて多クラス分類、Sigmoidと組み合わせて二値分類で使われる。","wrongReasons":{"0":"回帰はMSE/MAE。","2":"クラスタリングには別の目的関数。","3":"次元削減には別の目的関数。"},"keyword":"Categorical CE、Binary CE、KL divergence","difficulty":"easy"},{"id":115,"chapter":"Ch4","q":"「平均二乗誤差（MSE）」が使われる典型的タスクはどれか。","choices":["分類","回帰","クラスタリング","強化学習の方策更新"],"answer":1,"explanation":"MSEは回帰タスク（連続値予測）の標準損失。誤差の二乗を平均する。外れ値に敏感な点に注意。","wrongReasons":{"0":"分類はCross Entropy。","2":"クラスタリングは別。","3":"方策更新は別。"},"keyword":"L2 Loss、RMSE、MAE、Huber","difficulty":"easy"},{"id":116,"chapter":"Ch4","q":"「Adam」と「SGD」の使い分けについて、一般論として誤っている記述はどれか。","choices":["AdamはNLPのTransformerで広く使われる","SGD + Momentumは画像分類で長く使われてきた","Adamは常に最良の汎化性能を保証する","Adamは初期段階の収束が速い傾向"],"answer":2,"explanation":"Adamは収束が速いが、画像分類タスクなどではSGD+Momentumのほうが最終的な汎化性能が良いことが報告されており、「常に最良」とは言えない。","wrongReasons":{"0":"NLPでAdam系（AdamW）は標準。","1":"画像でSGDは長年の標準。","3":"初期収束は速い傾向あり。"},"keyword":"Adam vs SGD、AdamW、汎化性能の議論","difficulty":"hard"},{"id":117,"chapter":"Ch4","q":"「学習率スケジューリング」の代表例として誤っているものはどれか。","choices":["Step Decay","Cosine Annealing","Warmup","Random Walk"],"answer":3,"explanation":"Random Walkは学習率スケジューリングの代表例ではない。Step Decay（段階減衰）、Cosine Annealing（コサイン減衰）、Warmup（最初は小さく徐々に増やす）が標準的。","wrongReasons":{"0":"段階的減衰の代表。","1":"コサインカーブで減衰。","2":"Transformerで標準。"},"keyword":"Warm Restart、Polynomial Decay、Cyclical LR","difficulty":"normal"},{"id":118,"chapter":"Ch4","q":"「重み減衰（Weight Decay）」とは何か。","choices":["時間経過で重みを自動削除する","L2正則化と等価で、重みの大きさにペナルティを与え過学習を抑制する","学習率を減衰させる","層を減らす"],"answer":1,"explanation":"Weight Decayは損失関数に重みの二乗和をペナルティとして加える正則化。最適化アップデート式に重みを小さくする項を直接加える形でも実装できる（AdamWのW）。","wrongReasons":{"0":"自動削除ではない。","2":"学習率の話ではない。","3":"層数の話ではない。"},"keyword":"L2 Penalty、AdamW、正則化","difficulty":"normal"},{"id":119,"chapter":"Ch4","q":"「Data Augmentation（データ拡張）」の目的は何か。","choices":["データを物理的に増やすディスク操作","既存データに変換を加えて疑似的にデータ量を増やし汎化性能を高める","学習データを減らして高速化する","テストデータを変える"],"answer":1,"explanation":"データ拡張は回転・反転・クロップ・色変換・ノイズ追加など既存データに変換を加えて多様な学習サンプルを生成し、過学習を防ぎ汎化を高める。","wrongReasons":{"0":"ディスク操作ではない。","2":"減らすのではなく増やす。","3":"テストデータは触らない。"},"keyword":"Random Crop、Mixup、CutMix、AutoAugment","difficulty":"easy"},{"id":120,"chapter":"Ch4","q":"「Mixup」とは何か。","choices":["2つの画像とラベルを線形混合して新サンプルを作る拡張手法","ニューロンを混合する","学習率を混合する","重みを混合する"],"answer":0,"explanation":"Mixup（Zhang et al. 2018）は2つの訓練サンプル(x1,y1),(x2,y2)を λ で線形補間して新しい訓練サンプルを作る。汎化向上に有効。","wrongReasons":{"1":"ニューロン混合ではない。","2":"学習率の話ではない。","3":"重みの話ではない。"},"keyword":"CutMix、AugMix、Manifold Mixup","difficulty":"normal"},{"id":121,"chapter":"Ch4","q":"「転移学習（Transfer Learning）」の典型的な流れはどれか。","choices":["大規模データで事前学習したモデルを、目的のタスクで小規模データでファインチューニングする","完全にスクラッチで学習する","教師ラベルを変えずにそのまま使う","強化学習を必ず行う"],"answer":0,"explanation":"転移学習は別タスクで学習済みの重みを初期値として使い、目的タスクで追加学習（fine-tuning）する手法。データ・計算量の節約と性能向上に寄与。","wrongReasons":{"1":"スクラッチではない。","2":"ラベルは目的に合わせて変える。","3":"強化学習は必須ではない。"},"keyword":"Pre-trained Model、Fine-tuning、Feature Extraction","difficulty":"easy"},{"id":122,"chapter":"Ch4","q":"「Fine-tuning」と「Feature Extraction」の違いとして正しい記述はどれか。","choices":["Fine-tuningは事前学習層も含めて重みを更新、Feature Extractionは事前学習層を凍結して最終層のみ学習する","両者は同じ手法","Feature Extractionは強化学習に限る","Fine-tuningは教師なしに限る"],"answer":0,"explanation":"Feature Extractionは事前学習部分を固定（特徴抽出器として使う）し、新しい分類層のみ訓練。Fine-tuningは全体（または一部）の重みも一緒に更新する。","wrongReasons":{"1":"異なる。","2":"カテゴリ限定ではない。","3":"教師ありで使える。"},"keyword":"Frozen Layers、Partial Fine-tuning","difficulty":"normal"},{"id":123,"chapter":"Ch4","q":"「ニューラルネットの普遍性定理（Universal Approximation Theorem）」が示すことは何か。","choices":["任意の関数は必ずニューラルネットで学習できる","十分なニューロンを持つ1隠れ層のNNは任意の連続関数を近似できる","ニューラルネットは必ず最適解に到達する","全てのモデルはNNで置き換え可能"],"answer":1,"explanation":"普遍性定理（Cybenko 1989、Hornik 1991）は1隠れ層・適切な活性化関数・十分なニューロン数があれば、コンパクト集合上の連続関数を任意精度で近似できると主張する。学習可能性は別問題。","wrongReasons":{"0":"「学習できる」とは異なる（表現可能性）。","2":"最適化保証はない。","3":"言い過ぎ。"},"keyword":"Cybenko、Hornik、表現力と学習可能性","difficulty":"hard"},{"id":124,"chapter":"Ch4","q":"「深いネットワーク」が浅いネットワークより有利になる理由として最も適切なものはどれか。","choices":["より多くのパラメータで階層的な特徴表現を学習でき、汎化性能が向上しやすい","計算量が必ず減る","学習データが少なくてもよい","勾配が必ず安定する"],"answer":0,"explanation":"深いネットは低次から高次への階層的特徴を学習でき、同じパラメータ数でも表現力・汎化性能で有利な傾向。ただし勾配消失・最適化難の問題があり、ResNetなどの工夫が必要。","wrongReasons":{"1":"計算量は増える。","2":"データ少量で良いとは限らない。","3":"勾配は不安定になりやすい。"},"keyword":"階層的特徴、ResNet、Deep > Shallow","difficulty":"normal"},{"id":125,"chapter":"Ch4","q":"「ハイパーパラメータ」とは何か。","choices":["モデルが学習で更新する重み","学習の前に人間が設定する設定値（学習率、層数、バッチサイズなど）","活性化関数の出力","損失の値"],"answer":1,"explanation":"ハイパーパラメータは学習プロセスや構造を決める人手設定値。学習率、バッチサイズ、層数、ニューロン数、正則化強度など。学習で更新されるのは「パラメータ（重み・バイアス）」。","wrongReasons":{"0":"これはパラメータ。","2":"出力ではない。","3":"損失は計算結果。"},"keyword":"Learning Rate、Batch Size、Epochs","difficulty":"easy"},{"id":126,"chapter":"Ch4","q":"「Epoch」「Iteration」「Batch」の関係として正しい記述はどれか。","choices":["1 Epoch = 全訓練データを1回処理する単位、1 Iteration = 1ミニバッチの処理","1 Iteration = 全訓練データの1巡","Epoch ≦ Iteration ≦ Batchの大小関係","全て同じ意味"],"answer":0,"explanation":"1 Epochは訓練データ全体を1回通すこと。1 Iterationは1ミニバッチに対する1回のパラメータ更新。Epoch = (データ数 / バッチサイズ) Iteration。","wrongReasons":{"1":"逆。","2":"大小関係ではない。","3":"異なる概念。"},"keyword":"Epoch、Iteration、Batch、Steps","difficulty":"easy"},{"id":127,"chapter":"Ch4","q":"「Vanishing Gradient（勾配消失）」に強いとされる構造はどれか。","choices":["Tanhを多数重ねた古典MLP","Residual Connection（残差接続）を持つResNet","1層のみのパーセプトロン","決定木"],"answer":1,"explanation":"ResNet（He et al. 2015）の残差接続は入力をスキップして加算するため、勾配が直接遡れる経路を作り深い層でも勾配消失を緩和する。152層以上の深いネットを学習可能に。","wrongReasons":{"0":"古典MLPは消失しやすい。","2":"層が浅ければ問題は起きにくいが、表現力に劣る。","3":"NNではない。"},"keyword":"Skip Connection、Identity Mapping、Highway Network","difficulty":"normal"},{"id":128,"chapter":"Ch4","q":"「One-Hot ベクトル」と「Embedding」の違いとして正しいものはどれか。","choices":["両者は同じ","One-Hotは疎で次元が大きく意味関係を持たない、Embeddingは密で低次元かつ類似語が近くなる連続表現","Embeddingは0/1ベクトル","One-Hotは学習で得られる"],"answer":1,"explanation":"One-Hotは1つだけ1で残りは0の疎ベクトル。Embeddingは学習で得られる低次元の密な実数ベクトルで、意味的に近い単語が空間内で近い位置になる。","wrongReasons":{"0":"異なる。","2":"Embeddingは実数密。","3":"One-Hotは学習なし、決定的。"},"keyword":"Word2Vec、GloVe、FastText、Embedding Layer","difficulty":"normal"},{"id":129,"chapter":"Ch4","q":"「Softmax」の温度パラメータ T を大きくするとどうなるか。","choices":["出力分布がよりピーク（鋭く）になる","出力分布がより滑らかで一様に近づく","出力が必ず最大値に固定される","確率の合計が1でなくなる"],"answer":1,"explanation":"Softmax(z/T)で T を大きくすると指数の差が縮み、出力分布が滑らかになる。逆にTを小さくするとピーキーになる。蒸留などで温度を利用する。","wrongReasons":{"0":"逆。","2":"そうはならない。","3":"合計は常に1。"},"keyword":"Temperature、Knowledge Distillation、Sampling Temperature","difficulty":"hard"},{"id":130,"chapter":"Ch4","q":"「Knowledge Distillation（知識蒸留）」の典型的な仕組みは何か。","choices":["大規模な教師モデルの出力（Softmax含む）を小さな生徒モデルに学習させ、性能を維持しつつ軽量化する","教師モデルを完全にコピーする","教師ラベルを使わずに学習する","教師と生徒で対戦学習する"],"answer":0,"explanation":"知識蒸留はHinton et al. (2015)が提案した手法。大きな教師モデルの「ソフトターゲット」（温度Softmax出力）を生徒モデルが模倣することで、軽量化と性能維持を両立する。","wrongReasons":{"1":"単純コピーではない。","2":"教師の出力を使う。","3":"対戦ではない。"},"keyword":"Soft Target、Teacher-Student、DistilBERT","difficulty":"normal"},{"id":131,"chapter":"Ch4","q":"「Pruning（枝刈り）」と「Quantization（量子化）」が共通して目指すものは何か。","choices":["モデルの推論を高速・軽量化すること","学習データを増やすこと","学習率を自動調整すること","ハイパーパラメータを探すこと"],"answer":0,"explanation":"PruningはNNの重み・ニューロン・チャンネルを削除して軽量化、Quantizationは重みや活性化を低精度（int8等）に量子化して計算・メモリを節約する。エッジ展開に有用。","wrongReasons":{"1":"データ増加ではない。","2":"学習率調整ではない。","3":"HPO ではない。"},"keyword":"Model Compression、Edge AI、INT8、TensorRT","difficulty":"normal"},{"id":132,"chapter":"Ch4","q":"「混合精度学習（Mixed Precision Training）」の利点は何か。","choices":["FP32とFP16を併用してメモリと速度を改善しつつ精度を保つ","全てを8bitで学習する","計算精度を必ず下げる","学習を必ず不安定にする"],"answer":0,"explanation":"混合精度はFP32（マスタ重み）とFP16（順伝播・逆伝播）を併用してGPUの計算速度向上とメモリ削減を実現。Loss Scalingで勾配アンダーフローを回避。","wrongReasons":{"1":"INT8学習とは別。","2":"精度を保つ工夫がある。","3":"安定化が目的。"},"keyword":"FP16/BF16、Loss Scaling、TensorCore","difficulty":"hard"},{"id":133,"chapter":"Ch4","q":"「再帰型ニューラルネットワーク（RNN）」が扱う典型データはどれか。","choices":["独立な静止画","系列（時系列、テキスト、音声など）","テーブルデータの単一行","グラフ"],"answer":1,"explanation":"RNNは時間や順序のある系列データを内部状態を持って処理する。テキスト、音声、株価、センサーデータなどに適する。CNNは画像、GNNはグラフが主。","wrongReasons":{"0":"画像はCNN。","2":"テーブルはMLP/GBDTが普通。","3":"グラフはGNN。"},"keyword":"Hidden State、Time Step、Sequence","difficulty":"easy"},{"id":134,"chapter":"Ch4","q":"RNNの問題点として有名なものはどれか。","choices":["勾配消失・爆発と長距離依存の学習困難","活性化関数が一切使えない","教師あり学習でしか使えない","GPUで動かない"],"answer":0,"explanation":"古典RNNは時間方向に深い計算グラフを持ち、勾配消失・爆発で長距離依存が学習しにくい。LSTM/GRUがこれを緩和し、現代はTransformerがさらに上回る。","wrongReasons":{"1":"活性化は使う。","2":"両方使える。","3":"GPU動作する。"},"keyword":"BPTT、LSTM、GRU、長距離依存","difficulty":"normal"},{"id":135,"chapter":"Ch4","q":"「LSTM」が解決を目指した主な問題は何か。","choices":["画像認識精度","RNNの長距離依存と勾配消失","クラスタリングの初期化","次元削減"],"answer":1,"explanation":"LSTM（Long Short-Term Memory, 1997 Hochreiter & Schmidhuber）はゲート機構（入力・忘却・出力ゲート）と細胞状態で長距離情報を保持し、勾配消失を緩和する。","wrongReasons":{"0":"画像ではない。","2":"クラスタリングではない。","3":"次元削減ではない。"},"keyword":"Cell State、Forget Gate、GRU","difficulty":"normal"},{"id":136,"chapter":"Ch4","q":"「GRU」と「LSTM」の関係として正しいものはどれか。","choices":["GRUはLSTMの拡張で常に高性能","GRUはLSTMより簡素（ゲートが少ない）で計算が軽い","両者は完全に同じ","GRUはCNNの一種"],"answer":1,"explanation":"GRU（Gated Recurrent Unit, 2014）はLSTMより簡素なゲート構造（更新ゲート・リセットゲート）で、パラメータが少なく計算が軽い。性能はタスク次第。","wrongReasons":{"0":"必ず高性能とは限らない。","2":"異なる。","3":"CNNではない。"},"keyword":"Update Gate、Reset Gate","difficulty":"normal"},{"id":137,"chapter":"Ch4","q":"「Bidirectional RNN（BiRNN）」の特徴は何か。","choices":["双方向（前→後ろと後ろ→前）の2つのRNNを組み合わせ、両方向の文脈を捉える","強化学習に特化したRNN","層が双方向に伸びる別構造","RNNと別の手法"],"answer":0,"explanation":"BiRNNは順方向と逆方向のRNNを並列に走らせ出力を結合する。文脈の前後両方を考慮できる。BERTのBidirectional性とは概念が似ているが構造は別。","wrongReasons":{"1":"強化学習特化ではない。","2":"層構造の話ではない。","3":"RNNの拡張。"},"keyword":"Bi-LSTM、Bi-GRU、双方向文脈","difficulty":"normal"},{"id":138,"chapter":"Ch4","q":"「Attention機構」の本質的なアイデアは何か。","choices":["入力系列の各要素にスコア付けし、関連の高い情報に注目（重み付け）して処理する","ニューロンを完全に無効化する","層を増やす","勾配を増幅する"],"answer":0,"explanation":"Attentionは入力系列の各要素に対するクエリとキーの内積でスコアを計算し、Softmaxで重み付けして値を集約する仕組み。Self-AttentionがTransformerの中核。","wrongReasons":{"1":"無効化ではない。","2":"層追加ではない。","3":"勾配の話ではない。"},"keyword":"Query、Key、Value、Scaled Dot-Product Attention","difficulty":"easy"},{"id":139,"chapter":"Ch4","q":"「Self-Attention」の特徴として正しいものはどれか。","choices":["入力系列内の各要素同士の関係をAttentionで計算する","外部知識を必ず使う","RNNの一種","CNNの代替にはなれない"],"answer":0,"explanation":"Self-Attentionは入力系列内のQ・K・Vを同じ系列から生成し、要素間の関連性を全ペアで計算する。Transformerの基本構成要素。","wrongReasons":{"1":"外部知識は不要。","2":"RNNとは別。","3":"画像にも応用される（ViT）。"},"keyword":"Multi-Head、Self-Attention、Cross-Attention","difficulty":"normal"},{"id":140,"chapter":"Ch4","q":"Transformerが「並列化」に強い理由は何か。","choices":["RNNと違い、系列を逐次でなく一括で処理できるから","ニューロン数が少ないから","層が浅いから","活性化関数を使わないから"],"answer":0,"explanation":"Transformerは系列の全要素を同時に処理する（Self-Attentionは全ペア計算で一括並列可能）。RNNの逐次計算依存がないためGPUで高効率に並列化できる。","wrongReasons":{"1":"ニューロン数は多い。","2":"層は深い。","3":"活性化は使う。"},"keyword":"並列計算、GPU効率、Sequence Length","difficulty":"easy"},{"id":141,"chapter":"Ch4","q":"「Positional Encoding」がTransformerに必要な理由は何か。","choices":["Self-Attentionが系列順序の情報を持たないから明示的に位置情報を加える","活性化関数の代わり","正則化のため","勾配計算のため"],"answer":0,"explanation":"Self-Attentionは要素の順序を直接扱わないため、位置情報を埋め込みに加算（または学習可能なPositional Embedding）する必要がある。","wrongReasons":{"1":"活性化関数とは別。","2":"正則化ではない。","3":"勾配とは別。"},"keyword":"Sinusoidal、RoPE、Relative Position","difficulty":"normal"},{"id":142,"chapter":"Ch4","q":"「Encoder-Decoder」構造の典型的な用途は何か。","choices":["分類","機械翻訳・要約などSeq2Seq タスク","クラスタリング","次元削減"],"answer":1,"explanation":"Encoder-Decoderは入力系列をEncoderで圧縮表現に、Decoderでそこから別系列を生成する。機械翻訳、要約、音声認識など。Transformer・Seq2Seqモデルの基本構造。","wrongReasons":{"0":"分類なら通常Encoder単独。","2":"クラスタリングは別。","3":"次元削減は別。"},"keyword":"Seq2Seq、Machine Translation、Summarization","difficulty":"normal"},{"id":143,"chapter":"Ch4","q":"「Encoder-only」「Decoder-only」「Encoder-Decoder」のうち、GPTの構造はどれか。","choices":["Encoder-only","Decoder-only","Encoder-Decoder","Decoder + 強化学習"],"answer":1,"explanation":"GPT系列はDecoder-onlyのTransformer。自己回帰的（次のトークンを順に生成）に動作する。BERTはEncoder-only、T5やオリジナルTransformerはEncoder-Decoder。","wrongReasons":{"0":"BERT系。","2":"T5系。","3":"そのような分類は標準的ではない。"},"keyword":"Causal Mask、Autoregressive、Next Token Prediction","difficulty":"easy"},{"id":144,"chapter":"Ch4","q":"「Causal Mask（因果マスク）」がDecoder-only Transformerで必要な理由は何か。","choices":["未来トークンの情報を予測時に見せないようにするため","過去情報を見せないため","計算量を減らすため","勾配を消すため"],"answer":0,"explanation":"Decoderの自己回帰生成では、ある位置のトークン予測時には未来の正解トークンを見えないようにする必要があり、Self-Attentionに上三角マスクをかける。","wrongReasons":{"1":"過去は見せる。","2":"計算量削減が主目的ではない。","3":"勾配消去ではない。"},"keyword":"Look-ahead Mask、Triangular Mask、Autoregressive","difficulty":"normal"},{"id":145,"chapter":"Ch4","q":"ニューラルネットの「アンサンブル」が一般に効果的な理由は何か。","choices":["個別モデルの偏りや誤差を平均化することで汎化性能が上がる","計算が速くなる","メモリが減る","解釈性が上がる"],"answer":0,"explanation":"複数モデルの予測を平均/多数決することで個別モデルの誤りやノイズが打ち消され、汎化性能と頑健性が向上する。コストは増える。","wrongReasons":{"1":"計算は増える。","2":"メモリは増える。","3":"解釈性は下がる傾向。"},"keyword":"Bagging、Stacking、Snapshot Ensemble","difficulty":"easy"},{"id":146,"chapter":"Ch5","q":"畳み込みニューラルネットワーク（CNN）の最大の特徴として正しいものはどれか。","choices":["全結合のみで構成される","畳み込み層により局所的な特徴を空間的に捉え、重み共有でパラメータ効率が高い","RNNと完全に同一構造","活性化関数を持たない"],"answer":1,"explanation":"CNNは畳み込み層（カーネルがスライドして局所特徴を抽出）、プーリング層（ダウンサンプリング）、全結合層で構成される。重み共有によりパラメータ効率が高く、画像認識で支配的な構造。","wrongReasons":{"0":"畳み込み+プーリング+全結合の組み合わせ。","2":"異なる構造。","3":"活性化は持つ。"},"keyword":"Convolution、Pooling、Stride、Padding、Receptive Field","difficulty":"easy"},{"id":147,"chapter":"Ch5","q":"畳み込み層の「カーネル（フィルタ）」の役割は何か。","choices":["損失を計算する","入力の局所領域に対し畳み込み演算を行い特定パターン（エッジ、テクスチャ等）を抽出する","出力を平滑化する","勾配を計算する"],"answer":1,"explanation":"カーネルは小さな重み行列で、入力上をスライドさせながら畳み込み（要素積の和）を計算する。学習を通じてエッジ・テクスチャ・形状などのパターン検出器が獲得される。","wrongReasons":{"0":"損失計算ではない。","2":"平滑化はプーリング等の役割。","3":"勾配は逆伝播。"},"keyword":"3x3 Filter、Feature Map、Cross-correlation","difficulty":"easy"},{"id":148,"chapter":"Ch5","q":"畳み込み層の「Stride（ストライド）」を大きくするとどうなるか。","choices":["出力特徴マップが大きくなる","出力特徴マップが小さくなる（ダウンサンプリング）","パラメータ数が増える","学習速度が遅くなる"],"answer":1,"explanation":"Strideはカーネルを動かす間隔。Strideを大きくすると出力サイズが小さくなり、ダウンサンプリング効果を持つ。Pooling層の代替として使われることもある。","wrongReasons":{"0":"逆。","2":"パラメータ数は変わらない。","3":"通常は速くなる。"},"keyword":"Stride 1/2、Downsampling、Output Size計算","difficulty":"normal"},{"id":149,"chapter":"Ch5","q":"「Padding（パディング）」の主な目的は何か。","choices":["出力サイズを保つ、端の情報を保護する","勾配を計算する","学習率を上げる","重みを初期化する"],"answer":0,"explanation":"Paddingは入力の周囲に0などを追加する操作。出力サイズを入力と同じに保てる（Same Padding）、端の情報損失を抑える効果がある。","wrongReasons":{"1":"勾配計算ではない。","2":"学習率とは別。","3":"初期化とは別。"},"keyword":"Same Padding、Valid Padding、Zero Padding","difficulty":"easy"},{"id":150,"chapter":"Ch5","q":"Max PoolingとAverage Poolingの違いとして正しいものはどれか。","choices":["Max Poolingは領域内の最大値、Average Poolingは平均値を出力する","両者は同じ","Max Poolingは平均値、Average Poolingは最大値","どちらもニューロンの数を変えない"],"answer":0,"explanation":"Max Poolingは領域内の最大値、Average Poolingは平均値を取る。Max Poolingは特徴的なシグナルを残しやすく分類で多用、AvgはGlobal Avg Poolingで分類器の代替に。","wrongReasons":{"1":"異なる。","2":"逆。","3":"プーリングはダウンサンプリング。"},"keyword":"Pooling、GAP、Global Average Pooling","difficulty":"easy"},{"id":151,"chapter":"Ch5","q":"「Global Average Pooling」が分類CNNの最終層付近で使われる目的は何か。","choices":["全結合層を不要にしパラメータと過学習を削減する","より深い層を作る","畳み込みを置き換える","Stride を増やす"],"answer":0,"explanation":"GAPは特徴マップの空間方向を平均で潰し、チャネルごとに1値を出す。全結合層を置き換えることでパラメータが激減し過学習を抑える。GoogLeNetで採用。","wrongReasons":{"1":"層の深さとは別。","2":"畳み込みは別途残る。","3":"Strideとは別。"},"keyword":"GAP、GoogLeNet、CAM","difficulty":"normal"},{"id":152,"chapter":"Ch5","q":"AlexNet（2012）の主な革新点として誤っているものはどれか。","choices":["大規模CNNにGPUを使用","ReLU活性化関数の採用","Dropoutの活用","Transformerの導入"],"answer":3,"explanation":"AlexNetはCNN（GPU・ReLU・Dropoutの活用）で画像認識を革新した。Transformerは2017年で時代が異なる。","wrongReasons":{"0":"GPU活用は革新点。","1":"ReLUを大規模に使った。","2":"Dropoutも導入。"},"keyword":"Krizhevsky、ILSVRC 2012、CUDA","difficulty":"easy"},{"id":153,"chapter":"Ch5","q":"VGGネットワークの特徴として正しいものはどれか。","choices":["3x3の小カーネルを多重に重ねた単純構造","5x5や7x7の大カーネルのみ使用","畳み込みを使わない","RNN構造"],"answer":0,"explanation":"VGG（Simonyan & Zisserman 2014）は3x3畳み込みを深く積み重ねたシンプルな構造で高性能を達成。VGG16、VGG19が有名。","wrongReasons":{"1":"大カーネルではなく小カーネルの多重。","2":"畳み込みベース。","3":"CNNでありRNNではない。"},"keyword":"VGG16、VGG19、Oxford VGG","difficulty":"easy"},{"id":154,"chapter":"Ch5","q":"GoogLeNet（Inception）の特徴的な構造は何か。","choices":["Inceptionモジュール（複数カーネルサイズの並列畳み込み）","完全に同じ畳み込みのみ","RNNと畳み込みのハイブリッド","全結合のみ"],"answer":0,"explanation":"GoogLeNet（2014）はInceptionモジュールで1x1, 3x3, 5x5畳み込みとプーリングを並列に走らせ結合する構造。1x1で次元削減してから3x3/5x5を計算し効率化。","wrongReasons":{"1":"複数サイズが特徴。","2":"RNNは含まない。","3":"GAPを使うが全結合のみではない。"},"keyword":"Inception v1〜v4、1x1 Conv、Auxiliary Classifier","difficulty":"normal"},{"id":155,"chapter":"Ch5","q":"ResNetが導入した「残差接続（Skip Connection）」の効果として最も重要なものはどれか。","choices":["100層を超える深いネットでも勾配消失を抑え学習可能にした","層を浅くする手法","畳み込みを完全に置き換える","教師なし学習を実現"],"answer":0,"explanation":"ResNet（He et al. 2015）の残差接続 y = F(x) + x は恒等写像を学習しやすくし、152層を超える深いネットの学習を可能にした。ILSVRC 2015で人間を超える精度。","wrongReasons":{"1":"逆、深くするための工夫。","2":"畳み込みは残る。","3":"教師あり。"},"keyword":"ResNet-50/101/152、Identity Mapping、Pre-activation","difficulty":"easy"},{"id":156,"chapter":"Ch5","q":"「DenseNet」の特徴として正しいものはどれか。","choices":["各層が以前の全ての層の出力をチャネル方向に連結して受け取る","各層は直前の層からしか受け取らない","残差を引き算する","RNN構造を持つ"],"answer":0,"explanation":"DenseNet（Huang et al. 2017）は各層が前の全層の出力を入力として受け取る稠密接続構造。パラメータ効率が良く、勾配伝播が良好。","wrongReasons":{"1":"通常のCNNの説明。","2":"連結であり減算ではない。","3":"CNNベース。"},"keyword":"Dense Block、Transition Layer、Growth Rate","difficulty":"normal"},{"id":157,"chapter":"Ch5","q":"「MobileNet」が目指す主な性質は何か。","choices":["最高精度","モバイル・エッジ向けに軽量で高速","最大モデル","教師なし学習"],"answer":1,"explanation":"MobileNet（Google 2017）はDepthwise Separable Convolutionを使ってパラメータ・計算量を削減し、スマートフォンなどエッジデバイスでの実行を可能にする軽量CNN。","wrongReasons":{"0":"精度ではなく効率重視。","2":"小規模化。","3":"教師あり。"},"keyword":"Depthwise Separable Conv、Pointwise Conv、EfficientNet","difficulty":"normal"},{"id":158,"chapter":"Ch5","q":"「EfficientNet」の主要なアイデアは何か。","choices":["深さ・幅・解像度を複合的にスケールするCompound Scaling","深さだけを増やす","幅だけを増やす","解像度だけを増やす"],"answer":0,"explanation":"EfficientNet（Google 2019）はNAS（Neural Architecture Search）で基本構造を作り、深さ・幅・入力解像度を複合的にスケールする「Compound Scaling」で効率的に大規模化。","wrongReasons":{"1":"単独スケールではない。","2":"単独ではない。","3":"単独ではない。"},"keyword":"Compound Coefficient、NAS、SE Block","difficulty":"normal"},{"id":159,"chapter":"Ch5","q":"Vision Transformer（ViT）が画像をどう扱うか、正しい説明はどれか。","choices":["畳み込みで全画素を処理","画像を固定サイズパッチに分割し系列としてTransformerに入力","RNNで画素を順に処理","1ピクセルずつ全結合に入力"],"answer":1,"explanation":"ViT（Dosovitskiy et al. 2020）は画像を16x16等のパッチに分割し、各パッチを線形射影してEmbeddingにし、Positional Encodingを加えてTransformerに入力する。","wrongReasons":{"0":"CNNを使わない。","2":"RNNではない。","3":"パッチ単位。"},"keyword":"Patch Embedding、CLS Token、Hybrid ViT","difficulty":"normal"},{"id":160,"chapter":"Ch5","q":"「Self-Attention」の計算量は系列長nに対してどのオーダーか。","choices":["O(n)","O(n log n)","O(n²)","O(n³)"],"answer":2,"explanation":"Self-Attentionは全ペアの内積を計算するためO(n²)の計算量とメモリを要する。長系列では深刻なボトルネックとなり、Linear Attention、FlashAttentionなどの効率化手法が研究されている。","wrongReasons":{"0":"線形ではない。","1":"そうではない。","3":"そこまでではない。"},"keyword":"Quadratic Cost、FlashAttention、Sparse Attention","difficulty":"hard"},{"id":161,"chapter":"Ch5","q":"「Multi-Head Attention」の意義は何か。","choices":["複数の表現部分空間で並列にAttentionを行い、多様な関係性を捉える","1つのHeadを大きくして性能を上げる","層を深くする","活性化関数を増やす"],"answer":0,"explanation":"Multi-Head Attentionは複数のAttentionを並列に走らせ、それぞれが異なる関係性（位置・構文・意味など）を学習し、結合する。Transformerの表現力の核。","wrongReasons":{"1":"単一ヘッドを大きくするわけではない。","2":"深さの話ではない。","3":"活性化の話ではない。"},"keyword":"Head数、d_model、Concat","difficulty":"normal"},{"id":162,"chapter":"Ch5","q":"「Word2Vec」が学習する2つのモデルはどれか。","choices":["BERTとGPT","CBOWとSkip-gram","RNNとCNN","GANとVAE"],"answer":1,"explanation":"Word2Vec（Mikolov et al. 2013）はCBOW（周辺語から中心語を予測）とSkip-gram（中心語から周辺語を予測）の2モデル。単語の分散表現を効率的に学習。","wrongReasons":{"0":"BERT/GPTは別世代。","2":"アーキの一般名。","3":"生成モデル。"},"keyword":"Distributed Representation、Negative Sampling、GloVe","difficulty":"easy"},{"id":163,"chapter":"Ch5","q":"「分散表現（Distributed Representation）」とは何か。","choices":["単語を1つの記号として表現","単語を多次元の連続ベクトルで表現し意味的近さを表せる","単語を必ず100次元で表現","単語を木構造で表現"],"answer":1,"explanation":"分散表現は単語などの離散記号を多次元連続ベクトルで表現する手法。「王 - 男 + 女 ≒ 女王」のような意味演算が可能になる。","wrongReasons":{"0":"記号的表現ではない。","2":"次元数は任意。","3":"木ではなくベクトル。"},"keyword":"Embedding、Word2Vec、FastText、GloVe","difficulty":"easy"},{"id":164,"chapter":"Ch5","q":"「FastText」がWord2Vecと異なる主要な特徴は何か。","choices":["単語を文字n-gramの集合として扱い未知語にも対応しやすい","強化学習を使う","画像専用","教師ありが必須"],"answer":0,"explanation":"FastText（Facebook）は単語をサブワード（文字n-gram）の和で表現するため、未知語や形態素豊富な言語に強い。","wrongReasons":{"1":"教師なし。","2":"テキスト用。","3":"教師なしで学べる。"},"keyword":"Sub-word、Character n-gram、OOV対応","difficulty":"normal"},{"id":165,"chapter":"Ch5","q":"「Seq2Seq」モデルの代表的な用途として正しいものはどれか。","choices":["画像分類","機械翻訳","クラスタリング","次元削減"],"answer":1,"explanation":"Seq2SeqはEncoder-Decoder構造で入力系列を別系列に変換するモデル。機械翻訳、要約、対話、音声認識などで使われた。Transformerの登場で大幅に進化。","wrongReasons":{"0":"画像はCNN。","2":"クラスタリングではない。","3":"次元削減ではない。"},"keyword":"Encoder-Decoder、機械翻訳、Sutskever 2014","difficulty":"easy"},{"id":166,"chapter":"Ch5","q":"「Attention」がSeq2Seqに導入された動機は何か。","choices":["Encoderの単一固定ベクトルではボトルネックになり、長文翻訳が劣化する問題の解決","計算量削減のみ","教師なし学習化","次元削減"],"answer":0,"explanation":"古典Seq2SeqではEncoderが文全体を1つの固定長ベクトルに圧縮するためボトルネックがあった。Bahdanau Attention等で各時刻ごとに関連箇所に注目できるようになった。","wrongReasons":{"1":"計算量は増える。","2":"教師ありのまま。","3":"次元削減ではない。"},"keyword":"Bahdanau Attention、Luong Attention、長文翻訳","difficulty":"normal"},{"id":167,"chapter":"Ch5","q":"BERTの事前学習タスクとして正しい組み合わせはどれか。","choices":["MLM（マスク言語モデル）とNSP（次文予測）","自己回帰のみ","強化学習のみ","クラスタリング"],"answer":0,"explanation":"BERTの事前学習はMasked LM（一部単語をマスクして予測）とNext Sentence Prediction（2文が連続するか判定）の2タスク。RoBERTaではNSPを廃止して性能向上。","wrongReasons":{"1":"GPTは自己回帰。","2":"強化学習ではない。","3":"クラスタリングではない。"},"keyword":"MLM、NSP、RoBERTa、ELECTRA","difficulty":"normal"},{"id":168,"chapter":"Ch5","q":"「GPT」シリーズの基本的な学習タスクは何か。","choices":["双方向マスク言語モデル","次トークン予測（自己回帰言語モデル）","クラスタリング","教師なし強化学習"],"answer":1,"explanation":"GPTは前のトークン列から次のトークンを予測する自己回帰言語モデル。Decoder-only Transformerをこれで事前学習する。","wrongReasons":{"0":"これはBERT。","2":"クラスタリングではない。","3":"教師なしだが強化学習ではない。"},"keyword":"Causal LM、Autoregressive、Next Token","difficulty":"easy"},{"id":169,"chapter":"Ch5","q":"「T5」モデルが採用した枠組みは何か。","choices":["全てのNLPタスクをテキスト→テキストの形式に統一","全てを分類タスクにする","強化学習のみで学習","画像処理に特化"],"answer":0,"explanation":"T5（Google 2019）はすべてのタスクを「Text-to-Text」形式に変換する統一枠組み。翻訳・分類・要約・QAなどを同じモデルで扱える。","wrongReasons":{"1":"逆。","2":"教師あり事前学習。","3":"テキスト用。"},"keyword":"Text-to-Text Transfer Transformer、C4データセット","difficulty":"normal"},{"id":170,"chapter":"Ch5","q":"「GAN（敵対的生成ネットワーク）」の構成要素は何か。","choices":["Generator（生成器）とDiscriminator（識別器）の2モデルが敵対学習","Encoder と Decoder","Teacher と Student","Source と Target"],"answer":0,"explanation":"GAN（Goodfellow 2014）はGenerator（偽データ生成）とDiscriminator（本物か偽物か判定）が敵対的にmin-max最適化を行う。","wrongReasons":{"1":"これはVAEなど。","2":"これは蒸留。","3":"これは転移学習。"},"keyword":"Generator、Discriminator、Min-Max Game、DCGAN","difficulty":"easy"},{"id":171,"chapter":"Ch5","q":"GAN学習でよく起こる問題「モード崩壊（Mode Collapse）」とは何か。","choices":["Generatorが多様性を失い同じような出力ばかり生成する","学習が爆発する","Discriminatorが全く学習しない","メモリが不足する"],"answer":0,"explanation":"モード崩壊はGeneratorがDiscriminatorを騙せる限られた出力（モード）に収束してしまい、多様性が失われる現象。WGAN、Spectral Normなどで緩和。","wrongReasons":{"1":"勾配爆発とは別。","2":"Discriminator自体の問題ではない。","3":"メモリの話ではない。"},"keyword":"Mode Collapse、WGAN、Wasserstein Distance","difficulty":"normal"},{"id":172,"chapter":"Ch5","q":"「DCGAN」の特徴として正しいものはどれか。","choices":["GANにCNNを組み合わせた構造","RNNを使ったGAN","Decision Tree GAN","強化学習のGAN"],"answer":0,"explanation":"DCGAN（Radford et al. 2015）はGeneratorとDiscriminatorに転置畳み込み・畳み込みを使うアーキ。GANの安定学習に大きく貢献。","wrongReasons":{"1":"RNNではない。","2":"そういう名称はない。","3":"教師なし生成。"},"keyword":"Deep Convolutional GAN、Transposed Convolution","difficulty":"normal"},{"id":173,"chapter":"Ch5","q":"「StyleGAN」の特徴として正しいものはどれか。","choices":["スタイルを階層的に注入する高品質顔画像生成モデル","音声合成専用","テキスト分類用","強化学習エージェント"],"answer":0,"explanation":"StyleGAN（NVIDIA 2018-）はスタイルベクトルを各層に注入することで高品質・高解像度の顔画像生成を実現。StyleGAN2、StyleGAN3、StyleGAN-XLと進化。","wrongReasons":{"1":"画像。","2":"画像生成。","3":"GAN。"},"keyword":"AdaIN、Mapping Network、This Person Does Not Exist","difficulty":"normal"},{"id":174,"chapter":"Ch5","q":"「VAE（変分オートエンコーダ）」の特徴として正しいものはどれか。","choices":["潜在変数を確率分布として扱い、再構成損失とKLダイバージェンスで学習する生成モデル","GANと完全に同じ","クラス分類専用","強化学習用"],"answer":0,"explanation":"VAE（Kingma & Welling 2013）はEncoderが入力を潜在分布のパラメータに、Decoderが潜在変数から再構成する。ELBO（再構成項 + KL項）を最大化。","wrongReasons":{"1":"異なる原理。","2":"生成モデル。","3":"教師なし生成。"},"keyword":"ELBO、Reparameterization Trick、Latent Space","difficulty":"normal"},{"id":175,"chapter":"Ch5","q":"「Reparameterization Trick」がVAEで必要な理由は何か。","choices":["確率的サンプリングを通じた勾配伝播を可能にするため","計算速度を上げるため","メモリを減らすため","活性化を変えるため"],"answer":0,"explanation":"潜在変数をサンプリングする操作は微分不能なため、z = μ + σ・ε（ε～N(0,1)）と分解することで、μ・σに対し勾配を流せるようにする工夫。","wrongReasons":{"1":"勾配の話。","2":"勾配の話。","3":"活性化の話ではない。"},"keyword":"Stochastic Backprop、Sampling、Auto-Encoding Variational Bayes","difficulty":"hard"},{"id":176,"chapter":"Ch5","q":"「Diffusion Model（拡散モデル）」の生成プロセスとして正しいものはどれか。","choices":["徐々にノイズを加える順過程と、逆にノイズを除去して画像を作る逆過程を学習する","ランダム重みを生成する","クラスタを生成する","決定木を生成する"],"answer":0,"explanation":"拡散モデルは画像にガウシアンノイズを段階的に加え（順過程）、その逆過程をニューラルネットで学習することで、ノイズから画像を生成する。","wrongReasons":{"1":"重みの話ではない。","2":"クラスタとは別。","3":"決定木ではない。"},"keyword":"DDPM、Score Matching、Reverse Process","difficulty":"easy"},{"id":177,"chapter":"Ch5","q":"「Stable Diffusion」が「Latent Diffusion」である意味は何か。","choices":["画素空間ではなく低次元の潜在空間で拡散プロセスを行うことで計算を効率化","潜在的にしか動かないAI","潜在意識を扱う","潜在変数を持たない"],"answer":0,"explanation":"Latent Diffusion（Rombach et al. 2022）はVAE Encoderで画像を潜在空間に圧縮してから拡散プロセスを実行する。計算量とメモリを大幅削減し家庭用GPUでも動作可能に。","wrongReasons":{"1":"比喩ではない。","2":"心理学的概念ではない。","3":"潜在変数は中核。"},"keyword":"VAE Encoder、U-Net、Conditioning、CLIP Text Encoder","difficulty":"normal"},{"id":178,"chapter":"Ch5","q":"拡散モデルにおける「Classifier-Free Guidance」とは何か。","choices":["条件付き・無条件モデルを併用してテキスト条件付け強度を調整する手法","クラス分類器を一切使わない手法","強化学習による生成","蒸留手法"],"answer":0,"explanation":"CFG（Ho & Salimans 2021）は条件あり/なし両方を学習させ、推論時に「条件付きスコア + ガイダンス係数 × (条件付き - 無条件)」で条件への沿い具合を調整する。","wrongReasons":{"1":"クラス分類器を使わずに条件強化する。","2":"強化学習とは別。","3":"蒸留とは別。"},"keyword":"CFG、Guidance Scale、Conditional Generation","difficulty":"hard"},{"id":179,"chapter":"Ch5","q":"「U-Net」アーキテクチャが特に有名な分野はどれか。","choices":["医療画像セグメンテーションと拡散モデル","自然言語処理","音声合成","ボードゲーム"],"answer":0,"explanation":"U-Net（Ronneberger et al. 2015）はEncoder-DecoderとSkip Connectionから成るU字型構造。医療画像セグメンテーションで生まれ、現在は拡散モデルのデノイザとしても標準。","wrongReasons":{"1":"NLPはTransformer。","2":"音声は別。","3":"無関係。"},"keyword":"Skip Connection、Encoder-Decoder、Segmentation、Stable Diffusion","difficulty":"normal"},{"id":180,"chapter":"Ch5","q":"「DALL-E」「Imagen」「Stable Diffusion」「Midjourney」に共通するタスクは何か。","choices":["テキストからの画像生成（Text-to-Image）","画像分類","音声合成","強化学習"],"answer":0,"explanation":"これらはいずれもテキストプロンプトから画像を生成するモデル/サービス。CLIPなどのテキストEncoderと拡散モデル/Transformerの組み合わせが主流。","wrongReasons":{"1":"分類ではなく生成。","2":"画像生成。","3":"教師あり/自己教師あり。"},"keyword":"Text-to-Image、Prompt Engineering、CLIP","difficulty":"easy"},{"id":181,"chapter":"Ch5","q":"「GPT-4」「Claude 3」「Gemini 1.5」に共通する特徴として正しいものはどれか。","choices":["マルチモーダル対応の大規模基盤モデル","テキスト専用かつ小規模","強化学習に特化","画像生成専用"],"answer":0,"explanation":"いずれも2023〜2024年に登場した最先端LLMで、テキスト・画像など複数モダリティを扱うマルチモーダル大規模基盤モデル。","wrongReasons":{"1":"逆。","2":"汎用。","3":"画像生成専用ではない。"},"keyword":"GPT-4o、Claude Sonnet/Opus、Gemini、Multi-modal","difficulty":"easy"},{"id":182,"chapter":"Ch5","q":"「Tokenizer」がLLMで果たす役割は何か。","choices":["テキストをモデルが処理する単位（トークン）に分割する","勾配を計算する","正則化を行う","Attentionを計算する"],"answer":0,"explanation":"TokenizerはテキストをサブワードIDの系列に変換する。BPE、WordPiece、SentencePieceなどのアルゴリズムが使われる。トークン数 ≈ 計算コストとなる。","wrongReasons":{"1":"勾配ではない。","2":"正則化ではない。","3":"Attentionとは別工程。"},"keyword":"BPE、WordPiece、SentencePiece、tiktoken","difficulty":"easy"},{"id":183,"chapter":"Ch5","q":"「BPE（Byte Pair Encoding）」とは何か。","choices":["頻出するペアを順に結合してサブワード辞書を構築する手法","圧縮アルゴリズム","勾配計算手法","正則化手法"],"answer":0,"explanation":"BPEは元々データ圧縮手法だが、NLPでは頻出する文字・サブワードペアを反復的に結合して語彙を作る手法として転用。未知語問題を緩和。","wrongReasons":{"1":"圧縮起源だがNLPで応用。","2":"勾配ではない。","3":"正則化ではない。"},"keyword":"Subword Tokenization、GPT-2/3のTokenizer","difficulty":"normal"},{"id":184,"chapter":"Ch5","q":"「Context Window（コンテキスト長）」が大きいLLMの利点は何か。","choices":["長文を一度に処理でき、長い文書や対話履歴を扱える","計算量が必ず減る","メモリ消費が減る","学習が必ず安定する"],"answer":0,"explanation":"コンテキスト長が大きいほど、入力できるトークン数が増え長文書全体や長い対話履歴を扱える。GPT-4(8K-128K)、Claude(200K+)、Gemini 1.5(1M+)など拡大している。","wrongReasons":{"1":"O(n²)で増える。","2":"増える。","3":"安定とは別問題。"},"keyword":"Long Context、KV Cache、FlashAttention","difficulty":"easy"},{"id":185,"chapter":"Ch5","q":"「KV Cache」がLLM推論で行うことは何か。","choices":["過去トークンのKey/Valueを保存して再利用し、自己回帰生成を高速化","学習データを保存する","勾配を保存する","活性化値を全て保存する"],"answer":0,"explanation":"自己回帰生成では各ステップで全過去トークンのAttentionを計算する必要があるが、過去のK/Vを保存して再計算を避けることで O(n²) を O(n) に近づけられる。","wrongReasons":{"1":"学習データではない。","2":"勾配ではない。","3":"K/Vだけ。"},"keyword":"Inference Optimization、Speculative Decoding、Prefill/Decode","difficulty":"hard"},{"id":186,"chapter":"Ch5","q":"「In-context Learning」と「Fine-tuning」の主な違いは何か。","choices":["ICLは重み更新せずプロンプト内例示で適応、Fine-tuningは重みを更新する","両者は同じ","ICLは強化学習","Fine-tuningはプロンプト工学"],"answer":0,"explanation":"ICLはプロンプト内のfew-shot例示だけでタスク適応（重みは不変）。Fine-tuningは追加データで重みを更新。データ・計算コスト・適応性のトレードオフがある。","wrongReasons":{"1":"異なる。","2":"強化学習ではない。","3":"逆。"},"keyword":"Few-shot Prompting、PEFT、LoRA","difficulty":"easy"},{"id":187,"chapter":"Ch5","q":"「PEFT（Parameter-Efficient Fine-Tuning）」の代表手法はどれか。","choices":["LoRA、Prefix Tuning、Adapter","通常のFull Fine-tuning","強化学習","クラスタリング"],"answer":0,"explanation":"PEFTは大規模モデルの一部のみを学習することでメモリ・計算を節約しながら適応する技術群。LoRA、Adapter、Prefix Tuning、Prompt Tuning、QLoRAなど。","wrongReasons":{"1":"これはPEFTではない。","2":"異なるパラダイム。","3":"PEFTとは別。"},"keyword":"LoRA、QLoRA、Adapter、Prefix Tuning","difficulty":"normal"},{"id":188,"chapter":"Ch5","q":"「RLHF」の3ステップとして一般的な順序はどれか。","choices":["教師ありFine-tuning → 報酬モデル学習 → 強化学習（PPO等）","強化学習 → 報酬モデル → SFT","報酬モデルのみ","SFTのみ"],"answer":0,"explanation":"InstructGPT/ChatGPTのRLHFは(1)SFT（人手データで指示学習）、(2)Reward Model（人間ペア比較で報酬モデル学習）、(3)PPOで方策を報酬モデルに沿わせる、の3段階。","wrongReasons":{"1":"順序が逆。","2":"全工程必要。","3":"全工程必要。"},"keyword":"InstructGPT、PPO、DPO、報酬モデル","difficulty":"normal"},{"id":189,"chapter":"Ch5","q":"「DPO（Direct Preference Optimization）」がRLHFと異なる点として正しいものはどれか。","choices":["明示的な報酬モデルを使わずに選好データから直接方策を最適化する","強化学習を多段階で行う","報酬モデルを2つ使う","人間の介入が一切ない"],"answer":0,"explanation":"DPO（Rafailov et al. 2023）は報酬モデル学習とPPOを介さず、選好データから直接ロジット比較で方策をfine-tuneする簡素な手法。実装容易・安定性で人気。","wrongReasons":{"1":"逆、簡素化。","2":"使わない。","3":"選好データは人間由来。"},"keyword":"Direct Preference Optimization、Reference Model、Preference Data","difficulty":"hard"},{"id":190,"chapter":"Ch5","q":"「Constitutional AI」のアプローチとして特徴的なものはどれか。","choices":["AI自身に憲法（原則）に基づき自己批判・自己修正させてアラインメントを行う","外部の法律家が校正する","強化学習を使わない","全てルールベース"],"answer":0,"explanation":"Constitutional AI（Anthropic）はAIに与えた一連の原則（憲法）に基づき、自身の出力をAI自身が批判・改善させることでアラインメントを行う手法。RLAIFとも呼ばれる。","wrongReasons":{"1":"AI自己。","2":"強化学習を使う場合あり。","3":"ニューラル。"},"keyword":"RLAIF、Claude、Self-Critique","difficulty":"hard"},{"id":191,"chapter":"Ch5","q":"「ハルシネーション（幻覚）」とは何か。","choices":["LLMが事実と異なる情報をもっともらしく生成する現象","LLMの計算誤差","学習データのノイズ","活性化関数の数値オーバーフロー"],"answer":0,"explanation":"ハルシネーションはLLMが訓練データにない、または事実と異なる内容をあたかも事実のように生成する現象。RAG、Grounding、出典明示などで対策される。","wrongReasons":{"1":"計算誤差ではなく出力品質の問題。","2":"ノイズではない。","3":"数値の問題ではない。"},"keyword":"Confabulation、Grounding、RAG、Hallucination Detection","difficulty":"easy"},{"id":192,"chapter":"Ch5","q":"「プロンプトインジェクション」とは何か。","choices":["LLMに悪意のある指示を埋め込み、本来の動作を逸脱させる攻撃","プロンプトを最適化する手法","LLMを高速化する技術","プロンプトを暗号化する技術"],"answer":0,"explanation":"プロンプトインジェクションはユーザー入力や外部データに悪意ある指示を仕込み、システムの安全設計を回避させる攻撃。Direct/Indirect Injectionがある。LLMセキュリティの最重要課題。","wrongReasons":{"1":"最適化はPrompt Engineering。","2":"高速化ではない。","3":"暗号化ではない。"},"keyword":"Jailbreak、Indirect Prompt Injection、OWASP LLM Top 10","difficulty":"normal"},{"id":193,"chapter":"Ch5","q":"「Jailbreak」とは何か。","choices":["LLMの安全装置を回避させて禁止内容を出力させる手法","脱獄ゲーム","LLMを高速化する技術","学習データを盗む技術"],"answer":0,"explanation":"JailbreakはLLMのガードレール（安全策）を回避させて、本来拒否されるべき内容を生成させる試み。プロンプトインジェクションの一形態とも言える。","wrongReasons":{"1":"比喩。","2":"高速化とは別。","3":"これは別の攻撃。"},"keyword":"DAN、Roleplay Jailbreak、Red Teaming","difficulty":"easy"},{"id":194,"chapter":"Ch5","q":"「Tool Use（Function Calling）」がLLMで意味することは何か。","choices":["LLMが外部ツール（検索、計算、API）を呼び出して結果を統合する仕組み","LLM内部の最適化ツール","ハードウェアアクセラレータ","学習時のデータ拡張ツール"],"answer":0,"explanation":"Tool UseはLLMが必要に応じて外部ツールを呼び出す機能。検索、計算機、コード実行、社内APIなどを使ってLLMの限界（最新情報・計算精度）を補う。AIエージェントの中核技術。","wrongReasons":{"1":"内部最適化ではない。","2":"ハードではない。","3":"推論時の機能。"},"keyword":"Function Calling、ReAct、AI Agent、MCP","difficulty":"easy"},{"id":195,"chapter":"Ch5","q":"「AIエージェント」の典型的な動作サイクルとして正しいものはどれか。","choices":["観測 → 計画/思考 → 行動（ツール呼び出し）→ 観測のループ","学習 → 評価 → 学習のループ","推論 → 学習 → 推論のループ","順伝播 → 逆伝播 → 順伝播"],"answer":0,"explanation":"AIエージェントは環境を観測し、思考（計画）し、ツールを使って行動し、結果を観測してまた思考…というループで自律的に目標を達成する。ReActが代表パターン。","wrongReasons":{"1":"これは学習プロセス。","2":"通常は別フェーズ。","3":"ニューラルの内部処理。"},"keyword":"ReAct、Plan-Execute、AutoGPT、LangGraph","difficulty":"normal"},{"id":196,"chapter":"Ch5","q":"「MoE（Mixture of Experts）」アーキテクチャの特徴は何か。","choices":["複数の専門家ネットワークを持ち、入力に応じて一部だけ活性化させ計算効率と表現力を両立","完全に全層を毎回使う","層を1つしか使わない","強化学習専用"],"answer":0,"explanation":"MoEは複数のExpertネットワークを並列に持ち、Routerが入力に応じて一部のExpert（例：2/8）のみを活性化する。総パラメータは大きいが推論計算は少ない。Mixtral、Switch Transformer等で採用。","wrongReasons":{"1":"逆。","2":"複数使う。","3":"汎用。"},"keyword":"Mixture of Experts、Router、Sparse Activation、Mixtral","difficulty":"hard"},{"id":197,"chapter":"Ch5","q":"「量子化（Quantization）」のLLMでの主な意義は何か。","choices":["重みをFP16/INT8/INT4等の低精度に変換し、メモリ・速度を改善","計算精度を必ず上げる","層を増やす","学習データを増やす"],"answer":0,"explanation":"量子化はLLM推論時に重みを低精度（INT8、INT4、4-bit GPTQ、AWQ、QLoRAなど）にすることで、メモリ消費と推論速度を改善する。家庭用GPUでの大規模モデル動作の鍵。","wrongReasons":{"1":"通常は若干低下する。","2":"層数とは別。","3":"データの話ではない。"},"keyword":"INT8、INT4、GPTQ、AWQ、bitsandbytes","difficulty":"normal"},{"id":198,"chapter":"Ch5","q":"「Speculative Decoding」とは何か。","choices":["小さなドラフトモデルで予測→大きなモデルで検証することで生成を高速化する手法","投機的に学習を進める手法","学習データを増やす手法","強化学習の一手法"],"answer":0,"explanation":"Speculative Decoding（Leviathan et al. 2023）は軽量モデルが先読みでトークン列を生成し、大規模モデルがバッチ並列でそれを検証することで生成速度を2〜3倍に向上させる手法。","wrongReasons":{"1":"学習ではない。","2":"データの話ではない。","3":"推論最適化。"},"keyword":"Draft Model、Verifier、推論高速化","difficulty":"hard"},{"id":199,"chapter":"Ch5","q":"「Embedding Model」と「Generation Model」の違いとして正しいものはどれか。","choices":["Embeddingは入力を意味ベクトルに変換、Generationはテキスト等を生成する","両者は同じ","Embeddingはテキスト生成専用","Generationはベクトル化専用"],"answer":0,"explanation":"Embeddingモデルはテキスト等を固定長ベクトル（意味表現）に変換するモデル（text-embedding系）。検索、クラスタリング、RAGのretrieverで使う。Generationは文章を生成するモデル（GPT、Claude等）。","wrongReasons":{"1":"異なる。","2":"逆。","3":"逆。"},"keyword":"text-embedding-3、cohere embed、Sentence Transformers","difficulty":"easy"},{"id":200,"chapter":"Ch5","q":"「ベクトルデータベース」がRAGで担う役割は何か。","choices":["文書をEmbeddingに変換して保存し、類似ベクトル検索で関連文書を高速取得する","テキストをそのまま全文検索する","GPUのキャッシュ","学習データのストレージ"],"answer":0,"explanation":"ベクトルDB（Pinecone、Weaviate、Chroma、Milvus等）はEmbeddingベクトルを保存し、コサイン類似度等で最近傍検索を行う。RAGの検索基盤。","wrongReasons":{"1":"これは全文検索。","2":"ハードウェアではない。","3":"用途違い。"},"keyword":"ANN、HNSW、Faiss、Pinecone","difficulty":"normal"},{"id":201,"chapter":"Ch5","q":"「Hybrid Search」とは何か。","choices":["キーワード検索（BM25等）とベクトル検索を組み合わせる手法","DBを切り替えながら検索する","強化学習で検索する","クラウドとローカルを併用する"],"answer":0,"explanation":"Hybrid Searchは伝統的なキーワード検索（BM25、Elasticsearch）と密ベクトル検索を組み合わせ、両者の長所を取る検索戦略。RAGの精度向上に重要。","wrongReasons":{"1":"単なる切替ではない。","2":"検索の話。","3":"インフラの話ではない。"},"keyword":"BM25、Dense+Sparse、Reciprocal Rank Fusion","difficulty":"hard"},{"id":202,"chapter":"Ch5","q":"「Whisper」モデルが行うタスクは何か。","choices":["音声認識（音声→テキスト）","テキスト→音声合成","画像認識","翻訳のみ"],"answer":0,"explanation":"Whisper（OpenAI 2022）は多言語対応の音声認識（ASR）モデル。68万時間の音声データで学習され、ノイズに強く翻訳も可能。","wrongReasons":{"1":"TTSは別モデル。","2":"音声。","3":"認識と翻訳両方できる。"},"keyword":"ASR、Speech-to-Text、Multilingual、Robust","difficulty":"easy"},{"id":203,"chapter":"Ch5","q":"「自己回帰モデル」と「非自己回帰モデル」の違いとして正しいものはどれか。","choices":["自己回帰は1トークンずつ順に生成、非自己回帰は並列に生成する","両者は同じ","自己回帰は学習が並列だが推論が逐次","自己回帰は教師なし"],"answer":0,"explanation":"自己回帰モデル（GPT等）は前のトークンを条件に次を生成するため推論が逐次。非自己回帰モデルは全位置を並列に生成。並列モデルは速いが品質はやや劣る傾向。","wrongReasons":{"1":"異なる。","2":"両方とも自己回帰だが、学習は並列可。","3":"カテゴリ違い。"},"keyword":"Autoregressive、Non-AR、NAT、並列生成","difficulty":"normal"},{"id":204,"chapter":"Ch5","q":"「Sampling Strategy」のうち「Top-k Sampling」の説明として正しいものはどれか。","choices":["最も確率の高いk個から確率に従ってサンプリング","確率が最大のものだけ選ぶ","全候補から完全ランダム","ビーム探索のk個"],"answer":0,"explanation":"Top-k Samplingは確率の高い上位k個のトークンに限定して、その分布から確率的にサンプル。多様性と品質のバランスを取る。Top-p（Nucleus）と並び広く使われる。","wrongReasons":{"1":"これはGreedy。","2":"これは無制約サンプリング。","3":"これはBeam Search。"},"keyword":"Greedy、Beam Search、Top-p、Temperature","difficulty":"normal"},{"id":205,"chapter":"Ch5","q":"「Top-p（Nucleus）Sampling」の特徴は何か。","choices":["累積確率がpを超えるまでの上位候補に限定してサンプリング","上位p個から選ぶ","確率pで強制終了する","全候補からpの確率で選ぶ"],"answer":0,"explanation":"Nucleus Sampling（Holtzman et al. 2019）は累積確率がpになる最小集合を選び、その範囲内からサンプル。確信度に応じて候補数が変動する点でTop-kより柔軟。","wrongReasons":{"1":"これはTop-k。","2":"終了とは別。","3":"異なる。"},"keyword":"Nucleus Sampling、Dynamic Truncation","difficulty":"hard"},{"id":206,"chapter":"Ch6","q":"物体検出タスクで「Bounding Box」と「クラス」を同時に予測する代表的なモデルファミリーはどれか。","choices":["R-CNN系（Faster R-CNN等）、YOLO系、SSD系","BERT系","Word2Vec系","VAE系"],"answer":0,"explanation":"物体検出は画像中の物体の位置（BBox）とクラスを予測する。Two-stage（R-CNN、Fast/Faster R-CNN、Mask R-CNN）、One-stage（YOLO、SSD、RetinaNet）に大別される。","wrongReasons":{"1":"NLP用。","2":"単語埋め込み。","3":"生成モデル。"},"keyword":"Faster R-CNN、YOLO v1〜v10、DETR、Anchor Box","difficulty":"easy"},{"id":207,"chapter":"Ch6","q":"「セマンティックセグメンテーション」と「インスタンスセグメンテーション」の違いは何か。","choices":["セマンティックは画素ごとにクラスを割り当てる（個体区別なし）、インスタンスは個体まで区別する","両者は同じ","セマンティックは個体まで区別","インスタンスは画像分類"],"answer":0,"explanation":"セマンティックは「猫の画素全部を猫クラスにする」のみ（個体区別なし）。インスタンスは「猫A、猫B」と個体ごとに分ける。Panoptic Segmentationは両方を統合。","wrongReasons":{"1":"異なる。","2":"逆。","3":"分類ではない。"},"keyword":"Mask R-CNN、U-Net、Panoptic、SAM","difficulty":"normal"},{"id":208,"chapter":"Ch6","q":"「SAM（Segment Anything Model）」を開発した組織はどこか。","choices":["OpenAI","Meta（Facebook）","Google","Anthropic"],"answer":1,"explanation":"SAM（2023）はMeta AIが公開したプロンプト指示でほぼ任意のオブジェクトをセグメント可能な基盤モデル。ゼロショットセグメンテーションを実現。","wrongReasons":{"0":"OpenAIではない。","2":"Googleではない。","3":"Anthropicではない。"},"keyword":"Meta、Foundation Model for Segmentation、SAM 2","difficulty":"easy"},{"id":209,"chapter":"Ch6","q":"「画像キャプショニング」とはどんなタスクか。","choices":["画像から自然言語の説明文を生成する","画像を分類する","画像を圧縮する","画像を生成する"],"answer":0,"explanation":"Image Captioningは画像を入力に自然言語の説明文を出力するタスク。CNN+RNN、CNN+Transformer、CLIP+LLMなどで実現される。","wrongReasons":{"1":"分類は別タスク。","2":"圧縮は別。","3":"画像生成は逆方向。"},"keyword":"Show and Tell、BLIP、Flamingo、GPT-4V","difficulty":"normal"},{"id":210,"chapter":"Ch6","q":"「VQA（Visual Question Answering）」とは何か。","choices":["画像と自然言語の質問を入力に、回答を生成するマルチモーダルタスク","音声質問応答","画像のみで質問","テキストのみQA"],"answer":0,"explanation":"VQAは画像内容に関する自然言語の質問にAIが回答するタスク。マルチモーダル基盤モデル（GPT-4V、Claude 3、Gemini）が現代の主力。","wrongReasons":{"1":"音声ではない。","2":"質問は言語。","3":"画像必要。"},"keyword":"VQA v2、ScienceQA、Multimodal LLM","difficulty":"normal"},{"id":211,"chapter":"Ch6","q":"「OCR（光学文字認識）」のディープラーニング化で典型的な構成はどれか。","choices":["CNNで特徴抽出 + RNN/Transformerで系列認識（CTC損失等）","ルールベースのみ","決定木","強化学習のみ"],"answer":0,"explanation":"DLベースのOCRはCNNで画像から特徴を抽出し、RNN/TransformerとCTC損失（系列のアライメント）で文字列を出力するEnd-to-end構造が主流。CRNN、TrOCRなど。","wrongReasons":{"1":"古典。","2":"NN以前。","3":"教師ありが主流。"},"keyword":"CRNN、CTC、TrOCR、PaddleOCR","difficulty":"normal"},{"id":212,"chapter":"Ch6","q":"「機械翻訳」が現代主流とするアーキテクチャは何か。","choices":["Transformer Encoder-Decoder","古典SMTのみ","RNN（LSTM）のみ","決定木"],"answer":0,"explanation":"現代の機械翻訳はTransformer Encoder-Decoderが標準。LLMによる翻訳（GPT/Claude等）も普及。SMT（統計的MT）は2010年代まで、RNN/LSTMはその後、Transformerが2017年以降。","wrongReasons":{"1":"旧世代。","2":"旧世代。","3":"使わない。"},"keyword":"NMT、Transformer、BLEU、自動翻訳","difficulty":"easy"},{"id":213,"chapter":"Ch6","q":"「BLEU」スコアが評価するものは何か。","choices":["機械翻訳出力と参照訳のn-gram一致度","画像分類精度","音声認識のWER","回帰のMSE"],"answer":0,"explanation":"BLEU（Bilingual Evaluation Understudy）は機械翻訳の評価指標。n-gram精度と短文ペナルティを組み合わせ、参照訳との一致度を測る。0〜1（または0〜100）。","wrongReasons":{"1":"画像とは別。","2":"WERは音声認識指標。","3":"回帰指標。"},"keyword":"BLEU-1〜4、Brevity Penalty、ROUGE、METEOR","difficulty":"normal"},{"id":214,"chapter":"Ch6","q":"「ROUGE」スコアが主に使われる場面はどれか。","choices":["要約タスクの評価（n-gram再現率ベース）","画像分類","音声合成","回帰"],"answer":0,"explanation":"ROUGE（Recall-Oriented Understudy for Gisting Evaluation）は要約の評価指標。ROUGE-1（unigram）、ROUGE-2（bigram）、ROUGE-L（LCS）など。再現率重視。","wrongReasons":{"1":"分類ではない。","2":"音声合成ではない。","3":"回帰ではない。"},"keyword":"ROUGE-N、ROUGE-L、要約評価","difficulty":"normal"},{"id":215,"chapter":"Ch6","q":"「音声認識（ASR）」のディープラーニング以前の主流手法はどれか。","choices":["HMM（隠れマルコフモデル）+ GMM","Transformer","CNN","GAN"],"answer":0,"explanation":"DL以前の音声認識はHMM-GMMが標準（音響モデル+言語モデル+辞書）。現代はEnd-to-Endの深層モデル（DeepSpeech、Wav2Vec、Whisper等）が支配的。","wrongReasons":{"1":"DL登場以降。","2":"DL登場以降。","3":"DL登場以降。"},"keyword":"HMM、GMM、Wav2Vec 2.0、Whisper","difficulty":"normal"},{"id":216,"chapter":"Ch6","q":"「TTS（Text-to-Speech）」の現代的なニューラルモデル例として代表的なものはどれか。","choices":["Tacotron、WaveNet、VITS、ElevenLabs等","AlexNet","BERT","Word2Vec"],"answer":0,"explanation":"ニューラルTTSはTacotron 2（メルスペクトログラム生成）+ WaveNet/HiFi-GAN（音声波形）が古典構成。VITS、StyleTTS、ElevenLabs、OpenAI TTSなどが現代の主力。","wrongReasons":{"1":"画像。","2":"言語理解。","3":"単語表現。"},"keyword":"WaveNet、Tacotron 2、VITS、Vocoder","difficulty":"easy"},{"id":217,"chapter":"Ch6","q":"「強化学習」がゲームで成果を出した代表例として誤っているものはどれか。","choices":["AlphaGo（囲碁）","AlphaStar（StarCraft II）","OpenAI Five（Dota 2）","ImageNet（画像分類）"],"answer":3,"explanation":"ImageNetは教師あり画像分類のベンチマークで、強化学習の事例ではない。AlphaGo（囲碁）、AlphaStar、OpenAI Five、AlphaZeroなどは強化学習の代表的成功事例。","wrongReasons":{"0":"DeepMindの代表作。","1":"DeepMind。","2":"OpenAI。"},"keyword":"AlphaGo、AlphaZero、MuZero、Gym","difficulty":"easy"},{"id":218,"chapter":"Ch6","q":"「DQN（Deep Q-Network）」が示した重要な成果は何か。","choices":["Atariゲームを人間並みにプレイ","囲碁世界王者撃破","音声認識を革新","自然言語処理を革新"],"answer":0,"explanation":"DQN（DeepMind 2013/2015）はAtari 2600ゲームの画像を入力に強化学習で人間並みのプレイを達成。Experience Replay、Target Networkが革新。","wrongReasons":{"1":"これはAlphaGo。","2":"音声ではない。","3":"NLPではない。"},"keyword":"Experience Replay、Target Network、Atari","difficulty":"easy"},{"id":219,"chapter":"Ch6","q":"「自動運転」のレベル分類でレベル3が示す状態は何か。","choices":["完全人間運転","特定条件下で自動運転（システムが主、ドライバーは緊急時対応）","完全自動運転（人間不要）","アシスト機能のみ"],"answer":1,"explanation":"自動運転レベル（SAE J3016）：L0=人間のみ、L1=支援、L2=部分自動（人間監視）、L3=条件付き自動（人間は緊急対応）、L4=高度自動（限定領域内で人間不要）、L5=完全自動。","wrongReasons":{"0":"これはL0。","2":"これはL5。","3":"これはL1/L2。"},"keyword":"SAE J3016、ODD、Waymo、Tesla FSD","difficulty":"normal"},{"id":220,"chapter":"Ch6","q":"自動運転のAI技術として中心的なものはどれか。","choices":["物体検出、セマンティックセグメンテーション、深度推定、行動計画、強化学習","決定木のみ","全文検索","VAE"],"answer":0,"explanation":"自動運転は知覚（検知、セグメンテーション、深度・距離推定）、予測（他車の動き）、計画・制御（経路決定）など多層的AIシステム。LiDAR、カメラ、レーダーの融合（センサフュージョン）も重要。","wrongReasons":{"1":"古典では限界。","2":"検索の話ではない。","3":"単体では完結しない。"},"keyword":"Sensor Fusion、Lidar、End-to-End Driving、Tesla","difficulty":"easy"},{"id":221,"chapter":"Ch6","q":"「医療画像AI」の代表的応用として正しいものはどれか。","choices":["X線/CT/MRI画像からの病変検出・診断支援","音声カルテのみ","保険料の自動計算","受付の自動化"],"answer":0,"explanation":"医療画像AIはX線、CT、MRI、内視鏡、病理画像などから病変検出・分類・セグメンテーションを行う。皮膚癌、糖尿病網膜症、肺結節、脳卒中など多くの領域で実用化。","wrongReasons":{"1":"画像が主。","2":"医療AIの主流ではない。","3":"画像と無関係。"},"keyword":"PACS、CAD、薬事承認、医療機器プログラム","difficulty":"easy"},{"id":222,"chapter":"Ch6","q":"「異常検知」が産業応用で特に有効な領域として代表的なものはどれか。","choices":["設備の予知保全、製造ラインの不良品検出、サイバー攻撃検知","音楽生成のみ","ゲームAIのみ","翻訳のみ"],"answer":0,"explanation":"異常検知は正常データから外れるパターンを検出する技術で、製造業の予知保全（CBM）、外観検査、サイバーセキュリティ、医療異常検出など産業応用が広い。","wrongReasons":{"1":"創作分野ではない。","2":"ゲーム特化ではない。","3":"翻訳ではない。"},"keyword":"Predictive Maintenance、外観検査、Anomaly Detection","difficulty":"easy"},{"id":223,"chapter":"Ch6","q":"「レコメンドシステム」で「協調フィルタリング」と「コンテンツベース」の違いは何か。","choices":["協調FはユーザーやアイテムのID/行動から、CBはアイテムの内容特徴から推薦する","両者は同じ","協調FはNNが必須","CBはユーザー情報なしでは動かない"],"answer":0,"explanation":"協調フィルタリングはユーザー行動の類似性（ユーザーベース/アイテムベース）。コンテンツベースはアイテム自体の特徴（タグ、説明文）。両者を組み合わせるハイブリッドが現代主流。","wrongReasons":{"1":"異なる。","2":"行列分解でも可。","3":"アイテム特徴のみで可能。"},"keyword":"Matrix Factorization、TwoTower、Hybrid Recommender","difficulty":"normal"},{"id":224,"chapter":"Ch6","q":"「生成AI」の業務応用として一般的でないものはどれか。","choices":["コード生成（GitHub Copilot等）","メール下書き","議事録要約","物理的な工作機械の自動修理"],"answer":3,"explanation":"物理的な修理作業は生成AIだけでは完結しない（ロボット・センサが必要）。コード生成、文書生成、要約、画像生成、対話などが生成AIの典型業務応用。","wrongReasons":{"0":"代表例。","1":"代表例。","2":"代表例。"},"keyword":"Copilot、業務文書、議事録自動化","difficulty":"easy"},{"id":225,"chapter":"Ch6","q":"「Robotics」分野で深層強化学習が特に有用とされる領域はどれか。","choices":["把持・操作・歩行などの試行錯誤的な制御方策学習","ルール検証","音声認識","全文検索"],"answer":0,"explanation":"深層強化学習はロボットアームの把持、四足歩行、ドローン制御など試行錯誤的な制御方策学習に強力。実機学習はコスト高なのでシミュレーションでの学習＋Sim2Real転移が一般的。","wrongReasons":{"1":"無関係。","2":"音声タスクは別。","3":"検索は別。"},"keyword":"Sim2Real、Domain Randomization、ManipulationLearning","difficulty":"normal"},{"id":226,"chapter":"Ch6","q":"「製造業のAI活用」事例として一般的でないものはどれか。","choices":["AI外観検査による不良品検出","予知保全（設備故障予測）","需要予測","AIが現場の工程を物理的に設計"],"answer":3,"explanation":"需要予測、外観検査、予知保全、生産スケジューリング最適化は代表的な製造業AI活用。物理工程の設計はまだ人間（エンジニア）が中心で、AIは支援ツール。","wrongReasons":{"0":"代表例。","1":"代表例。","2":"代表例。"},"keyword":"スマートファクトリー、Industry 4.0、Smart Manufacturing","difficulty":"easy"},{"id":227,"chapter":"Ch6","q":"「金融分野のAI」典型応用として誤っているものはどれか。","choices":["不正取引検知","アルゴリズム取引","信用スコアリング","為替レートを物理的に変更する"],"answer":3,"explanation":"AIが為替レートを物理的に決めるわけではない（市場が決める）。不正検知、アルゴ取引、信用スコアリング、ロボアドバイザは典型応用。","wrongReasons":{"0":"代表例。","1":"代表例。","2":"代表例。"},"keyword":"Fraud Detection、Algo Trading、Credit Score","difficulty":"easy"},{"id":228,"chapter":"Ch6","q":"「タンパク質構造予測」で歴史的な成果を上げたAIはどれか。","choices":["AlphaFold（DeepMind）","ImageNet","GPT-1","AlphaGo"],"answer":0,"explanation":"AlphaFold（DeepMind 2020〜）はタンパク質のアミノ酸配列から立体構造を高精度予測。CASP14で他手法を圧倒し、生物学の大革新。AlphaFold 3は分子間相互作用も予測。","wrongReasons":{"1":"画像分類。","2":"言語モデル。","3":"囲碁。"},"keyword":"CASP、AlphaFold 2/3、Tanaka・Jumper、構造生物学","difficulty":"easy"},{"id":229,"chapter":"Ch6","q":"「気象予測」「災害予測」へのAI応用として正しい記述はどれか。","choices":["AIが従来の数値シミュレーションを補完・代替し、高速・高精度な短期予測を実現しつつある","AIには気象予測は不可能","気象予測は強化学習のみで行う","AIは異常気象を起こさせる"],"answer":0,"explanation":"GraphCast（DeepMind）、Pangu-Weather（Huawei）などのAI気象モデルが数値予報モデルを上回る性能を示し、台風・降雨予測などへの応用が進行中。","wrongReasons":{"1":"既に実用化進行中。","2":"教師あり/物理融合。","3":"観測・予測する。"},"keyword":"GraphCast、Pangu-Weather、ECMWF","difficulty":"normal"},{"id":230,"chapter":"Ch6","q":"「化学・新材料開発」へのAI応用例として代表的なものはどれか。","choices":["材料候補のスクリーニング、合成経路提案、特性予測","物質を魔法のように出現させる","化学法則を変える","周期表を変更する"],"answer":0,"explanation":"Materials Informatics、AI-Driven Drug Discovery（創薬）、逆設計（Inverse Design）、Active Learningでの実験効率化など多領域で活用。AI for Scienceの一翼。","wrongReasons":{"1":"非現実的。","2":"非現実的。","3":"非現実的。"},"keyword":"Materials Informatics、AI for Science、創薬AI","difficulty":"easy"},{"id":231,"chapter":"Ch6","q":"「コード生成AI」（GitHub Copilot、Cursor、Claude Code等）の典型的な能力として正しいものはどれか。","choices":["自然言語のコメント・指示からコードを生成・補完する","コンパイル無しでアプリを公開する","プログラミング言語を新規開発する","ハードウェアを物理製造する"],"answer":0,"explanation":"コード生成AIはコンテキスト（既存コード・コメント・自然言語指示）からコードを補完・生成する。Copilot、Cursor、Claude Code、Devinなど多数。SWE-Benchで評価される。","wrongReasons":{"1":"開発フローは別。","2":"そういう機能はない。","3":"物理は無関係。"},"keyword":"GitHub Copilot、Cursor、Claude Code、SWE-Bench","difficulty":"easy"},{"id":232,"chapter":"Ch6","q":"「動画生成AI」の代表的なモデルはどれか。","choices":["Sora、Runway Gen-3、Pika、Veo","GPT-1","AlexNet","ResNet-50"],"answer":0,"explanation":"テキスト→動画生成のSora（OpenAI）、Runway Gen-3、Pika、Veo（Google DeepMind）、Kling等が2024年に競合。Diffusion Transformer基盤が多い。","wrongReasons":{"1":"テキストのみ。","2":"画像分類。","3":"画像分類。"},"keyword":"Text-to-Video、DiT、Veo、Sora","difficulty":"normal"},{"id":233,"chapter":"Ch6","q":"「音楽生成AI」の代表例はどれか。","choices":["Suno、Udio、MusicLM、Stable Audio","DALL-E","BERT","Word2Vec"],"answer":0,"explanation":"Suno、Udio、MusicLM（Google）、Stable Audio（Stability）、AudioCraft（Meta）など、テキストから楽曲を生成するAIが2023〜2024年に大きく発展。","wrongReasons":{"1":"画像。","2":"言語理解。","3":"単語表現。"},"keyword":"MusicLM、AudioCraft、Suno v3","difficulty":"normal"},{"id":234,"chapter":"Ch6","q":"「教育分野へのAI応用」として近年注目される代表例はどれか。","choices":["個別最適化学習（Adaptive Learning）、AIチューター","校舎の建設","給食メニューの作成のみ","通学路の決定"],"answer":0,"explanation":"学習者の進捗・誤答パターンを分析し個別最適な教材・問題を提示するAdaptive Learning、ChatGPT/Claude等のAIチューター、自動採点、生成AIによる教材作成などが急速に普及。","wrongReasons":{"1":"教育AIではない。","2":"範囲が狭すぎ。","3":"教育AIではない。"},"keyword":"EdTech、Adaptive Learning、AIチューター、Khanmigo","difficulty":"easy"},{"id":235,"chapter":"Ch6","q":"「農業AI」の典型応用として正しいものはどれか。","choices":["ドローン/衛星画像からの作物状態モニタリング、害虫検出、収量予測","種を物理的に作る","天気を変える","農地の土地登記"],"answer":0,"explanation":"農業AIはドローン/衛星画像解析（NDVI等）、病害虫検出、収量予測、ロボット収穫、精密農業（場所ごと最適施肥）など多領域で実用化中。","wrongReasons":{"1":"非現実。","2":"非現実。","3":"AI不要。"},"keyword":"Smart Agriculture、Precision Farming、NDVI","difficulty":"easy"},{"id":236,"chapter":"Ch7","q":"「PoC（Proof of Concept）」を実施する主な目的は何か。","choices":["技術的・ビジネス的に成立するか小規模に検証すること","完成品を量産すること","学術論文を書くこと","特許を取得すること"],"answer":0,"explanation":"PoCはアイデアの実現可能性・効果を小規模・短期間で検証するフェーズ。本格開発前のリスク低減が目的。仮説検証→結果評価→Go/No-Go判断という流れ。","wrongReasons":{"1":"量産は別フェーズ。","2":"研究目的とは別。","3":"特許とは別。"},"keyword":"PoC、MVP、Pilot、本格展開","difficulty":"easy"},{"id":237,"chapter":"Ch7","q":"AI実装で「PoC貧乏」と呼ばれる状況とは何か。","choices":["PoCを多数実施するが本番化に至らず投資が回収できない状態","PoCを安く実施する能力","PoCの数が少なすぎる状態","PoCを高品質にする手法"],"answer":0,"explanation":"「PoC貧乏」はPoCばかり繰り返して本番運用やROIに至らない問題。本番化を見据えた要件設計、運用体制、変革管理が伴わないと起きる。","wrongReasons":{"1":"逆の意味。","2":"逆。","3":"手法ではなく問題。"},"keyword":"PoC死、Pilot Purgatory、ROI、運用展開","difficulty":"normal"},{"id":238,"chapter":"Ch7","q":"AIプロジェクトの「ROI」を考える上で重要な要素として誤っているものはどれか。","choices":["導入コスト（人件費、システム、データ整備）","効果（売上向上、コスト削減、品質改善）","運用・保守コスト","AI技術の流行に乗ること"],"answer":3,"explanation":"流行はROIの本質ではない。導入・運用コストと定量化された効果（時間削減、人件費、品質）の比較が ROI 評価の核心。","wrongReasons":{"0":"重要要素。","1":"重要要素。","2":"重要要素。"},"keyword":"TCO、Total Cost of Ownership、効果定量化","difficulty":"easy"},{"id":239,"chapter":"Ch7","q":"AI開発プロセスの一般的な順序として正しいものはどれか。","choices":["課題定義 → データ収集・準備 → モデル開発 → 評価 → デプロイ → 運用・モニタリング","デプロイ → データ収集 → 課題定義","モデル開発 → 課題定義 → デプロイ","評価のみ"],"answer":0,"explanation":"AIプロジェクトは①ビジネス課題定義 → ②データ収集・前処理 → ③モデル開発（学習・チューニング）→ ④評価（オフライン）→ ⑤本番デプロイ → ⑥モニタリング・改善のサイクル。","wrongReasons":{"1":"順序が逆。","2":"順序おかしい。","3":"全工程必要。"},"keyword":"CRISP-DM、ML Project Lifecycle、MLOps","difficulty":"easy"},{"id":240,"chapter":"Ch7","q":"「CRISP-DM」とは何か。","choices":["データマイニング・AI開発の業界標準的プロセスモデル","暗号化アルゴリズム","プログラミング言語","ニューラルアーキテクチャ"],"answer":0,"explanation":"CRISP-DM（Cross-Industry Standard Process for Data Mining）はビジネス理解・データ理解・データ準備・モデリング・評価・展開の6フェーズからなる業界標準プロセス。","wrongReasons":{"1":"暗号ではない。","2":"言語ではない。","3":"NNではない。"},"keyword":"6 Phase、Business Understanding、Deployment","difficulty":"normal"},{"id":241,"chapter":"Ch7","q":"「MLOps」とは何か。","choices":["機械学習モデルの開発・デプロイ・運用・モニタリングを継続的に行うための工学的プラクティス","新しいプログラミング言語","ML専用OS","暗号化技術"],"answer":0,"explanation":"MLOps（DevOpsのML版）はMLパイプラインの自動化、モデルのバージョン管理、本番デプロイ、データ・モデルのモニタリング、再学習自動化等を含む実運用のための工学。","wrongReasons":{"1":"言語ではない。","2":"OSではない。","3":"暗号ではない。"},"keyword":"DevOps、CI/CD/CT、MLflow、Kubeflow、Vertex AI","difficulty":"easy"},{"id":242,"chapter":"Ch7","q":"「データドリフト」と「モデルドリフト」の違いとして正しいものはどれか。","choices":["データドリフトは入力データ分布の変化、モデルドリフトは入出力関係の変化","両者は同じ","データドリフトはモデルが古くなること","モデルドリフトはデータが古くなること"],"answer":0,"explanation":"Data Drift：本番の入力データ分布が学習時と変わる現象。Concept Drift（モデルドリフト）：入力と出力の関係そのものが変わる現象。どちらも本番性能劣化の原因。","wrongReasons":{"1":"異なる。","2":"逆。","3":"逆。"},"keyword":"Data Drift、Concept Drift、モニタリング、再学習","difficulty":"normal"},{"id":243,"chapter":"Ch7","q":"AIプロジェクトの「データ収集」で重要でない観点はどれか。","choices":["データ量と品質","ラベル付け方針","個人情報・著作権の取扱い","データを多ければ多いほど無条件に良いと考えること"],"answer":3,"explanation":"量だけでなく品質、代表性、バイアス、法的取扱いの全てが重要。量だけ追うと低品質・偏りデータで悪化する。Garbage In, Garbage Out。","wrongReasons":{"0":"重要。","1":"重要。","2":"重要。"},"keyword":"Garbage In Garbage Out、データガバナンス","difficulty":"easy"},{"id":244,"chapter":"Ch7","q":"「アノテーション（ラベル付け）」のコストを下げる手法として代表的でないものはどれか。","choices":["能動学習（Active Learning）","弱教師あり学習","半教師あり学習","アノテーションを完全に省略する"],"answer":3,"explanation":"教師あり学習である以上、ラベルを完全に省略はできない。代わりにActive Learning（情報量の高いデータ優先）、Weak/Semi-supervised、Self-supervised、合成データ活用などで効率化する。","wrongReasons":{"0":"代表手法。","1":"代表手法。","2":"代表手法。"},"keyword":"Active Learning、Weak Supervision、Snorkel、合成データ","difficulty":"normal"},{"id":245,"chapter":"Ch7","q":"「A/Bテスト」がAI本番運用で果たす役割は何か。","choices":["新モデルと既存モデルを実トラフィックで比較し効果を統計的に検証","プログラムのテスト","ABクラスに分ける","学習データを2分割する"],"answer":0,"explanation":"A/Bテストはユーザーをランダムに2群に分け新旧モデルの効果（クリック率、CV、満足度等）を比較する標準手法。仮説検定で有意性を判定。","wrongReasons":{"1":"単体テストではない。","2":"分類とは別。","3":"これはホールドアウト。"},"keyword":"A/B Test、Statistical Significance、Multi-armed Bandit","difficulty":"normal"},{"id":246,"chapter":"Ch7","q":"「ステークホルダーマネジメント」がAIプロジェクトで重要な理由として誤っているものはどれか。","choices":["現場利用者の納得感が運用成否を左右する","経営層の意思決定にビジネス価値の説明が必要","技術部門と業務部門の連携が必要","AIは万能なので関係者と話す必要はない"],"answer":3,"explanation":"AIプロジェクトは技術だけでなく、現場・経営・法務・データ管理など多部門連携が成否を分ける。「AIは万能」という前提は失敗の典型。","wrongReasons":{"0":"重要。","1":"重要。","2":"重要。"},"keyword":"Change Management、業務変革、Stakeholder Map","difficulty":"easy"},{"id":247,"chapter":"Ch7","q":"「AI事業者ガイドライン」（経済産業省・総務省）が対象とする立場として誤っているものはどれか。","choices":["AI開発者","AI提供者","AI利用者（事業者）","一般消費者個人の家庭利用"],"answer":3,"explanation":"AI事業者ガイドライン（2024）は開発者・提供者・利用者（事業者）の3つの立場を整理。一般消費者の家庭利用は直接の対象ではない（守るべき主体ではなく守られる主体側）。","wrongReasons":{"0":"対象。","1":"対象。","2":"対象。"},"keyword":"AI開発者・提供者・利用者、経産省、総務省、2024年版","difficulty":"normal"},{"id":248,"chapter":"Ch7","q":"「AI事業者ガイドライン」が示す「人間中心」の原則として最も近いものはどれか。","choices":["AIの利用がヒトの基本的人権を尊重し人々の能力を引き出すこと","AIがすべての判断を行うこと","AIが人間を監視すること","AI開発者の利益を最優先すること"],"answer":0,"explanation":"人間中心の原則は、AIが人間の尊厳・基本的人権を侵害せず、人間の能力を引き出し補完することを目指す原則。社会原則と開発・利用原則の中心。","wrongReasons":{"1":"逆。","2":"逆。","3":"逆。"},"keyword":"Human-Centric、人間中心のAI社会原則、内閣府","difficulty":"normal"},{"id":249,"chapter":"Ch7","q":"AIの「説明可能性（Explainability）」が重要視される領域として代表的でないものはどれか。","choices":["医療診断","信用審査","司法判断","ゲームのスコア表示"],"answer":3,"explanation":"高リスク領域（医療・金融・司法・採用・公共）はXAIが特に重要。EU AI Actも高リスクAIに透明性義務を課す。ゲームスコア表示は説明可能性が必須となる領域ではない。","wrongReasons":{"0":"必要。","1":"必要。","2":"必要。"},"keyword":"XAI、High-Risk AI、SHAP、LIME、説明責任","difficulty":"easy"},{"id":250,"chapter":"Ch7","q":"「SHAP」「LIME」が共通して目指すものは何か。","choices":["モデル予測の説明可能性（どの特徴量が寄与したかを示す）","モデルの高速化","モデルの軽量化","モデルの学習自動化"],"answer":0,"explanation":"SHAP（SHapley Additive exPlanations）とLIME（Local Interpretable Model-agnostic Explanations）は予測ごとの特徴量寄与を可視化するモデル非依存のXAI手法。","wrongReasons":{"1":"高速化ではない。","2":"軽量化ではない。","3":"AutoMLとは別。"},"keyword":"XAI、Feature Importance、Shapley Value","difficulty":"normal"},{"id":251,"chapter":"Ch7","q":"「AIモデルの監視（Model Monitoring）」で典型的に監視すべき指標として誤っているものはどれか。","choices":["精度・誤差率の時系列推移","入力データ分布の変化","予測分布の変化","サーバー室の室温のみ"],"answer":3,"explanation":"モデル性能（精度・遅延・スループット）、データドリフト、コンセプトドリフト、ビジネスKPIへの寄与等が監視対象。サーバー室の室温だけでは不十分。","wrongReasons":{"0":"重要指標。","1":"重要指標。","2":"重要指標。"},"keyword":"Monitoring、Alert、Drift Detection、SLO","difficulty":"normal"},{"id":252,"chapter":"Ch7","q":"「再学習（Retraining）」が必要となる典型的なシグナルはどれか。","choices":["精度の低下、データドリフト検知、業務環境変化","サーバー再起動","プログラム言語のバージョンアップ","営業時間の変更"],"answer":0,"explanation":"本番性能劣化、データドリフト/コンセプトドリフトの検知、業務プロセス変更時などに再学習が必要。スケジューリング再学習（定期）+ トリガー再学習（イベント）が一般的。","wrongReasons":{"1":"無関係。","2":"無関係。","3":"無関係。"},"keyword":"Retraining、Continuous Training、Auto-Retrain","difficulty":"easy"},{"id":253,"chapter":"Ch7","q":"AIシステムを社内導入する際の「変革管理（Change Management）」とは何か。","choices":["導入により変わる業務プロセス・組織・スキルへの対応を計画的に進める活動","AIの重みを管理する","AIが組織を変更する","新システムにすぐ完全切替する手法"],"answer":0,"explanation":"Change ManagementはAI導入に伴う業務プロセス変更・教育・抵抗管理・スキル再構築を計画的に行う活動。技術導入だけでなく組織変革を伴って初めて効果が出る。","wrongReasons":{"1":"技術話ではない。","2":"逆。","3":"段階移行が一般的。"},"keyword":"Kotter 8 Steps、Adoption、Training","difficulty":"normal"},{"id":254,"chapter":"Ch7","q":"「AIプロジェクトの内製化」と「外注」のトレードオフとして正しいものはどれか。","choices":["内製は知見蓄積に強いがリソース確保が課題、外注は早期立ち上げに強いがブラックボックス化に注意","内製は必ず安く速い","外注は必ず安く速い","両者に違いはない"],"answer":0,"explanation":"内製はノウハウ蓄積・継続改善が利点だが採用・教育コスト大。外注は早期立ち上げ可能だが運用後のブラックボックス化・継続費用に注意。ハイブリッドが現実解。","wrongReasons":{"1":"単純化しすぎ。","2":"単純化しすぎ。","3":"差は大きい。"},"keyword":"Build vs Buy、Hybrid、SIer、内製化","difficulty":"easy"},{"id":255,"chapter":"Ch7","q":"AI活用人材の社内育成における「リスキリング」とは何か。","choices":["既存の従業員が新しいスキル（AI利活用等）を学び直し別の業務に適応できるようにすること","新人を採用すること","AIに従業員を置き換えること","従業員のスキルを下げること"],"answer":0,"explanation":"リスキリング（Reskilling）は既存従業員が新分野（DX、AI、データ等）のスキルを身につけて新業務に適応すること。デジタル変革の重要施策。","wrongReasons":{"1":"これは新規採用。","2":"逆。","3":"逆。"},"keyword":"Reskilling、Upskilling、DX人材、Digital Talent","difficulty":"easy"},{"id":256,"chapter":"Ch7","q":"「データガバナンス」が指す内容として最も適切なものはどれか。","choices":["データの品質・セキュリティ・利用ルールを組織的に管理する仕組み","データを物理的に守る金庫","データの圧縮技術","データを自動生成する"],"answer":0,"explanation":"データガバナンスはデータの品質、可用性、整合性、セキュリティ、利用権限、ライフサイクル管理を組織的なポリシー・体制・ツールで統制する仕組み。","wrongReasons":{"1":"物理セキュリティとは別。","2":"圧縮とは別。","3":"生成とは別。"},"keyword":"Data Stewardship、Data Catalog、Data Quality","difficulty":"normal"},{"id":257,"chapter":"Ch7","q":"「AIシステムのセキュリティリスク」として誤っているものはどれか。","choices":["敵対的サンプル（Adversarial Examples）","モデル盗用（Model Extraction）","メンバーシップ推論攻撃","AIが必ず物理的に発火する"],"answer":3,"explanation":"AIセキュリティリスク：Adversarial Examples（攻撃用入力）、Model Extraction（モデル盗用）、Membership Inference（学習データ推定）、Data Poisoning、Prompt Injection等が代表的。物理発火は無関係。","wrongReasons":{"0":"代表リスク。","1":"代表リスク。","2":"代表リスク。"},"keyword":"Adversarial ML、OWASP ML Top 10、Red Teaming","difficulty":"normal"},{"id":258,"chapter":"Ch7","q":"「敵対的サンプル（Adversarial Examples）」とは何か。","choices":["人間にはほとんど見えない摂動を加えてAIを誤分類させる入力","AIが敵対的に振る舞うこと","学習データの一部","誤って入力された通常データ"],"answer":0,"explanation":"敵対的サンプルは人間には知覚困難な微小摂動でAIを誤分類させる入力。Goodfellow et al. 2014で報告。自動運転・医療等で深刻なリスク。Adversarial Trainingで対策。","wrongReasons":{"1":"AIの振る舞いではなく入力側の問題。","2":"通常データではない。","3":"意図的な攻撃。"},"keyword":"FGSM、PGD、Adversarial Training","difficulty":"hard"},{"id":259,"chapter":"Ch7","q":"「データポイズニング」とは何か。","choices":["学習データに悪意あるサンプルを混入させモデルの動作を歪める攻撃","データを物理的に汚す","データを圧縮する","データを暗号化する"],"answer":0,"explanation":"データポイズニングは学習データに悪意あるサンプル（バックドアトリガを仕込んだもの等）を混入させ、特定条件で誤動作するモデルを作らせる攻撃。","wrongReasons":{"1":"比喩。","2":"圧縮ではない。","3":"暗号とは別。"},"keyword":"Backdoor Attack、Trojan、Trigger","difficulty":"hard"},{"id":260,"chapter":"Ch7","q":"「Red Teaming」がAIで意味することは何か。","choices":["AIシステムに対し意図的に攻撃・逸脱を試み脆弱性を洗い出す活動","赤チームの色分け","サーバの色","通常ユーザーテスト"],"answer":0,"explanation":"AI Red Teamingは専門チームがLLM・AIシステムに対しJailbreak、Prompt Injection、有害出力誘発などを試みて脆弱性を発見し対策に繋げる活動。Anthropic、OpenAI等が体系化。","wrongReasons":{"1":"比喩のみ。","2":"無関係。","3":"通常テストとは別。"},"keyword":"Red Team、Adversarial Testing、AI Safety","difficulty":"normal"},{"id":261,"chapter":"Ch8","q":"日本における「個人情報保護法」が定義する「個人情報」の説明として正しいものはどれか。","choices":["生存する個人に関する情報で、特定の個人を識別できるもの（個人識別符号を含む）","全ての法人情報","死者の情報のみ","数値データ全般"],"answer":0,"explanation":"個人情報とは生存する個人に関する情報で、氏名・生年月日その他により特定の個人を識別できるもの。マイナンバー等の個人識別符号も含む。","wrongReasons":{"1":"法人情報は対象外。","2":"死者は基本対象外。","3":"識別性が必要。"},"keyword":"個人情報保護法、個人識別符号、要配慮個人情報","difficulty":"easy"},{"id":262,"chapter":"Ch8","q":"「要配慮個人情報」に該当しないものはどれか。","choices":["人種","信条・社会的身分","病歴・犯罪歴","氏名・住所のみ"],"answer":3,"explanation":"要配慮個人情報は不当な差別等の不利益を生じないよう特に取扱いに配慮を要する情報。人種、信条、社会的身分、病歴、犯罪歴、犯罪被害歴等。氏名・住所単独では該当しない。","wrongReasons":{"0":"該当。","1":"該当。","2":"該当。"},"keyword":"要配慮個人情報、特別なカテゴリのデータ、GDPR Sensitive Data","difficulty":"normal"},{"id":263,"chapter":"Ch8","q":"個人情報を第三者提供する場合、原則として何が必要か。","choices":["本人の同意","誰にも知らせる必要なし","国の許可のみ","本人通知のみ"],"answer":0,"explanation":"個人情報の第三者提供は原則として本人の同意が必要。例外（オプトアウト、法令、生命財産保護、委託、共同利用等）に該当する場合のみ同意不要。","wrongReasons":{"1":"必要。","2":"国許可は通常不要。","3":"通知より同意が原則。"},"keyword":"第三者提供、オプトアウト、共同利用","difficulty":"easy"},{"id":264,"chapter":"Ch8","q":"「仮名加工情報」と「匿名加工情報」の違いとして正しいものはどれか。","choices":["仮名加工は他情報との照合で再識別可能だが匿名加工は再識別不可能なレベルまで加工される","両者は同じ","匿名加工は照合で再識別可能","仮名加工は完全匿名"],"answer":0,"explanation":"仮名加工情報は他情報と照合しない限り個人を識別できないよう加工した情報（社内分析向き）。匿名加工情報はさらに復元不可能なレベルまで加工し第三者提供を容易にした情報。","wrongReasons":{"1":"異なる。","2":"逆。","3":"逆。"},"keyword":"仮名加工、匿名加工、令和2年改正、PPDP","difficulty":"hard"},{"id":265,"chapter":"Ch8","q":"「GDPR」とは何か。","choices":["EU一般データ保護規則。EU域内の個人データ保護を定める規則","米国の連邦法","日本の個人情報保護法の通称","AIに関するEU規則"],"answer":0,"explanation":"GDPR（General Data Protection Regulation）は2018年施行のEU規則。EU域内の個人データ保護を厳しく規定。違反時の制裁金は世界売上の4%まで。域外適用あり。","wrongReasons":{"1":"EU規則。","2":"日本ではない。","3":"AI規則はAI Act。"},"keyword":"GDPR、Lawful Basis、DPO、忘れられる権利、域外適用","difficulty":"easy"},{"id":266,"chapter":"Ch8","q":"GDPRが定める「データ主体の権利」として誤っているものはどれか。","choices":["アクセス権","訂正権","消去権（忘れられる権利）","他者の個人データを自由に閲覧する権利"],"answer":3,"explanation":"GDPRはデータ主体に対し、アクセス・訂正・消去・処理制限・データポータビリティ・異議申立等の権利を保証。他者のデータを自由に閲覧する権利は含まれない。","wrongReasons":{"0":"権利。","1":"権利。","2":"権利。"},"keyword":"Right to Access、Right to Erasure、Data Portability","difficulty":"normal"},{"id":267,"chapter":"Ch8","q":"「EU AI Act」が示すAIのリスクベース分類として誤っているものはどれか。","choices":["許容できないリスク（禁止）","高リスク（規制対象）","限定リスク（透明性義務）","完全自由（規制なし）"],"answer":3,"explanation":"EU AI Actは(1)許容できないリスク（社会信用スコア等を禁止）、(2)高リスク（医療・採用・司法等で厳格な義務）、(3)限定リスク（チャットボット等で透明性義務）、(4)最小リスク（規制なし）。完全自由カテゴリは存在しない。","wrongReasons":{"0":"分類あり。","1":"分類あり。","2":"分類あり。"},"keyword":"EU AI Act 2024、Risk-based、High-Risk AI、GPAI","difficulty":"normal"},{"id":268,"chapter":"Ch8","q":"EU AI Actで「禁止」されるAI利用例として該当しないものはどれか。","choices":["公共空間でのリアルタイム遠隔生体認証（限定的例外あり）","サブリミナル技術による有害な操作","社会信用スコアによる行政差別","通常のスパムメール検知"],"answer":3,"explanation":"EU AI Actが禁止するのは①サブリミナル/操作的技術、②脆弱な人々の弱みを突く利用、③社会信用スコア、④原則公共空間でのリアルタイム生体認証（重大犯罪等の例外）等。スパム検知は通常通常の業務AI。","wrongReasons":{"0":"原則禁止。","1":"禁止。","2":"禁止。"},"keyword":"Prohibited AI、Article 5、社会信用スコア","difficulty":"hard"},{"id":269,"chapter":"Ch8","q":"EU AI Actの「汎用AIモデル（GPAI）」への義務として正しいものはどれか。","choices":["技術文書整備、著作権遵守、訓練データ概要公開等の透明性義務","完全に規制対象外","EU域内での使用禁止","全て禁止"],"answer":0,"explanation":"GPAI（特にシステミックリスクあり）には技術文書整備、著作権ポリシー、訓練データ概要の公開、評価・リスク低減等の義務がある。違反は厳しい制裁。","wrongReasons":{"1":"対象。","2":"使用は可能。","3":"禁止ではない。"},"keyword":"GPAI、Foundation Model、Systemic Risk","difficulty":"hard"},{"id":270,"chapter":"Ch8","q":"AIの判断結果が個人に法的・重要な影響を及ぼす場合、GDPRが認める個人の権利として正しいものはどれか。","choices":["完全自動化された意思決定の対象とならない権利","AIの全ソースコード閲覧権","AI開発者と直接対話する権利","AIを物理的に破壊する権利"],"answer":0,"explanation":"GDPR第22条は完全自動化された意思決定（プロファイリングを含む）の対象とならない権利を規定。重要な影響のある決定（採用・与信等）は人間関与の保証が必要。","wrongReasons":{"1":"そこまでの権利はない。","2":"そこまでの権利はない。","3":"そういう権利はない。"},"keyword":"Article 22、Automated Decision-Making、Human-in-the-Loop","difficulty":"normal"},{"id":271,"chapter":"Ch8","q":"日本の著作権法における「著作物」の定義として正しいものはどれか。","choices":["思想又は感情を創作的に表現したもので、文芸・学術・美術・音楽の範囲に属するもの","全ての文字列","全ての数字データ","全てのアイデア"],"answer":0,"explanation":"著作物は①思想又は感情を、②創作的に、③表現したもので、④文芸・学術・美術・音楽の範囲に属するもの。アイデアそのものは保護されない（表現が保護される）。","wrongReasons":{"1":"創作性不要では該当しない。","2":"単純データは非該当。","3":"アイデアは保護外。"},"keyword":"著作権法第2条、創作性、アイデア・表現二分論","difficulty":"easy"},{"id":272,"chapter":"Ch8","q":"日本の著作権法第30条の4は何を定めるか。","choices":["AI開発・学習目的での著作物の利用は原則として著作権者の許諾なく行える（例外あり）","AI生成物は全て著作物","AI学習には全て著作権者の許諾が必要","AI開発は禁止"],"answer":0,"explanation":"著作権法第30条の4は情報解析等のために著作物を利用することを、原則として権利者の許諾なくできると規定。ただし「著作権者の利益を不当に害する場合」は例外。AI学習で広く議論される条文。","wrongReasons":{"1":"著作物性は別途判断。","2":"原則許諾不要。","3":"開発自体は可。"},"keyword":"第30条の4、情報解析、機械学習目的の利用、文化庁素案","difficulty":"normal"},{"id":273,"chapter":"Ch8","q":"日本の現行運用において、AIが生成したコンテンツの著作物性について最も近い見解はどれか。","choices":["人間の創作的寄与がある場合は著作物となりうる、純粋にAIだけで生成された場合は通常著作物に該当しない","AI生成物は全て自動的に著作物","AI生成物は全て著作物に該当しない","AI生成物はAIが著作者"],"answer":0,"explanation":"文化庁・日本政府の素案では、AI生成物に人間の創作的寄与（プロンプト工夫、選択、修正等）があるかで著作物性を判断。純粋AI生成は通常著作物外。AI自体が著作者にはならない（自然人または法人）。","wrongReasons":{"1":"自動でなく寄与判断。","2":"寄与あれば著作物。","3":"AIは著作者ではない。"},"keyword":"AIと著作権、創作的寄与、文化庁の考え方、2024年素案","difficulty":"hard"},{"id":274,"chapter":"Ch8","q":"AI開発における「学習データに含まれる著作物」と、その後の「生成物」が他人の著作物に類似する場合の著作権侵害判断で重要な観点として正しい組み合わせはどれか。","choices":["依拠性と類似性","圧縮率と保存形式","計算速度と精度","GPUの世代"],"answer":0,"explanation":"著作権侵害成立には①依拠性（既存著作物に依拠して作られたこと）と②類似性（表現が実質的に類似していること）の2要件が原則必要。AI生成物でも同様に判断される。","wrongReasons":{"1":"技術的要素は判断基準ではない。","2":"無関係。","3":"無関係。"},"keyword":"依拠性、類似性、表現の本質的特徴、二要件","difficulty":"hard"},{"id":275,"chapter":"Ch8","q":"「肖像権」とは何か。","choices":["自分の容ぼう・姿態をみだりに撮影・公表されない権利","著作権の一種","個人情報のみに関する権利","全ての画像に対する所有権"],"answer":0,"explanation":"肖像権は判例上認められた人格権の一種で、容ぼう・姿態をみだりに撮影・公表されない権利。著作権とは別。AI生成画像・ディープフェイクで特に注目される。","wrongReasons":{"1":"別の権利。","2":"個人情報法とは別。","3":"そういう権利ではない。"},"keyword":"人格権、パブリシティ権、ディープフェイク","difficulty":"normal"},{"id":276,"chapter":"Ch8","q":"「パブリシティ権」とは何か。","choices":["著名人の氏名・肖像が持つ顧客吸引力の経済的価値を保護する権利","全ての人の肖像権","出版社の権利","学術的引用の権利"],"answer":0,"explanation":"パブリシティ権は著名人の氏名・肖像等が持つ顧客吸引力という経済的価値を権利者がコントロールできる権利。判例で確立。AI生成著名人画像・声で論点に。","wrongReasons":{"1":"範囲が違う。","2":"出版とは別。","3":"引用権ではない。"},"keyword":"Pinkレディ事件、ピンク・レディー判決、有名人","difficulty":"hard"},{"id":277,"chapter":"Ch8","q":"ディープフェイク技術が法的・社会的に問題視される理由として誤っているものはどれか。","choices":["なりすまし・名誉毀損・選挙妨害等への悪用","性的画像の非合意作成（ポルノ被害）","詐欺への利用","全ての利用が違法だから"],"answer":3,"explanation":"全利用が違法というわけではない（合意ある映像制作・教育・芸術等の合法利用も）。しかし悪用（なりすまし、性的画像、詐欺、政治的操作）が深刻なため各国で規制議論が進行。","wrongReasons":{"0":"問題。","1":"問題。","2":"問題。"},"keyword":"Deepfake、Non-consensual、Provenance、C2PA","difficulty":"normal"},{"id":278,"chapter":"Ch8","q":"「AIガバナンス」が組織で行うこととして誤っているものはどれか。","choices":["AI利用方針・倫理原則の策定","リスク評価とコンプライアンス","従業員のAIリテラシー教育","全てのAI利用を無条件に禁止すること"],"answer":3,"explanation":"AIガバナンスは禁止ではなく、安全・倫理・法令遵守を保ちながら活用するための枠組み。方針策定、リスク評価、教育、モニタリング、第三者監査などを行う。","wrongReasons":{"0":"代表的施策。","1":"代表的施策。","2":"代表的施策。"},"keyword":"AI Governance、AI Risk Management、Policy","difficulty":"easy"},{"id":279,"chapter":"Ch8","q":"「アルゴリズムバイアス」とは何か。","choices":["AIが学習データや設計の偏りによって特定属性に不公平な判断を下す現象","AIの計算誤差","AIの活性化関数","AIの正則化"],"answer":0,"explanation":"アルゴリズムバイアスはAIが特定の属性（性別・人種・年齢等）に対して不当に偏った判断を下す現象。学習データの代表性不足、ラベル付けの偏り、特徴量設計、社会構造の反映等が原因。","wrongReasons":{"1":"計算誤差ではない。","2":"活性化ではない。","3":"正則化ではない。"},"keyword":"Bias、Disparate Impact、Statistical Parity、Fairness","difficulty":"easy"},{"id":280,"chapter":"Ch8","q":"AI公平性指標として代表的なものはどれか。","choices":["Demographic Parity、Equalized Odds、Equal Opportunity等","Accuracyのみ","Loss値のみ","Train/Test分割比率"],"answer":0,"explanation":"公平性指標は属性間で予測結果がどう異なるかを測る。Demographic Parity（陽性率の平等）、Equalized Odds（TPR/FPRの平等）、Equal Opportunity（TPRの平等）など。指標間にトレードオフあり。","wrongReasons":{"1":"公平性とは別軸。","2":"単独指標。","3":"無関係。"},"keyword":"Group Fairness、Individual Fairness、Calibration","difficulty":"hard"},{"id":281,"chapter":"Ch8","q":"「ELSI」とは何の頭文字か。","choices":["Ethical, Legal and Social Issues（倫理的・法的・社会的課題）","Electrical, Logical, Statistical, Industrial","Economical, Legal, Scientific, International","Educational, Linguistic, Social, Individual"],"answer":0,"explanation":"ELSIはEthical, Legal and Social Issuesの略。新興技術（AI、ゲノム、ロボット）の社会実装で扱うべき横断的論点。ELSI研究が世界中で進む。","wrongReasons":{"1":"違う。","2":"違う。","3":"違う。"},"keyword":"ELSI、Responsible Innovation、RRI","difficulty":"normal"},{"id":282,"chapter":"Ch8","q":"「人間中心のAI社会原則」（内閣府）が掲げる原則として誤っているものはどれか。","choices":["人間中心の原則","教育・リテラシーの原則","プライバシー確保の原則","AI開発者の利益最優先の原則"],"answer":3,"explanation":"内閣府の「人間中心のAI社会原則」7原則：①人間中心、②教育・リテラシー、③プライバシー、④セキュリティ確保、⑤公正競争確保、⑥公平性・説明責任・透明性、⑦イノベーション。開発者利益優先は含まれない。","wrongReasons":{"0":"原則。","1":"原則。","2":"原則。"},"keyword":"AI社会原則、内閣府、7原則、2019年","difficulty":"normal"},{"id":283,"chapter":"Ch8","q":"OECDの「AI原則」（2019/改訂2024）で定める価値ベースの原則として誤っているものはどれか。","choices":["包摂的成長・持続可能な発展・幸福","人間中心の価値・公平性","透明性・説明可能性","AI自身の権利保障"],"answer":3,"explanation":"OECD AI原則は①包摂的成長等、②人間中心・公平性、③透明性・説明可能性、④堅牢性・セキュリティ・安全性、⑤アカウンタビリティ。AIは法的人格を持たず権利主体ではない。","wrongReasons":{"0":"原則。","1":"原則。","2":"原則。"},"keyword":"OECD AI Principles、2019/2024、G7、国際整合","difficulty":"hard"},{"id":284,"chapter":"Ch8","q":"「広島AIプロセス」とは何か。","choices":["G7が主導する高度AIシステム（特に基盤モデル）の国際的なガイドライン形成プロセス","広島地域のAI企業協会","原爆資料館のAI化計画","国内法の名称"],"answer":0,"explanation":"広島AIプロセスは2023年G7広島サミットで合意された高度AI（基盤モデル）のガイドライン作成プロセス。「広島プロセス国際指針」「国際行動規範」等を策定。国際整合性の起点。","wrongReasons":{"1":"違う。","2":"違う。","3":"違う。"},"keyword":"G7広島サミット、Code of Conduct、Hiroshima AI Process","difficulty":"normal"},{"id":285,"chapter":"Ch8","q":"日本の「AI事業者ガイドライン」（経産省・総務省、2024）が言及する原則として一般的に挙げられるものはどれか。","choices":["人間中心、安全性、公平性、プライバシー、セキュリティ、透明性、アカウンタビリティ、教育リテラシー、公正競争、イノベーション","AI絶対遵守の原則","AI第一の原則","技術優先の原則"],"answer":0,"explanation":"AI事業者ガイドラインは10程度の共通指針を掲げる。人間中心、安全性、公平性、プライバシー、セキュリティ、透明性、アカウンタビリティ、教育・リテラシー、公正競争、イノベーション等。","wrongReasons":{"1":"そういう原則は存在しない。","2":"そういう原則は存在しない。","3":"そういう原則は存在しない。"},"keyword":"AI事業者ガイドライン、2024、共通指針、Soft Law","difficulty":"normal"},{"id":286,"chapter":"Ch8","q":"「AIを利用した採用」で日本企業が留意すべき法令・原則として一般に誤っているものはどれか。","choices":["個人情報保護法","労働関連法（差別禁止等）","職業安定法（応募者情報の取得制限）","AI生成物に著作権を主張すること"],"answer":3,"explanation":"採用AIでは個人情報保護、差別禁止（労基法・男女雇用機会均等法等）、職業安定法（取得情報の制限）、説明責任が重要。著作権主張は採用判断と関係しない。","wrongReasons":{"0":"重要。","1":"重要。","2":"重要。"},"keyword":"Hiring AI、Bias監査、応募者情報、HR Tech","difficulty":"normal"},{"id":287,"chapter":"Ch8","q":"AIによる個人プロファイリングの倫理的問題として誤っているものはどれか。","choices":["差別的扱いの再生産","プライバシー侵害","本人にとって不利な決定の不透明化","AIが完璧に公平であること"],"answer":3,"explanation":"AIは構造的に学習データの偏りや代理特徴量を介してバイアスを再生産しうる。「完璧に公平」は実態と異なり、設計者・運用者の継続的なバイアス監査と緩和が必要。","wrongReasons":{"0":"問題。","1":"問題。","2":"問題。"},"keyword":"Profiling、Disparate Impact、Proxy Variable","difficulty":"normal"},{"id":288,"chapter":"Ch8","q":"学習データに「個人情報」を含めて利用する際の留意点として誤っているものはどれか。","choices":["利用目的の特定と通知/公表","適法な取得","目的外利用の制限","個人情報なら自由に集めて自由に使ってよい"],"answer":3,"explanation":"個人情報を学習に使う場合も個人情報保護法の規律（利用目的特定、適法取得、目的外利用制限、第三者提供制限、安全管理措置等）が適用される。自由ではない。","wrongReasons":{"0":"必要。","1":"必要。","2":"必要。"},"keyword":"個人情報保護法、利用目的、PPC、AI学習データ","difficulty":"easy"},{"id":289,"chapter":"Ch8","q":"「医療AI」を日本で医療機器として薬機法上提供する場合、必要な手続きとして一般に誤っているものはどれか。","choices":["PMDAでの薬事承認・認証","QMS（品質マネジメントシステム）整備","市販後の安全性監視","全く規制なく自由に販売すること"],"answer":3,"explanation":"医療AIプログラム（SaMD）は薬機法の規制対象で、クラス分類に応じてPMDA承認・認証、QMS、GVP（市販後安全管理）等が必要。診断補助等のAIは医療機器に該当することが多い。","wrongReasons":{"0":"必要。","1":"必要。","2":"必要。"},"keyword":"SaMD、薬機法、PMDA、QMS、GVP","difficulty":"hard"},{"id":290,"chapter":"Ch8","q":"「AI倫理」での「アカウンタビリティ（説明責任）」が指す内容として最も適切なものはどれか。","choices":["AIシステムの判断・影響に対し関係者が責任を持ち説明できる体制","AIが自ら責任を取ること","ユーザーが全責任を持つこと","誰も責任を取らない仕組み"],"answer":0,"explanation":"アカウンタビリティはAIシステムの設計・運用・結果について開発者・提供者・利用者が役割に応じて責任を負い、必要に応じて説明・対応できる体制を整えること。","wrongReasons":{"1":"AIは法的主体ではない。","2":"利用者単独に押し付けない。","3":"逆。"},"keyword":"Accountability、Responsibility、Liability","difficulty":"easy"},{"id":291,"chapter":"Ch8","q":"AIシステムの「説明可能性」と「透明性」の違いとして最も適切なものはどれか。","choices":["透明性は仕組み・データ・運用についての情報開示、説明可能性は予測・判断の理由を示すこと","両者は完全同義","透明性は予測ごとの理由、説明可能性は組織情報","両者ともユーザビリティのこと"],"answer":0,"explanation":"Transparency（透明性）はAIシステム全体の仕組み・学習データ・運用についての可視化・情報開示。Explainability（説明可能性）は個別の予測・判断の理由を理解可能な形で示すこと。","wrongReasons":{"1":"異なる。","2":"逆。","3":"異なる。"},"keyword":"Transparency、Explainability、XAI、System Card","difficulty":"normal"},{"id":292,"chapter":"Ch8","q":"「データの匿名化」について、技術的に完璧な匿名化が困難な理由として正しいものはどれか。","choices":["他の公開データとの照合（リンク攻撃）で再識別が可能になることがある","匿名化は不可能","暗号化と同義","匿名化すると必ずデータが消える"],"answer":0,"explanation":"リンク攻撃（Linkage Attack）の事例（Netflix Prize、医療記録等）から、単純な匿名化では再識別リスクが残ることが知られる。k-匿名性、差分プライバシー等の発展。","wrongReasons":{"1":"完璧でなくともリスク低減は可能。","2":"暗号化とは別概念。","3":"消えない。"},"keyword":"k-Anonymity、l-Diversity、Differential Privacy","difficulty":"hard"},{"id":293,"chapter":"Ch8","q":"「差分プライバシー（Differential Privacy）」とは何か。","choices":["クエリ結果にノイズを加えることで個人の有無が結果にほぼ影響しないことを数学的に保証する手法","暗号化技術","個人情報を完全に削除すること","データを圧縮する手法"],"answer":0,"explanation":"差分プライバシーは個人のデータが含まれるか否かでクエリ結果が統計的にほぼ区別不能になるようノイズを加える数学的フレームワーク。プライバシー予算ε で強度を制御。Apple、Googleが採用。","wrongReasons":{"1":"暗号化とは別。","2":"削除ではない。","3":"圧縮ではない。"},"keyword":"ε-DP、ノイズ付加、Laplace、Gaussian、PATE","difficulty":"hard"},{"id":294,"chapter":"Ch8","q":"「連合学習（Federated Learning）」の特徴として正しいものはどれか。","choices":["生データを集約せず各クライアントで学習しモデル更新のみを集める分散学習","全データを中央サーバに集めて学習","オンライン強化学習の一種","クラスタリングの一手法"],"answer":0,"explanation":"連合学習はGoogleが提唱（2016）。各デバイスでローカル学習しモデル更新（勾配等）のみを中央集約する。生データを共有せずプライバシー保護に資する。スマホのキーボード予測等で実用化。","wrongReasons":{"1":"逆。","2":"強化学習ではない。","3":"クラスタリングではない。"},"keyword":"Federated Learning、Cross-device、Differential Privacy併用","difficulty":"normal"},{"id":295,"chapter":"Ch8","q":"「AIによる選挙妨害・誤情報拡散」の防止策として有効でないものはどれか。","choices":["コンテンツ来歴（Provenance）の付与（C2PA等）","プラットフォームの監視と削除","メディアリテラシー教育","AIによる情報発信を一切禁止すること"],"answer":3,"explanation":"全面禁止は表現の自由・利便性を著しく損なう。実務的にはコンテンツ来歴標識（C2PA）、プラットフォーム責任、ファクトチェック、リテラシー教育、政治広告規制の組み合わせが現実解。","wrongReasons":{"0":"有効。","1":"有効。","2":"有効。"},"keyword":"C2PA、Content Credentials、Watermarking、誤情報","difficulty":"normal"},{"id":296,"chapter":"Ch8","q":"「AI生成コンテンツの来歴情報」を表現する代表的な標準仕様はどれか。","choices":["C2PA（Content Authenticity Initiative）","JPEG","PNG","MP4のみ"],"answer":0,"explanation":"C2PA（Coalition for Content Provenance and Authenticity）はAdobe、Microsoft、Intel、BBC等が参加するコンテンツ来歴の業界標準。署名付きメタデータで生成・編集履歴を証明する。","wrongReasons":{"1":"画像形式。","2":"画像形式。","3":"動画形式。"},"keyword":"C2PA、CAI、Content Credentials、Provenance","difficulty":"hard"},{"id":297,"chapter":"Ch8","q":"「AIによる雇用への影響」に関する一般的な見方として最も近いものはどれか。","choices":["一部の業務は自動化されるが、新たな職種・業務も生まれ、リスキリングが鍵となる","全雇用が必ず消失する","雇用は全く影響を受けない","AIが新雇用を直接面接する"],"answer":0,"explanation":"OECD、IMF、世界経済フォーラム等の報告では、AIにより一部業務は自動化される一方、新職種創出と再配置が起こり、教育・再訓練（リスキリング）が決定的に重要とされる。","wrongReasons":{"1":"極論。","2":"極論。","3":"非現実。"},"keyword":"Future of Work、Reskilling、Job Polarization","difficulty":"easy"},{"id":298,"chapter":"Ch8","q":"AI開発における「Responsible AI」の典型的な実践として誤っているものはどれか。","choices":["バイアス監査と緩和","システムカード/モデルカードによる情報開示","Red Teamingによる脆弱性検証","問題が起きてから対応すれば十分なので事前対策は不要"],"answer":3,"explanation":"Responsible AIはバイアス監査、モデルカード/システムカード公開、Red Teaming、社内ガバナンス、影響評価などの事前・継続的な実践を組み合わせる。事後対応のみは不十分。","wrongReasons":{"0":"実践例。","1":"実践例。","2":"実践例。"},"keyword":"Responsible AI、Model Card、System Card、AI Impact Assessment","difficulty":"easy"},{"id":299,"chapter":"Ch8","q":"「モデルカード（Model Card）」が記載する内容として誤っているものはどれか。","choices":["モデルの用途・想定利用者・性能・限界・バイアス・倫理的考慮","ライセンス","学習データの概要","モデル開発者の個人情報詳細（住所等）"],"answer":3,"explanation":"モデルカード（Mitchell et al. 2019）はモデルの目的、性能、限界、評価条件、倫理的考慮、想定利用範囲などを記載。開発者の個人情報詳細は記載対象ではない。","wrongReasons":{"0":"記載対象。","1":"記載対象。","2":"記載対象。"},"keyword":"Model Card、Datasheet for Datasets、Transparency","difficulty":"normal"},{"id":300,"chapter":"Ch8","q":"AI開発・利用において日本の「AI推進法」または各種ガイドラインを踏まえつつ、企業として取るべき態度として最も近いものはどれか。","choices":["国内外のソフトロー・法規制動向を継続的に把握し、自社の利用範囲・リスクに応じて統制とイノベーションのバランスを取る","法的義務がない領域は完全に無視する","全AI利用を停止する","海外のルールは関係ないとして無視する"],"answer":0,"explanation":"AI規制は急速に変化中（EU AI Act、米国大統領令、日本のソフトロー、G7広島プロセス等）。企業は国内外動向を継続把握し、自社のリスクと用途に応じて統制（ガバナンス）と利活用（イノベーション）を両立させる態度が求められる。","wrongReasons":{"1":"将来の規制リスク。","2":"極論。","3":"域外適用あり。"},"keyword":"Soft Law、Hard Law、AI Governance、国際整合","difficulty":"normal"}];
+</script>
+<script>
+// ====================== 状態 ======================
+const STORAGE_KEY = 'g_kentei_quiz_v1';
+let progress = {
+  history: {}, // {qid: {correct: bool, attempts: int, lastDate: iso}}
+};
+let session = {
+  mode: 'sequential',
+  chapters: new Set(),
+  queue: [],
+  current: 0,
+  sessionAnswers: [], // {qid, selected, correct, isCorrect}
+};
+
+const CHAPTERS = [
+  { num: 'Ch1', title: 'AIとは', count: 0 },
+  { num: 'Ch2', title: 'AI動向', count: 0 },
+  { num: 'Ch3', title: '機械学習', count: 0 },
+  { num: 'Ch4', title: 'DL概要', count: 0 },
+  { num: 'Ch5', title: 'DL要素技術', count: 0 },
+  { num: 'Ch6', title: 'DL応用', count: 0 },
+  { num: 'Ch7', title: '社会実装', count: 0 },
+  { num: 'Ch8', title: '法律・倫理', count: 0 },
+];
+
+function load() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    try { progress = Object.assign(progress, JSON.parse(raw)); } catch(e) {}
+  }
+}
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }
+
+// ====================== 章フィルタUI ======================
+function renderChapterFilter() {
+  // count
+  CHAPTERS.forEach(c => c.count = 0);
+  QUESTIONS.forEach(q => {
+    const c = CHAPTERS.find(c => c.num === q.chapter);
+    if (c) c.count++;
+  });
+  const filter = document.getElementById('chapter-filter');
+  filter.innerHTML = `<span class="ch-chip selected" data-ch="all">All (${QUESTIONS.length})</span>` +
+    CHAPTERS.map(c => `<span class="ch-chip" data-ch="${c.num}">${c.num}: ${c.title} (${c.count})</span>`).join('');
+  filter.querySelectorAll('.ch-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const ch = chip.dataset.ch;
+      if (ch === 'all') {
+        filter.querySelectorAll('.ch-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        session.chapters.clear();
+      } else {
+        filter.querySelector('[data-ch="all"]').classList.remove('selected');
+        chip.classList.toggle('selected');
+        if (chip.classList.contains('selected')) session.chapters.add(ch);
+        else session.chapters.delete(ch);
+        if (session.chapters.size === 0) filter.querySelector('[data-ch="all"]').classList.add('selected');
+      }
+      updateFilterInfo();
+    });
+  });
+  updateFilterInfo();
+}
+
+function getFilteredQuestions() {
+  let filtered = QUESTIONS;
+  if (session.chapters.size > 0) {
+    filtered = filtered.filter(q => session.chapters.has(q.chapter));
+  }
+  if (session.mode === 'weak') {
+    filtered = filtered.filter(q => progress.history[q.id] && progress.history[q.id].correct === false);
+  } else if (session.mode === 'unanswered') {
+    filtered = filtered.filter(q => !progress.history[q.id]);
+  }
+  return filtered;
+}
+
+function updateFilterInfo() {
+  const f = getFilteredQuestions();
+  document.getElementById('filter-info').textContent = `${f.length} questions ready`;
+}
+
+// ====================== モード切替 ======================
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    session.mode = btn.dataset.mode;
+    updateFilterInfo();
+  });
+});
+
+// ====================== セッション ======================
+function startSession() {
+  let qs = getFilteredQuestions();
+  if (qs.length === 0) { alert('該当する問題がありません'); return; }
+  if (session.mode === 'random' || session.mode === 'mock') {
+    qs = [...qs].sort(() => Math.random() - 0.5);
+  }
+  if (session.mode === 'mock') {
+    qs = qs.slice(0, Math.min(30, qs.length));
+  }
+  session.queue = qs;
+  session.current = 0;
+  session.sessionAnswers = [];
+
+  document.getElementById('start-screen').classList.add('hide');
+  document.getElementById('score-area').classList.add('hide');
+  document.getElementById('quiz-area').classList.remove('hide');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = session.queue[session.current];
+  if (!q) { endSession(); return; }
+  const pct = ((session.current) / session.queue.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const diffClass = q.difficulty || 'normal';
+  const diffLabel = { easy: 'Easy', normal: 'Normal', hard: 'Hard' }[diffClass];
+  const container = document.getElementById('question-container');
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-meta">
+          <span class="q-num">Q ${String(session.current + 1).padStart(3, '0')} / ${session.queue.length}</span>
+          <span class="q-chapter">${q.chapter}</span>
+        </div>
+        <span class="q-difficulty ${diffClass}">${diffLabel}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="choices" id="choices">
+        ${q.choices.map((c, i) => `
+          <div class="choice" data-idx="${i}" onclick="selectChoice(${i})">
+            <span class="choice-letter">${String.fromCharCode(65 + i)}</span>
+            <span>${c}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div id="explanation"></div>
+    </div>
+  `;
+  document.getElementById('next-btn').classList.add('hide');
+}
+
+function selectChoice(idx) {
+  const q = session.queue[session.current];
+  const choices = document.querySelectorAll('.choice');
+  if (choices[0].classList.contains('disabled')) return;
+  choices.forEach((c, i) => {
+    c.classList.add('disabled');
+    if (i === q.answer) c.classList.add('correct');
+    if (i === idx && i !== q.answer) c.classList.add('incorrect');
+  });
+
+  const isCorrect = idx === q.answer;
+  // 履歴更新
+  if (!progress.history[q.id]) progress.history[q.id] = { correct: isCorrect, attempts: 0, lastDate: '' };
+  progress.history[q.id].correct = isCorrect;
+  progress.history[q.id].attempts += 1;
+  progress.history[q.id].lastDate = new Date().toISOString().split('T')[0];
+  save();
+
+  session.sessionAnswers.push({ qid: q.id, selected: idx, correct: q.answer, isCorrect });
+
+  // 解説
+  const explWrongs = q.choices.map((c, i) => {
+    if (i === q.answer) return '';
+    const reason = (q.wrongReasons && q.wrongReasons[i]) || '';
+    return `<div class="expl-wrong"><strong>${String.fromCharCode(65 + i)} 不正解</strong>${reason}</div>`;
+  }).join('');
+
+  document.getElementById('explanation').innerHTML = `
+    <div class="explanation">
+      <div class="expl-label">${isCorrect ? '✓ 正解' : '✗ 不正解'} — 解説</div>
+      <div class="expl-correct"><strong style="color:var(--success)">${String.fromCharCode(65 + q.answer)}が正解</strong>：${q.explanation}</div>
+      ${explWrongs}
+      ${q.keyword ? `<div class="expl-keyword"><strong>関連キーワード</strong>${q.keyword}</div>` : ''}
+    </div>
+  `;
+  document.getElementById('next-btn').classList.remove('hide');
+  updateStats();
+}
+
+function nextQuestion() {
+  session.current++;
+  if (session.current >= session.queue.length) {
+    finishSession();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishSession() {
+  document.getElementById('quiz-area').classList.add('hide');
+  document.getElementById('score-area').classList.remove('hide');
+  const total = session.sessionAnswers.length;
+  const correct = session.sessionAnswers.filter(a => a.isCorrect).length;
+  const pct = total === 0 ? 0 : Math.round((correct / total) * 100);
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('score-detail').innerHTML = `
+    <div><strong>${correct}</strong> / ${total} 問正解</div>
+    <div style="margin-top:8px;">${pct >= 80 ? '🎯 合格ライン（80%）クリア！' : pct >= 70 ? '⚠️ もう一歩。誤答を見直しましょう' : '📚 復習が必要です'}</div>
+  `;
+}
+
+function endSession() {
+  if (session.sessionAnswers.length === 0) {
+    backToStart();
+  } else {
+    finishSession();
+  }
+}
+
+function backToStart() {
+  document.getElementById('start-screen').classList.remove('hide');
+  document.getElementById('quiz-area').classList.add('hide');
+  document.getElementById('score-area').classList.add('hide');
+  updateStats();
+  updateFilterInfo();
+}
+
+function reviewSession() {
+  const wrongIds = new Set(session.sessionAnswers.filter(a => !a.isCorrect).map(a => a.qid));
+  if (wrongIds.size === 0) { alert('全問正解です！'); return; }
+  session.queue = QUESTIONS.filter(q => wrongIds.has(q.id));
+  session.current = 0;
+  session.sessionAnswers = [];
+  document.getElementById('score-area').classList.add('hide');
+  document.getElementById('quiz-area').classList.remove('hide');
+  renderQuestion();
+}
+
+// ====================== 統計 ======================
+function updateStats() {
+  const history = Object.values(progress.history);
+  const answered = history.length;
+  const correct = history.filter(h => h.correct).length;
+  const wrong = answered - correct;
+  document.getElementById('stat-answered').textContent = answered;
+  document.getElementById('stat-correct').textContent = correct;
+  document.getElementById('stat-wrong').textContent = wrong;
+  document.getElementById('stat-accuracy').textContent = answered === 0 ? '—' : Math.round((correct / answered) * 100) + '%';
+}
+
+function resetHistory() {
+  if (!confirm('全ての回答履歴をリセットします。よろしいですか？')) return;
+  progress.history = {};
+  save();
+  updateStats();
+  updateFilterInfo();
+}
+
+function exportProgress() {
+  const blob = new Blob([JSON.stringify(progress, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `g-kentei-quiz-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ====================== 初期化 ======================
+load();
+renderChapterFilter();
+updateStats();
+</script>
+
+<!-- ====================== PWA: install button + iOS hint ====================== -->
+<style>
+#pwa-install-btn{
+  position:fixed; right:16px; bottom:16px; z-index:9999;
+  display:none; align-items:center; gap:8px;
+  padding:12px 18px; border:none; border-radius:14px;
+  background:linear-gradient(135deg,#ffce7a,#ffb84d); color:#1a1300;
+  font-size:14px; font-weight:700; cursor:pointer;
+  box-shadow:0 8px 28px rgba(255,184,77,.35);
+  font-family:-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+#pwa-install-btn:active{transform:scale(.96)}
+#pwa-ios-hint{
+  position:fixed; left:16px; right:16px; bottom:16px; z-index:9999; display:none;
+  padding:14px 16px; border:1px solid #2a2a35; border-radius:14px;
+  background:#14141a; color:#e8e8ec; font-size:13px; line-height:1.6;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+  font-family:-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;
+}
+#pwa-ios-hint b{color:#ffb84d}
+#pwa-ios-hint .x{position:absolute; top:8px; right:12px; color:#8a8a98; cursor:pointer; font-size:18px}
+#pwa-update-bar{
+  position:fixed; left:0; right:0; top:0; z-index:10000; display:none;
+  padding:10px 16px; text-align:center;
+  background:#4fc3f7; color:#062430; font-size:13px; font-weight:700; cursor:pointer;
+  font-family:-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;
+}
+</style>
+<button id="pwa-install-btn">📲 アプリとして追加</button>
+<div id="pwa-ios-hint">
+  <span class="x" onclick="document.getElementById('pwa-ios-hint').style.display='none'">×</span>
+  ホーム画面に追加すると全画面アプリになります。<br>
+  下の <b>共有ボタン</b> → <b>「ホーム画面に追加」</b> を選んでください。
+</div>
+<div id="pwa-update-bar">新しいバージョンがあります。タップして更新 ↻</div>
+
+<script>
+// --- Service Worker 登録 ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then((reg) => {
+      // 更新検知
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+            const bar = document.getElementById('pwa-update-bar');
+            bar.style.display = 'block';
+            bar.onclick = () => { nw.postMessage && location.reload(); location.reload(); };
+          }
+        });
+      });
+    }).catch(() => {});
+  });
+}
+
+// --- インストールプロンプト（Android / Chrome / Edge） ---
+let deferredPrompt = null;
+const installBtn = document.getElementById('pwa-install-btn');
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-flex';
+});
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installBtn.style.display = 'none';
+});
+window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; });
+
+// --- iOS Safari は beforeinstallprompt 非対応なので手動案内を出す ---
+(function(){
+  const ua = window.navigator.userAgent;
+  const isIOS = /iphone|ipad|ipod/i.test(ua);
+  const isSafari = /safari/i.test(ua) && !/crios|fxios|edgios/i.test(ua);
+  const isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
+  if (isIOS && isSafari && !isStandalone && !localStorage.getItem('pwa_ios_hint_dismissed')) {
+    setTimeout(() => {
+      document.getElementById('pwa-ios-hint').style.display = 'block';
+    }, 1500);
+  }
+  // 閉じたら記憶
+  document.querySelector('#pwa-ios-hint .x')?.addEventListener('click', () => {
+    localStorage.setItem('pwa_ios_hint_dismissed', '1');
+  });
+})();
+</script>
+</body>
+</html>
