@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>戦績トラッカー｜メガハッサム×ゲッコウガ</title>
+<meta name="theme-color" content="#0e1014">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="戦績トラッカー">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAE30lEQVR4nO3dO28TURCG4QmylISeGlGmpeD/1xS0lCg1PaJACkWyiuN47b2cc2bmm/dpqBIWnzejYX3Jze3d/ZMBIj54XwDQEkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDysH7Avb6+/2T9yXIufv22/sSNrvJ9lFgBDxepsDTBE3I/jKEHT5oQo4ncthhgybk+CKGHfIuBzHnEPGcwgUd8UHCvGjnFWbliPbAYL0IK0iICU3MGiKcY4iggVbcg47wU412vM/TNWjvfzz68DxXt6CJWZvX+bqvHEBLLkEznWvwOGcmNKQMD5rpXMvo82ZCQ8rQoJnONY08dyY0pBA0pBA0pAwLmv25tlHnz4QW8nB49L4EdwQtYoq5etQELeA04spRE3Ryc/E+HB5Lhk3QiS0JtlrUBO2gxZtJ14RaKWqCLqJK1AQ92Ojp3OLrMiHoZPZGqR41QQ+0dzq3ilH5DghBO9jyNHCPABWjJuhB9kznnuGpRU3QwfUO7ue/z12//2gEPcDW6UzM6xF0UMS8DUF3tmU6E/N2BB0MMe9D0B2tnc5qdxw8EHQh6tPZjKC7mZvOc0+qsGq0QdABEHM7BN3Bmt2ZmNsiaEfE3B5BN7Z0OhNzHwTtgJj7IeiGlkxnYu6LoIVUj9mMoJvx/rXAxPyMoAUQ8yuCbmDpdP7y40/nKwFBJ8d0fougd/LcnYn5PYJOipjPO3hfQGZrp/Ovrx/b/d0vf/KbEd5iQidGzO8R9Ebe951xHkEnxXQ+j6A38J7OxDyPoCGFoFdiOsdG0IkQ83UEvYL3dMZ1BJ0E03kZgl7IczoT83IEDSkEvQDTOQ+CDoyY1yPoK7ymMzFvQ9AX8PG2+fB66BlTzK3eB7jmtdBM5+2Y0Ge0nszEPA5Bn2DNyI2gj3jHzHTej6Bf9Ip56bpBzG0QNKQQtLFqKCkfdM+Yl6wbxNxW6aC9JzPaKxt0hA8eZzq3VzLoETFfew0IMfdRLugIkxn9lAo6SsxM537KBD0y5kvrBjH3VSLoKJMZ/ckHHSlmpnN/0kF73GeeWzeIeQzpoHtj1YhHNmiPVYPp7E8yaPbmuuSCJubapIL2jJkPcoxBJuhIk9mM6exFJuiedxyIOQ+ZoM36RL3ke7JuxCEVtNlzgK3C3vJ9mM6+5IKe7I2amHOSDdpse9Rrvo51IxbpoM3GPT3NdI5BPmizdVGzauRWImizZaGujZl1I54yQZtdvgOydTVhOsdSKujJabzErKNk0GavEfOaZi1lgzYjZkXDguY/ULWNOv/SExp6CBpSCBpShgbNHl3TyHNnQkPK8KCZ0rWMPm8mNKS4BM2UrsHjnJnQkOIWNFNam9f5uk5ootbkea7uKwdRa/E+T/eggZZCBO39U402Ipzjze3d/ZP3RRzjXSD5RAh5EmJCH4v04OC6aOcVLmizeA8Szot4TuFWjlOsIPFEDHkSPugJYfuLHPIkTdATwh4vQ8iTdEGfIvD2MgV8Kn3QwLGQdzmArQgaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUv4Dbc+FE222XdoAAAAASUVORK5CYII=">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAFd0lEQVR4nO3dMW8TTRSF4RtkKQ49NaJMS8H/ryloKVFqekSBFIrEilm8tmc9M/fMnPfpKL7E3+59727i2L673z88B2DqXfYDADIRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKztsh9Abb+/fsh+CNPbf/mZ/RCquRv9zXEZ+HwjBzFsAAy+nhFDGCoAhn4co8QwzA/BDP9YRjlf8leAUQ4k1ilfDaSvAAz/HJTPo2wAygcN5VTPp2QAqgcLt1E8r3IBKB4k1KN2fqUCUDs4aEPpPMsEoHRQ0J7K+ZYIQOVgoC+F8y4RAJAlPQCFLYA82ec/NYDs/3loyJyD9CsAkIkAYC0tAG5/cCxrHrgCwFpKAGx/nJIxF1wBYI0AYI0AjDzunrIfgpzuAXD/n+Mw/OoR9J4PrgAGlkOvHkFPBDC5tWEnghcEMLFLQ/64e7IPgQBgHQEBCKn5/jmlQ+0aAQFMaOswO0ZAACJqbf9bh9gtAgKYSK3hdYqAAATU2P61h9blN0QEMIGWgzp7BASQ7Hj7b/kzgB4DOnMEBDCwXoP5/c/HLt8nAwEkuuXen+GvgwCwavbhjyCANOrb32H4IwhgODP/QJqBABJs3f7c99dHAINg+NsggM62bH+Gvx0CEMfwt0UAHZ3b/qeeBWb42yMAUQx/HwTQScm9P8PfDwGYYvhfEEAHatuf4X9DAEJ4lrc/Amjs2u3PfX8OAjDC8P+PABqq+T4/t2L4TyMAAwz/OgJopGT7f/r2q9njYPjPI4CJMfyXEUADCvf+DP91CGBCDP/1CKCy7O3P8JfZZT8ARPz4/L7a19ov/s1nsp3HFaCi7O2/xPBfRgCwRgCVsP3HRAATYvivRwAVKG1/hr8MAcAaAdyI7T82ApgEw78NAdxAaftjGwKYANt/OwLYSGX7M/y3IQBYI4AN2P7zIIBBMfx1EEAhhe3P8NfD6wEK1X4Be83XAqAcV4ACtd+9bcvws/3rIoArKbxvJ8NfHwFcQWH40QYBXNBq+Etvf9j+bRDAGSqbn+FvhwBWqAw/2iKAE1oPf8ntD9u/LQJYUNr8DH97BHCE4fdDAJ3xzK8WAnil9OmMbP9+CCC49XFmH0DPT2dU+EtS/Ms6ALWPJmX792cbAMOPCNMAMoaf2x9NdgGobf4Itn8mqwCyhv/c9mf4c9kEwObHKTYB9MAH1I3HIoDMZ3nXbn/Y/hqmD0DpWd4Dhl/H1AEo3vdDy7QBKAz/qdsftr+WaQPosZVLvwfDr2faACLaRsBtzxymDiDiZVBrD+s1X295+8P21zR9AAe1ItjydRh+XTYBRNweAcM/H6sAIrZHUPLf8Zef47ALIKI8gq3RsP31WQYQ0f63OAz/GGwDiLjuN0SloXD7MxbrAA7Whpxbn/kRwKvlsDP8HgjgyGHoeZbXx939/uG59zdlS2JN75+huALAGgHAGgHAWkoA/K4cp2TMBVcAWEsLgKsAjmXNA1cAWCMAWEsNgNsgROTOQfoVgAi8ZZ//9ACATBIBZG8B5FA47xIBRGgcDPSjcr5lAojQOShoS+k8SwUQoXVwUJ/a+ZULIELvIKEOxfMqGUCE5sHCdqrnUzaACN2DhjLK5zHlJZFb8DLK8SgP/oH0FeDYCAcTb0Y5X8NcAZa4IugZZeiPDRvAASHkG3HwD4YPYIkg2ht54JemCwAoMcwPwUALBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrfwH17qK1BJPkzwAAAABJRU5ErkJggg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Zen+Maru+Gothic:wght@500;700;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1014;--bg2:#13161c;--ink:#070809;--panel:#161a21;--panel2:#1b2028;
+    --yellow:#ffd21e;--yellow2:#ffb800;--cyan:#28d6ff;--cyan2:#16b6e6;
+    --txt:#eef4f8;--sub:#93a3b0;--line:#2a313c;
+    --red:#ff5247;--green:#5fe39a;--cream:#fff6d6;--purple:#b98bff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(700px 400px at 6% -8%,rgba(255,210,30,.12),transparent 60%),
+      radial-gradient(680px 420px at 100% 2%,rgba(40,214,255,.12),transparent 60%),
+      var(--bg);
+    color:var(--txt);font-family:"Outfit","Zen Maru Gothic",system-ui,sans-serif;line-height:1.6;
+    -webkit-tap-highlight-color:transparent;
+    padding-bottom:calc(90px + env(safe-area-inset-bottom));
+    padding-top:env(safe-area-inset-top);
+  }
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+    background-image:radial-gradient(rgba(40,214,255,.10) 1.3px,transparent 1.5px);background-size:18px 18px;}
+  .wrap{max-width:560px;margin:0 auto;padding:0 16px;position:relative;z-index:2}
+
+  header{padding:22px 0 12px;text-align:center}
+  .kick{display:inline-block;font-family:"JetBrains Mono";font-weight:800;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink);background:var(--yellow);padding:6px 13px;border-radius:999px;border:3px solid var(--ink);box-shadow:2px 3px 0 var(--cyan);transform:rotate(-1.4deg);margin-bottom:13px}
+  h1{font-family:"Zen Maru Gothic";font-weight:900;font-size:clamp(21px,5.6vw,28px);color:var(--cream);text-shadow:2px 2px 0 var(--ink),4px 4px 0 rgba(40,214,255,.35);line-height:1.1}
+  h1 .y{color:var(--yellow);-webkit-text-stroke:1.5px var(--ink)} h1 .c{color:var(--cyan);-webkit-text-stroke:1.5px var(--ink)}
+
+  /* install banner */
+  .install{display:none;margin-top:14px;background:var(--panel);border:3px solid var(--cyan);border-radius:15px;box-shadow:3px 4px 0 var(--ink);padding:13px 15px;text-align:left;align-items:center;gap:12px}
+  .install.show{display:flex}
+  .install .txt{font-size:12px;color:#d3dde4;flex:1}
+  .install .txt b{color:var(--cyan)}
+  .install button{font-family:"Zen Maru Gothic";font-weight:800;font-size:13px;padding:9px 14px;border-radius:11px;border:3px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:2px 3px 0 var(--ink);cursor:pointer;white-space:nowrap}
+  .install .close{background:none;border:none;box-shadow:none;color:var(--sub);font-size:18px;padding:0 4px;cursor:pointer}
+
+  .tabs{display:flex;gap:7px;margin:16px 0 6px;position:sticky;top:calc(8px + env(safe-area-inset-top));z-index:5}
+  .tab{flex:1;font-family:"Zen Maru Gothic";font-weight:700;font-size:13px;padding:10px 0;text-align:center;border-radius:12px;border:3px solid var(--ink);background:var(--panel);color:var(--sub);box-shadow:3px 4px 0 var(--ink);cursor:pointer;transition:transform .12s}
+  .tab.on{background:var(--yellow);color:var(--ink)} .tab:active{transform:translate(1px,2px)}
+
+  .view{display:none;padding:14px 0 10px} .view.on{display:block}
+
+  /* reminder card (record tab top) */
+  .remind{background:var(--ink);border:3px solid var(--yellow);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+  .remind .rh{font-family:"Zen Maru Gothic";font-weight:900;color:var(--yellow);font-size:14px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .remind ul{list-style:none}
+  .remind li{font-size:12.5px;color:#dbe6ec;padding:5px 0 5px 22px;position:relative}
+  .remind li::before{content:"▸";position:absolute;left:2px;color:var(--cyan);font-weight:800}
+  .remind li b{color:var(--cream)}
+
+  .mcard{background:var(--panel);border:3px solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:18px;margin-bottom:14px;overflow:hidden}
+  .mcard .mtop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .mcard .mname{font-family:"Zen Maru Gothic";font-weight:900;font-size:16px;color:var(--cream)}
+  .mcard .goal{font-family:"JetBrains Mono";font-weight:700;font-size:11px;color:var(--sub)}
+  .mcard .big{font-family:"JetBrains Mono";font-weight:800;font-size:40px;line-height:1;letter-spacing:-.02em}
+  .mcard .big .u{font-size:18px}
+  .mcard .sub2{font-size:11.5px;color:var(--sub);margin-top:4px}
+  .bar{height:14px;background:var(--bg2);border:2px solid var(--ink);border-radius:8px;overflow:hidden;margin-top:12px;position:relative}
+  .bar .fl{height:100%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .bar .goalmark{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--cream);opacity:.85}
+  .status{display:inline-block;font-family:"JetBrains Mono";font-weight:800;font-size:11px;padding:4px 11px;border-radius:999px;border:2px solid var(--ink);margin-top:11px}
+  .status.ok{background:var(--green);color:var(--ink)} .status.ng{background:var(--red);color:#fff}
+  .recent{font-family:"JetBrains Mono";font-size:10.5px;color:var(--sub);margin-top:9px}
+  .recent b{color:var(--cyan)}
+
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .sm{background:var(--panel);border:3px solid var(--ink);border-radius:14px;box-shadow:3px 4px 0 var(--ink);padding:13px 8px;text-align:center}
+  .sm .k{font-family:"JetBrains Mono";font-size:9.5px;color:var(--sub);text-transform:uppercase;letter-spacing:.04em}
+  .sm .v{font-family:"JetBrains Mono";font-weight:800;font-size:24px;margin-top:4px;color:var(--cream)}
+  .sm .v.w{color:var(--green)} .sm .v.r{color:var(--cyan)}
+
+  .streak{background:var(--panel);border:3px solid var(--ink);border-radius:14px;box-shadow:3px 4px 0 var(--ink);padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+  .streak .sl{font-family:"Zen Maru Gothic";font-weight:700;font-size:13px;color:var(--sub)}
+  .streak .sv{font-family:"Zen Maru Gothic";font-weight:900;font-size:18px}
+  .streak .sv.win{color:var(--yellow)} .streak .sv.lose{color:var(--cyan)} .streak .sv.none{color:var(--sub)}
+
+  .secttl{font-family:"Zen Maru Gothic";font-weight:900;font-size:15px;color:var(--cream);margin:20px 0 11px;display:flex;align-items:center;gap:8px}
+  .secttl::before{content:"";width:6px;height:18px;background:var(--cyan);border-radius:3px}
+
+  /* opponent winrate */
+  .opp-row{background:var(--panel);border:3px solid var(--ink);border-radius:13px;box-shadow:3px 4px 0 var(--ink);padding:12px 14px;margin-bottom:10px}
+  .opp-row .ot{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .opp-row .on{font-family:"Zen Maru Gothic";font-weight:700;font-size:14px;color:var(--cream)}
+  .opp-row .ow{font-family:"JetBrains Mono";font-weight:800;font-size:15px}
+  .opp-row .obar{height:10px;background:var(--bg2);border:2px solid var(--ink);border-radius:6px;overflow:hidden}
+  .opp-row .ofl{height:100%}
+  .opp-row .oc{font-family:"JetBrains Mono";font-size:10px;color:var(--sub);margin-top:5px}
+
+  .empty{text-align:center;color:var(--sub);font-size:13px;padding:28px 16px;background:var(--panel);border:3px dashed var(--line);border-radius:16px}
+
+  .frm{background:var(--panel);border:3px solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:18px;margin-bottom:14px}
+  .flabel{font-family:"Zen Maru Gothic";font-weight:700;font-size:14px;color:var(--cream);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+  .flabel:first-child{margin-top:0}
+  .flabel .ic{width:7px;height:18px;background:var(--cyan);border-radius:3px;display:inline-block}
+  .seg{display:flex;gap:8px}
+  .seg button{flex:1;font-family:"Zen Maru Gothic";font-weight:700;font-size:13.5px;padding:13px 0;border-radius:12px;border:3px solid var(--ink);background:var(--bg2);color:var(--sub);cursor:pointer;transition:transform .1s}
+  .seg button:active{transform:translateY(2px)}
+  .seg button.sel.yes{background:var(--green);color:var(--ink)}
+  .seg button.sel.no{background:var(--red);color:#fff}
+  .seg.wl button.sel.win{background:var(--yellow);color:var(--ink)}
+  .seg.wl button.sel.lose{background:var(--panel2);color:var(--cyan);border-color:var(--cyan)}
+  .hint{font-size:11px;color:var(--sub);margin-top:6px}
+  textarea,input[type=text]{width:100%;background:var(--bg2);border:3px solid var(--ink);border-radius:12px;color:var(--txt);
+    font-family:"Outfit","Zen Maru Gothic",sans-serif;font-size:14px;padding:12px;resize:vertical}
+  textarea{min-height:60px}
+  .save{width:100%;margin-top:18px;font-family:"Zen Maru Gothic";font-weight:900;font-size:16px;padding:15px 0;border-radius:14px;
+    border:3px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:4px 5px 0 var(--ink);cursor:pointer;transition:transform .1s}
+  .save:active{transform:translate(1px,2px);box-shadow:2px 3px 0 var(--ink)}
+  .save:disabled{background:var(--panel2);color:var(--sub);box-shadow:none}
+
+  .lg{background:var(--panel);border:3px solid var(--ink);border-radius:15px;box-shadow:3px 4px 0 var(--ink);padding:14px;margin-bottom:11px}
+  .lg .lh{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+  .lg .ldate{font-family:"JetBrains Mono";font-size:11px;color:var(--sub)}
+  .lg .res{font-family:"Zen Maru Gothic";font-weight:900;font-size:14px;padding:3px 12px;border-radius:999px;border:2px solid var(--ink)}
+  .lg .res.win{background:var(--yellow);color:var(--ink)} .lg .res.lose{background:var(--panel2);color:var(--cyan)}
+  .lg .tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+  .lg .t{font-family:"JetBrains Mono";font-weight:700;font-size:10.5px;padding:4px 9px;border-radius:8px;border:2px solid var(--ink)}
+  .t.y{background:var(--green);color:var(--ink)} .t.n{background:var(--red);color:#fff} .t.fok{background:var(--green);color:var(--ink)} .t.fng{background:var(--red);color:#fff}
+  .lg .memo{font-size:12.5px;color:#cdd8df;background:var(--bg2);border-radius:9px;padding:9px 11px;border:2px solid var(--line);margin-top:4px}
+  .lg .del{margin-top:9px;font-family:"JetBrains Mono";font-weight:700;font-size:11px;color:var(--red);background:none;border:2px solid var(--red);border-radius:8px;padding:5px 11px;cursor:pointer}
+
+  .toolrow{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .toolrow button{flex:1;min-width:30%;font-family:"JetBrains Mono";font-weight:700;font-size:11px;padding:10px 0;border-radius:11px;border:3px solid var(--ink);background:var(--panel);color:var(--sub);cursor:pointer}
+  .toolrow button.danger{color:var(--red);border-color:var(--red)}
+
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(80px);z-index:50;
+    background:var(--green);color:var(--ink);font-family:"Zen Maru Gothic";font-weight:800;font-size:14px;
+    padding:12px 22px;border-radius:14px;border:3px solid var(--ink);box-shadow:3px 4px 0 var(--ink);transition:transform .3s;opacity:0}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  .note{font-size:11px;color:var(--sub);text-align:center;margin:18px 0 6px;line-height:1.7}
+  .help{background:var(--panel);border:3px dashed var(--line);border-radius:14px;padding:15px;margin-top:14px;font-size:12px;color:#cdd8df;line-height:1.8}
+  .help b{color:var(--yellow)} .help .step{color:var(--cyan);font-family:"JetBrains Mono";font-weight:700}
+  input[type=file]{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="kick">Pokémon Champions ・ 戦績トラッカー</span>
+    <h1><span class="y">メガハッサム</span>×<span class="c">ゲッコウガ</span><br>3指標トラッカー</h1>
+    <div class="install" id="installBar">
+      <div class="txt"><b>ホーム画面に追加</b>してアプリのように使えます</div>
+      <button id="installBtn">追加</button>
+      <button class="close" id="installClose">×</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab on" data-v="dash">📊 ダッシュ</div>
+    <div class="tab" data-v="rec">✏️ 記録</div>
+    <div class="tab" data-v="log">📜 履歴</div>
+  </div>
+
+  <!-- DASH -->
+  <section class="view on" id="dash">
+    <div class="summary">
+      <div class="sm"><div class="k">試合数</div><div class="v" id="s-total">0</div></div>
+      <div class="sm"><div class="k">勝率</div><div class="v w" id="s-wr">–</div></div>
+      <div class="sm"><div class="k">勝/負</div><div class="v r" id="s-wl">0/0</div></div>
+    </div>
+    <div class="streak" id="streakBox">
+      <span class="sl">現在の連勝/連敗</span><span class="sv none" id="streakVal">–</span>
+    </div>
+    <div id="metrics"></div>
+    <div id="oppSection"></div>
+    <p class="note">※指標と目標値は上達のための自作フレームです（ゲーム内の公式数値ではありません）。<br>記録はこの端末に保存され、次に開いても残ります。</p>
+  </section>
+
+  <!-- RECORD -->
+  <section class="view" id="rec">
+    <div class="remind">
+      <div class="rh">⚡ 試合前チェック（最重要）</div>
+      <ul>
+        <li>相手に<b>炎</b>がいないか確認（リザードン/ガオガエン/ヒードラン）</li>
+        <li>炎がいるなら<b>炎受け枠を選出</b>。ハッサムは切り札に温存</li>
+        <li>ゲッコウガは<b>先発で1削り</b>、不利ならクイックターンで損切り</li>
+        <li>剣舞は<b>削ってから</b>。早積み厳禁</li>
+      </ul>
+    </div>
+    <div class="frm">
+      <div class="flabel"><span class="ic"></span>① 展開成功（ゲッコウガが1体削る or 安全に引く）</div>
+      <div class="seg" data-q="deploy">
+        <button data-val="1" class="yes">できた</button>
+        <button data-val="0" class="no">できなかった</button>
+      </div>
+      <div class="flabel"><span class="ic"></span>② 剣舞着地（ハッサムが剣舞を1回以上積めた）</div>
+      <div class="seg" data-q="sd">
+        <button data-val="1" class="yes">積めた</button>
+        <button data-val="0" class="no">積めなかった</button>
+      </div>
+      <div class="flabel"><span class="ic"></span>③ 炎被弾（ハッサムが炎技を受けた）</div>
+      <div class="seg" data-q="fire">
+        <button data-val="1" class="no">被弾した</button>
+        <button data-val="0" class="yes">受けなかった</button>
+      </div>
+      <p class="hint">※「受けなかった」が良い結果（緑）。炎被弾率は低いほど◎</p>
+      <div class="flabel"><span class="ic"></span>勝敗</div>
+      <div class="seg wl" data-q="result">
+        <button data-val="win" class="win">勝ち</button>
+        <button data-val="lose" class="lose">負け</button>
+      </div>
+      <div class="flabel"><span class="ic"></span>相手構築タグ（任意）</div>
+      <input type="text" id="opp" placeholder="例：ガブ展開 / 受け回し / リザ入り / 雨パ">
+      <p class="hint">同じタグ名でまとめると、相手構築別の勝率が出ます</p>
+      <div class="flabel"><span class="ic"></span>反省メモ（任意）</div>
+      <textarea id="memo" placeholder="気づき・反省（任意）：例 炎受けを選出し忘れた、剣舞早すぎた…"></textarea>
+      <button class="save" id="saveBtn" disabled>記録する</button>
+    </div>
+  </section>
+
+  <!-- LOG -->
+  <section class="view" id="log">
+    <div class="toolrow">
+      <button id="exportBtn">⬇ 書き出し</button>
+      <button id="importBtn">⬆ 読み込み</button>
+      <button id="clearBtn" class="danger">🗑 全削除</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json">
+    <div id="logList"></div>
+    <div class="help">
+      <b>📲 ホーム画面に追加する方法</b><br>
+      <b style="color:var(--cyan)">iPhone (Safari)：</b> 共有ボタン <span class="step">⬆</span> →「ホーム画面に追加」<br>
+      <b style="color:var(--cyan)">Android (Chrome)：</b> メニュー <span class="step">⋮</span> →「アプリをインストール」または「ホーム画面に追加」<br>
+      <span style="color:var(--sub)">※GitHub Pages 等のhttpsに置くとオフライン動作＆アプリアイコンが有効になります。</span>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast">保存しました！</div>
+
+<script>
+const KEY='msg_tracker_records_v1';
+let records=[];
+const sel={deploy:null,sd:null,fire:null,result:null};
+
+/* ---- storage (artifact API with localStorage fallback) ---- */
+async function load(){
+  try{
+    if(window.storage && window.storage.get){
+      const r=await window.storage.get(KEY);
+      if(r && r.value){ records=JSON.parse(r.value)||[]; }
+    }else{
+      const v=localStorage.getItem(KEY); if(v) records=JSON.parse(v)||[];
+    }
+  }catch(e){ try{const v=localStorage.getItem(KEY); if(v) records=JSON.parse(v)||[];}catch(_){ records=[]; } }
+  renderAll();
+}
+async function persist(){
+  try{
+    if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(records)); }
+    else{ localStorage.setItem(KEY, JSON.stringify(records)); }
+  }catch(e){ try{ localStorage.setItem(KEY, JSON.stringify(records)); }catch(_){} }
+}
+
+/* ---- tabs ---- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById(t.dataset.v).classList.add('on');
+    if(t.dataset.v==='dash') renderAll();
+    if(t.dataset.v==='log') renderLog();
+  });
+});
+
+/* ---- segmented ---- */
+document.querySelectorAll('.seg').forEach(seg=>{
+  const q=seg.dataset.q;
+  seg.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      seg.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel'); sel[q]=b.dataset.val; checkReady();
+    });
+  });
+});
+function checkReady(){
+  document.getElementById('saveBtn').disabled =
+    !(sel.deploy!==null && sel.sd!==null && sel.fire!==null && sel.result!==null);
+}
+
+/* ---- save ---- */
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
+  records.unshift({
+    id:Date.now(), date:new Date().toISOString(),
+    deploy:+sel.deploy, sd:+sel.sd, fire:+sel.fire, result:sel.result,
+    opp:document.getElementById('opp').value.trim(),
+    memo:document.getElementById('memo').value.trim()
+  });
+  await persist();
+  document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('sel'));
+  sel.deploy=sel.sd=sel.fire=sel.result=null;
+  document.getElementById('opp').value=''; document.getElementById('memo').value='';
+  checkReady(); toast('記録しました！');
+  document.querySelector('.tab[data-v="dash"]').click();
+});
+
+/* ---- calc ---- */
+function calc(list){
+  const n=list.length; if(!n) return null;
+  return {
+    n,
+    deploy:list.filter(r=>r.deploy===1).length/n*100,
+    sd:list.filter(r=>r.sd===1).length/n*100,
+    fire:list.filter(r=>r.fire===1).length/n*100,
+    wins:list.filter(r=>r.result==='win').length,
+    losses:n-list.filter(r=>r.result==='win').length
+  };
+}
+function streak(){
+  if(!records.length) return {type:'none',count:0};
+  const first=records[0].result; let c=0;
+  for(const r of records){ if(r.result===first) c++; else break; }
+  return {type:first,count:c};
+}
+
+/* ---- render ---- */
+function renderAll(){ renderDash(); renderOpp(); }
+function renderDash(){
+  const all=calc(records);
+  document.getElementById('s-total').textContent=all?all.n:0;
+  document.getElementById('s-wr').textContent=all?Math.round(all.wins/all.n*100)+'%':'–';
+  document.getElementById('s-wl').textContent=all?`${all.wins}/${all.losses}`:'0/0';
+
+  const st=streak();
+  const sv=document.getElementById('streakVal');
+  if(st.type==='none'){ sv.textContent='–'; sv.className='sv none'; }
+  else if(st.type==='win'){ sv.textContent=`${st.count}連勝 🔥`; sv.className='sv win'; }
+  else{ sv.textContent=`${st.count}連敗`; sv.className='sv lose'; }
+
+  const recent=calc(records.slice(0,10));
+  const box=document.getElementById('metrics');
+  if(!all){ box.innerHTML='<div class="empty">まだ記録がありません。<br>「✏️ 記録」タブから1試合目を入力しよう。</div>'; return; }
+
+  const defs=[
+    {key:'deploy',name:'展開成功率',goal:70,dir:'up',color:'var(--cyan)',sub:'ゲッコウガが1体削る or 安全に引けた割合'},
+    {key:'sd',name:'剣舞着地率',goal:50,dir:'up',color:'var(--yellow)',sub:'ハッサムが剣舞を1回以上積めた割合'},
+    {key:'fire',name:'炎被弾率',goal:20,dir:'down',color:'var(--cyan)',sub:'炎技を被弾した割合（低いほど◎）'},
+  ];
+  box.innerHTML=defs.map(d=>{
+    const val=all[d.key], v=Math.round(val);
+    const pass=d.dir==='up'?val>=d.goal:val<=d.goal;
+    const fillColor=pass?'var(--green)':(d.dir==='down'?'var(--red)':'var(--yellow2)');
+    const goalLabel=d.dir==='up'?`目標 ${d.goal}%+`:`目標 ${d.goal}%−`;
+    let rec='';
+    if(recent){ const rv=Math.round(recent[d.key]); const rp=d.dir==='up'?recent[d.key]>=d.goal:recent[d.key]<=d.goal;
+      rec=`<div class="recent">直近${recent.n}戦：<b style="color:${rp?'var(--green)':'var(--red)'}">${rv}%</b> ${rp?'達成':'未達'}</div>`; }
+    return `<div class="mcard">
+      <div class="mtop"><span class="mname">${d.name}</span><span class="goal">${goalLabel}</span></div>
+      <div class="big" style="color:${pass?'var(--green)':d.color}">${v}<span class="u">%</span></div>
+      <div class="sub2">${d.sub}</div>
+      <div class="bar"><div class="fl" style="width:${Math.min(100,v)}%;background:${fillColor}"></div><div class="goalmark" style="left:${d.goal}%"></div></div>
+      <span class="status ${pass?'ok':'ng'}">${pass?'✓ 目標達成':'✗ 未達'}</span>
+      ${rec}
+    </div>`;
+  }).join('');
+}
+function renderOpp(){
+  const sec=document.getElementById('oppSection');
+  const groups={};
+  records.forEach(r=>{ if(r.opp){ (groups[r.opp]=groups[r.opp]||[]).push(r); } });
+  const keys=Object.keys(groups);
+  if(!keys.length){ sec.innerHTML=''; return; }
+  keys.sort((a,b)=>groups[b].length-groups[a].length);
+  sec.innerHTML='<div class="secttl">相手構築タグ別の勝率</div>'+keys.map(k=>{
+    const g=groups[k], w=g.filter(r=>r.result==='win').length, wr=Math.round(w/g.length*100);
+    const col=wr>=60?'var(--green)':wr>=40?'var(--yellow)':'var(--red)';
+    return `<div class="opp-row">
+      <div class="ot"><span class="on">${esc(k)}</span><span class="ow" style="color:${col}">${wr}%</span></div>
+      <div class="obar"><div class="ofl" style="width:${wr}%;background:${col}"></div></div>
+      <div class="oc">${g.length}戦 ${w}勝 ${g.length-w}敗</div>
+    </div>`;
+  }).join('');
+}
+function renderLog(){
+  const list=document.getElementById('logList');
+  if(!records.length){ list.innerHTML='<div class="empty">履歴はまだありません。</div>'; return; }
+  list.innerHTML=records.map(r=>{
+    const d=new Date(r.date);
+    const ds=`${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    const res=r.result==='win'?'<span class="res win">WIN</span>':'<span class="res lose">LOSE</span>';
+    const tags=`<span class="t ${r.deploy?'y':'n'}">展開 ${r.deploy?'○':'×'}</span>`+
+               `<span class="t ${r.sd?'y':'n'}">剣舞 ${r.sd?'○':'×'}</span>`+
+               `<span class="t ${r.fire?'fng':'fok'}">炎 ${r.fire?'被弾':'回避'}</span>`;
+    const opp=r.opp?`<div class="memo"><b style="color:var(--cyan)">相手:</b> ${esc(r.opp)}</div>`:'';
+    const memo=r.memo?`<div class="memo">${esc(r.memo)}</div>`:'';
+    return `<div class="lg"><div class="lh"><span class="ldate">${ds}</span>${res}</div>
+      <div class="tags">${tags}</div>${opp}${memo}
+      <button class="del" data-id="${r.id}">削除</button></div>`;
+  }).join('');
+  list.querySelectorAll('.del').forEach(b=>{
+    b.addEventListener('click', async ()=>{
+      records=records.filter(x=>x.id!=b.dataset.id);
+      await persist(); renderLog(); renderAll(); toast('削除しました');
+    });
+  });
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ---- tools ---- */
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(records,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='msg-tracker.json'; a.click();
+  URL.revokeObjectURL(url); toast('書き出しました');
+});
+document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=async()=>{ try{
+    const data=JSON.parse(rd.result);
+    if(Array.isArray(data)){ records=data; await persist(); renderAll(); renderLog(); toast('読み込みました'); }
+    else toast('形式が不正です');
+  }catch(_){ toast('読み込み失敗'); } };
+  rd.readAsText(f); e.target.value='';
+});
+document.getElementById('clearBtn').addEventListener('click', async ()=>{
+  if(!records.length){ toast('記録がありません'); return; }
+  if(confirm('すべての記録を削除します。よろしいですか？')){
+    records=[]; await persist(); renderLog(); renderAll(); toast('全削除しました');
+  }
+});
+
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),1600);
+}
+
+/* ---- PWA: dynamic manifest + service worker ---- */
+(function setupPWA(){
+  try{
+    const manifest={
+      name:"メガハッサム×ゲッコウガ 戦績トラッカー",
+      short_name:"戦績トラッカー",
+      start_url:".",
+      scope:".",
+      display:"standalone",
+      orientation:"portrait",
+      background_color:"#0e1014",
+      theme_color:"#0e1014",
+      icons:[
+        {src:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAFd0lEQVR4nO3dMW8TTRSF4RtkKQ49NaJMS8H/ryloKVFqekSBFIrEilm8tmc9M/fMnPfpKL7E3+59727i2L673z88B2DqXfYDADIRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKztsh9Abb+/fsh+CNPbf/mZ/RCquRv9zXEZ+HwjBzFsAAy+nhFDGCoAhn4co8QwzA/BDP9YRjlf8leAUQ4k1ilfDaSvAAz/HJTPo2wAygcN5VTPp2QAqgcLt1E8r3IBKB4k1KN2fqUCUDs4aEPpPMsEoHRQ0J7K+ZYIQOVgoC+F8y4RAJAlPQCFLYA82ec/NYDs/3loyJyD9CsAkIkAYC0tAG5/cCxrHrgCwFpKAGx/nJIxF1wBYI0AYI0AjDzunrIfgpzuAXD/n+Mw/OoR9J4PrgAGlkOvHkFPBDC5tWEnghcEMLFLQ/64e7IPgQBgHQEBCKn5/jmlQ+0aAQFMaOswO0ZAACJqbf9bh9gtAgKYSK3hdYqAAATU2P61h9blN0QEMIGWgzp7BASQ7Hj7b/kzgB4DOnMEBDCwXoP5/c/HLt8nAwEkuuXen+GvgwCwavbhjyCANOrb32H4IwhgODP/QJqBABJs3f7c99dHAINg+NsggM62bH+Gvx0CEMfwt0UAHZ3b/qeeBWb42yMAUQx/HwTQScm9P8PfDwGYYvhfEEAHatuf4X9DAEJ4lrc/Amjs2u3PfX8OAjDC8P+PABqq+T4/t2L4TyMAAwz/OgJopGT7f/r2q9njYPjPI4CJMfyXEUADCvf+DP91CGBCDP/1CKCy7O3P8JfZZT8ARPz4/L7a19ov/s1nsp3HFaCi7O2/xPBfRgCwRgCVsP3HRAATYvivRwAVKG1/hr8MAcAaAdyI7T82ApgEw78NAdxAaftjGwKYANt/OwLYSGX7M/y3IQBYI4AN2P7zIIBBMfx1EEAhhe3P8NfD6wEK1X4Be83XAqAcV4ACtd+9bcvws/3rIoArKbxvJ8NfHwFcQWH40QYBXNBq+Etvf9j+bRDAGSqbn+FvhwBWqAw/2iKAE1oPf8ntD9u/LQJYUNr8DH97BHCE4fdDAJ3xzK8WAnil9OmMbP9+CCC49XFmH0DPT2dU+EtS/Ms6ALWPJmX792cbAMOPCNMAMoaf2x9NdgGobf4Itn8mqwCyhv/c9mf4c9kEwObHKTYB9MAH1I3HIoDMZ3nXbn/Y/hqmD0DpWd4Dhl/H1AEo3vdDy7QBKAz/qdsftr+WaQPosZVLvwfDr2faACLaRsBtzxymDiDiZVBrD+s1X295+8P21zR9AAe1ItjydRh+XTYBRNweAcM/H6sAIrZHUPLf8Zef47ALIKI8gq3RsP31WQYQ0f63OAz/GGwDiLjuN0SloXD7MxbrAA7Whpxbn/kRwKvlsDP8HgjgyGHoeZbXx939/uG59zdlS2JN75+huALAGgHAGgHAWkoA/K4cp2TMBVcAWEsLgKsAjmXNA1cAWCMAWEsNgNsgROTOQfoVgAi8ZZ//9ACATBIBZG8B5FA47xIBRGgcDPSjcr5lAojQOShoS+k8SwUQoXVwUJ/a+ZULIELvIKEOxfMqGUCE5sHCdqrnUzaACN2DhjLK5zHlJZFb8DLK8SgP/oH0FeDYCAcTb0Y5X8NcAZa4IugZZeiPDRvAASHkG3HwD4YPYIkg2ht54JemCwAoMcwPwUALBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrfwH17qK1BJPkzwAAAABJRU5ErkJggg==",sizes:"192x192",type:"image/png",purpose:"any maskable"},
+        {src:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAARGUlEQVR4nO3dvW9kRd6G4WY1EgM5MSIkJeD/jwlICdHE5IgAiQ2GYcbuY7e7T338qp7rSl/p3eORu567jnftr75+/80/FwAgyv9mPwAAMJ4AAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAr2b/QCs769fvpv9CBDp/c9/zH4EFvbV1++/+Wf2Q1CfkYe1iANuEQAcMviwF0HAcwKAy+Vi8CGNIEAABDP6wOUiBlIJgECGHzgiBLIIgBBGH7iHGNifANic4QfOEAL7EgCbMvxAS0JgPwJgM4Yf6EkI7EMAbMLwAyMJgfX5WwAbMP7AaM6d9XkDsDAfQKACbwPW5A3Aoow/UIXzaE3eACzGBw2ozNuAdXgDsBDjD1TnnFqHAFiEDxWwCufVGvwIoDgfJGBlfiRQlzcAhRl/YHXOsboEQFE+NMAunGc1CYCCfFiA3TjX6hEAxfiQALtyvtUiAArx4QB255yrQwAU4UMBpHDe1SAACvBhANI49+YTAJP5EACpnH9zCYCJfPMD6ZyD8wiASXzTA3zkPJxDAEzgmx3gKefieAIAAAIJgMFULsAx5+NYAmAg39wAr3NOjiMABvFNDfA2zssxBAAABBIAA6hZgPs4N/sTAJ35JgZ4jPOzLwEAAIEEQEfqFeAc52g/AqAT37QAbThP+xAAABBIAHSgVgHacq62JwAAIJAAaEylAvThfG1LAABAIAHQkDoF6Ms5244AAIBAAqARVQowhvO2DQEAAIEEAAAEEgANeB0FMJZz9zwBAACBBMBJKhRgDufvOQIAAAIJAAAIJABO8PoJYC7n8OMEAAAEEgAAEEgAAEAgAfAgP3cCqMF5/BgBAACBBADAK35892H2I0AXAgDgBZ/GXwSwIwHwAD9vgv09H30RUJtz+X4CAOCZl8ZeBLATAQDwhVsjLwLYhQAA+Ndbx/3Hdx+EAMsTAAAPEgGsTAAAXB4fcxHAqgQAEO/siIsAViQA7uR/agJ7aTXeImA+5/N9BAAQq/VoiwBWIgCASL3GWgSwCgEAxOk90iKAFQgAIMqocfa7AqhOAAAxZgyyCKAqAQBEmDnEIoCKBADAACKAagQAcNP7n/+Y/QinVBnfKs8Bl4sAAG4w/m1Vex5yCQBgW1XHtupzkUUAAC9a+fZffWSrPx/7EwDAdlYZ11Wekz0JAODQl7f/lf7Iymqj6hcGMYsAALax8pCu/OysSQAAV1b82f8OA7rD18A6BACwvJ2Gc6evhdoEAPDEirf/3YgARhAAwNJ2Hctdvy7qEADAf1a7/e8+krt/fcwlAIAlpYxjytfJeAIAuFwuL9/+K/4OgLRR9LsC6EEAAEtJHsLkr532BACwzM/+DaB/A9oRAMASDN9n/i1oQQBAuBVu/wbvmn8TzhIAQGmG7thvf38/+xFYnACAYCvc/rlm/GlBAABluf1fM/60IgAg1Ftu/zN/B4Dxv2b8aUkAAOUY/2vGn9YEAASq/LN/4w9jCACgDON/zO2fHgQAhKl6+zf+x4w/vQgAYDrjf8z405MAgCAVb//G/5jxpzcBAExj/I8Zf0YQABDi3tt/798BYPyPGX9GEQAARRh/RhIAEKDaz/7d/q8Zf0YTAMBQxv+a8WcGAQCbq3T7N/5QhwAAhjD+x9z+mUUAwMaq3P6N/zHjz0wCAOjK+B8z/swmAGBTZ27/rX4HgPE/ZvypQAAAXRj/Y8afKgQAbGj2z/6N/zHjTyUCAGAA4081AgA24/Zfj/GnIgEANGP8rxl/qhIAsJGZt3/jD2sRAMBpxv+Y2z+VCQDYxKzbv/E/ZvypTgAAT9zzS4CM/zHjzwoEAGxgxu3f+B8z/qxCAAB3M/7HjD8rEQCwuNG3f+N/zPizGgEAcJLxZ0UCABbm9j+f8WdVAgB4E+N/zfizMgEAixp5+zf+sB8BAPzn6HcAGP9jbv+sTgDAgkbd/o3/MePPDgQAcMj4HzP+7EIAwGJG3P6N/zHjz04EAPCE8T9m/NmNAICF9L79G/9jxp8dCQCAVxh/diUAYBEz/uJfOuPPzgQAcLlcLpcffv1z9iOUYvzZnQCABbj9j2X8SSAAACCQAIDi3P7HcvsnhQAA+JfxJ4kAgMLc/scx/qQRAEA8408iAQBFuf2PYfxJJQCA2N8BYPxJJgCgILf//ow/6QQAEMf4gwCActz++zL+8JEAAIBAAgAKcfvvy+0fPhMAQATjD08JACjC7b8f4w/XBACE2/13ABh/OCYAoAC3/z6MP7xMAABbMv7wOgEAk7n9t2f84bZ3sx8AmOv3n76d/QjNvb/xf//rl++GPAdU5g0ATOT2P57xh48EAAAEEgAwidv/eG7/8JkAACIYf3hKAMAEbv/AbAIA2J7bP1wTADCY2/9Yxh+OCQBgW8YfXiYAYCC3f6AKAQBsye0fXicAYBC3/3GMP9wmAAAgkACAAdz+x3H7h7cRAMA2jD+8nQCAztz+gYoEALAFt3+4jwCAjtz+xzD+cD8BAACBBAB04vY/hts/PEYAAMsy/vA4AQAduP33Z/zhHAEAAIEEADTm9t+f2z+cJwCApRh/aEMAQENu/8AqBACwDLd/aEcAQCNu/30Zf2hLAABAIAEADbj99+X2D+0JAKA04w99CAA4ye0fWJEAAMpy+4d+BACc4Pbfj/GHvgQAUI7xh/4EADzI7R9YmQAASnH7hzEEADzA7b8P4w/jCAC404/vPsx+BIDTBADc4cd3Hy6///Tt7MfYkts/jCUAgOmMP4wnAOCN3P6Bnbyb/QCwgk8/9//h1z8nP0lbFYLG7R/m8AYAbtj1v/Rn/CGbAIBX7Dr+AAIAXmD8+3L7h7kEABzYffxnv/43/jCfAIBndh//2Yw/1CAA4AvGH0ghAOBfKeM/8/W/2z/UIQCAIYw/1CIA4JJz+wf4RAAQL2n8Z73+d/uHegQA0ZLGfxbjDzUJAGIZfyCZACBS4vjPeP3v9g91CQDiJI7/DMYfahMARDH+AB8JAGIkj//o1/9u/1CfACBC8viPZvxhDQIAaMb4wzoEANtLv/3P/tO/QE0CgK2lj/9Ibv+wFgHAtoz/OMYf1iMA2JLx/8jrf+AlAoDtGP+x3P5hTQKArRj/sYw/rEsAsA3j/5TX/8BrBABbMP7juf3D2gQAyzP+4xl/WJ8AYGnG/5jX/8AtAgA289vf33f9/+/2D3sQACzL7f+a8QfeSgCwJON/7dP4v//5j8lPAqxAALAc4z+H2z/sRQCwFON/zKt/4F4CgGUY/2Nfjn+P1//GH/YkAFiC8T/W++YP7EsAUJ7xPzZi/N3+YV8CgNKM/7Gj8W/9+t/4w94EAGUZ/2Ne+wMtCABYyKjxd/uH/QkASnL7v/ba+Ld8/W/8IYMAoBzjf81rf6A1AUApxn8ut3/IIQAow/gfu3X7b/X63/hDFgFACcb/mFf/QC8CgOmM/7GR4+/2D3kEAFMZ/2NvHf8Wr/+NP2QSAExj/I+5+QMjCACmMP7H7hn/Hn/5D8ghAKCI0f+FP7d/yCYAGM7t/5rxB0YTAAxl/K89Mv5e/wNnCQCGMf41uP0Dl4sAYBDjf8yrf2AWAUB3xv/Yo+Pv9T/QggCgK+N/bMav+HX7B74kAOjG+B8z/kAFAoAujP+xs+Pv9T/QigCgOeN/bNZf9nP7B44IABjA+APVCACacvu/1mr87339b/yB1wgAmjH+12bd/AFuEQA0YfyvzRx/t3/gFgHAaca/v3te/xt/4C0EAKcY/2Ne/QPVCQBOMXTXvPoHViAAOE0EfNbj3+Ktr/+NP3APAUATIsC/AbAWAUAzyQM4+2t3+wfuJQBo6re/v58+hqP1/Hrf8vrf+AOPEAB0kRIBKV8nsB8BQDe7j2OFr8/tH3iUAKCrCiPZw4iv69brf+MPnCEA6G7XCJjJ+ANnCQCG2CkCdvpagFwCgGF2GM5RX8Nrr//d/oEWBABDrRwBFZ7d+AOtCACGW/F3Baz2vAC3CACmWWVURz/nS6//3f6BlgQAU1WPgCrPZ/yB1gQA01UZ2eeqPhdACwKAEqqN7aznOXr97/YP9CAAKKNKBFR5jsvF+AP9CABKqTS+ADsTAJQzMwJm/mc/f/3v9g/0JAAoacYQV3r7YPyB3gQAZY38hUHGH0gjACiv9zhXGP9bf/oXoDUBwBJ6jXSF8f+S2z8wigBgGa3H2vgDyQQAS2k12pXG3+t/YAYBcCeH9Xxnx7vS+H/i9g/nOZ/vIwBY0qMjbvwBPhIALKvimAOsQgCwtHt+V4BgAPhMALCFW+Nu/AGeEgBs46WRN/4A1wQAW3k+9sYf4JgAeID/qUltn0bf+EMO5/L9BABbMv4ArxMAABBIAABAIAHwID9vAqjBefwYAQAAgQQAAAQSAAAQSACc4OdOAHM5hx8nAAAgkAAAgEAC4CSvnwDmcP6eIwAAIJAAaECFAozl3D1PAABAIAEAAIEEQCNeRwGM4bxtQwAAQCAB0JAqBejLOduOAACAQAKgMXUK0IfztS0BAACBBEAHKhWgLedqewIAAAIJgE7UKkAbztM+BEBHvmkBznGO9iMAACCQAOhMvQI8xvnZlwAYwDcxwH2cm/0JAAAIJAAGUbMAb+O8HEMADOSbGuB1zslxBMBgvrkBjjkfxxIAABBIAEygcgGeci6OJwAm8c0O8JHzcA4BMJFveiCdc3AeATCZb34glfNvLgFQgA8BkMa5N58AKMKHAUjhvKtBABTiQwHszjlXhwAoxocD2JXzrRYBUJAPCbAb51o9AqAoHxZgF86zmgRAYT40wOqcY3V99fX7b/6Z/RDc9tcv381+BIA3M/z1eQOwCB8mYBXOqzUIgIX4UAHVOafW4UcAi/IjAaASw78ebwAW5cMGVOE8WpM3ABvwNgCYwfCvzRuADfgQAqM5d9bnDcBmvA0AejL8+xAAmxICQEuGfz8CYHNCADjD8O9LAIQQAsA9DP/+BEAgMQAcMfpZBEAwIQBcLoY/lQDgcrmIAUhj9BEAHBIEsBeDz3MCgDcRBLAWg88tAoDTxAHMYeQ5QwAAQCB/CwAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAj0f4LtTkJ92+PrAAAAAElFTkSuQmCC",sizes:"512x512",type:"image/png",purpose:"any maskable"}
+      ]
+    };
+    const mblob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
+    const murl=URL.createObjectURL(mblob);
+    const link=document.createElement('link'); link.rel='manifest'; link.href=murl;
+    document.head.appendChild(link);
+  }catch(e){}
+
+  if('serviceWorker' in navigator){
+    const swCode=`
+      const C='msg-tracker-v1';
+      self.addEventListener('install',e=>{self.skipWaiting();});
+      self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());});
+      self.addEventListener('fetch',e=>{
+        e.respondWith(
+          caches.open(C).then(cache=>
+            cache.match(e.request).then(hit=>{
+              const net=fetch(e.request).then(res=>{
+                try{ if(e.request.method==='GET' && res && res.status===200) cache.put(e.request,res.clone()); }catch(_){}
+                return res;
+              }).catch(()=>hit);
+              return hit||net;
+            })
+          )
+        );
+      });`;
+    try{
+      const swurl=URL.createObjectURL(new Blob([swCode],{type:'text/javascript'}));
+      navigator.serviceWorker.register(swurl).catch(()=>{});
+    }catch(e){}
+  }
+})();
+
+/* ---- install prompt (Android/Chrome) ---- */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  if(!sessionStorage.getItem('hideInstall')) document.getElementById('installBar').classList.add('show');
+});
+document.getElementById('installBtn').addEventListener('click', async ()=>{
+  if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
+    document.getElementById('installBar').classList.remove('show'); }
+  else{ toast('共有メニューから「ホーム画面に追加」'); }
+});
+document.getElementById('installClose').addEventListener('click',()=>{
+  document.getElementById('installBar').classList.remove('show'); sessionStorage.setItem('hideInstall','1');
+});
+// iOS hint: show banner if standalone not active and is iOS
+(function(){
+  const isiOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone=window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  if(isiOS && !standalone && !sessionStorage.getItem('hideInstall')){
+    const bar=document.getElementById('installBar');
+    bar.querySelector('.txt').innerHTML='<b>ホーム画面に追加</b>：共有 ⬆ →「ホーム画面に追加」';
+    bar.querySelector('#installBtn').style.display='none';
+    bar.classList.add('show');
+  }
+})();
+
+load();
+</script>
+</body>
+</html>
