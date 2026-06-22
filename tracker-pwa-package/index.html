@@ -2,525 +2,1185 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>戦績トラッカー｜メガハッサム×ゲッコウガ</title>
-<meta name="theme-color" content="#0e1014">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="戦績トラッカー">
-<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAE30lEQVR4nO3dO28TURCG4QmylISeGlGmpeD/1xS0lCg1PaJACkWyiuN47b2cc2bmm/dpqBIWnzejYX3Jze3d/ZMBIj54XwDQEkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDCkFDysH7Avb6+/2T9yXIufv22/sSNrvJ9lFgBDxepsDTBE3I/jKEHT5oQo4ncthhgybk+CKGHfIuBzHnEPGcwgUd8UHCvGjnFWbliPbAYL0IK0iICU3MGiKcY4iggVbcg47wU412vM/TNWjvfzz68DxXt6CJWZvX+bqvHEBLLkEznWvwOGcmNKQMD5rpXMvo82ZCQ8rQoJnONY08dyY0pBA0pBA0pAwLmv25tlHnz4QW8nB49L4EdwQtYoq5etQELeA04spRE3Ryc/E+HB5Lhk3QiS0JtlrUBO2gxZtJ14RaKWqCLqJK1AQ92Ojp3OLrMiHoZPZGqR41QQ+0dzq3ilH5DghBO9jyNHCPABWjJuhB9kznnuGpRU3QwfUO7ue/z12//2gEPcDW6UzM6xF0UMS8DUF3tmU6E/N2BB0MMe9D0B2tnc5qdxw8EHQh6tPZjKC7mZvOc0+qsGq0QdABEHM7BN3Bmt2ZmNsiaEfE3B5BN7Z0OhNzHwTtgJj7IeiGlkxnYu6LoIVUj9mMoJvx/rXAxPyMoAUQ8yuCbmDpdP7y40/nKwFBJ8d0fougd/LcnYn5PYJOipjPO3hfQGZrp/Ovrx/b/d0vf/KbEd5iQidGzO8R9Ebe951xHkEnxXQ+j6A38J7OxDyPoCGFoFdiOsdG0IkQ83UEvYL3dMZ1BJ0E03kZgl7IczoT83IEDSkEvQDTOQ+CDoyY1yPoK7ymMzFvQ9AX8PG2+fB66BlTzK3eB7jmtdBM5+2Y0Ge0nszEPA5Bn2DNyI2gj3jHzHTej6Bf9Ip56bpBzG0QNKQQtLFqKCkfdM+Yl6wbxNxW6aC9JzPaKxt0hA8eZzq3VzLoETFfew0IMfdRLugIkxn9lAo6SsxM537KBD0y5kvrBjH3VSLoKJMZ/ckHHSlmpnN/0kF73GeeWzeIeQzpoHtj1YhHNmiPVYPp7E8yaPbmuuSCJubapIL2jJkPcoxBJuhIk9mM6exFJuiedxyIOQ+ZoM36RL3ke7JuxCEVtNlzgK3C3vJ9mM6+5IKe7I2amHOSDdpse9Rrvo51IxbpoM3GPT3NdI5BPmizdVGzauRWImizZaGujZl1I54yQZtdvgOydTVhOsdSKujJabzErKNk0GavEfOaZi1lgzYjZkXDguY/ULWNOv/SExp6CBpSCBpShgbNHl3TyHNnQkPK8KCZ0rWMPm8mNKS4BM2UrsHjnJnQkOIWNFNam9f5uk5ootbkea7uKwdRa/E+T/eggZZCBO39U402Ipzjze3d/ZP3RRzjXSD5RAh5EmJCH4v04OC6aOcVLmizeA8Szot4TuFWjlOsIPFEDHkSPugJYfuLHPIkTdATwh4vQ8iTdEGfIvD2MgV8Kn3QwLGQdzmArQgaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUggaUv4Dbc+FE222XdoAAAAASUVORK5CYII=">
-<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAFd0lEQVR4nO3dMW8TTRSF4RtkKQ49NaJMS8H/ryloKVFqekSBFIrEilm8tmc9M/fMnPfpKL7E3+59727i2L673z88B2DqXfYDADIRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKztsh9Abb+/fsh+CNPbf/mZ/RCquRv9zXEZ+HwjBzFsAAy+nhFDGCoAhn4co8QwzA/BDP9YRjlf8leAUQ4k1ilfDaSvAAz/HJTPo2wAygcN5VTPp2QAqgcLt1E8r3IBKB4k1KN2fqUCUDs4aEPpPMsEoHRQ0J7K+ZYIQOVgoC+F8y4RAJAlPQCFLYA82ec/NYDs/3loyJyD9CsAkIkAYC0tAG5/cCxrHrgCwFpKAGx/nJIxF1wBYI0AYI0AjDzunrIfgpzuAXD/n+Mw/OoR9J4PrgAGlkOvHkFPBDC5tWEnghcEMLFLQ/64e7IPgQBgHQEBCKn5/jmlQ+0aAQFMaOswO0ZAACJqbf9bh9gtAgKYSK3hdYqAAATU2P61h9blN0QEMIGWgzp7BASQ7Hj7b/kzgB4DOnMEBDCwXoP5/c/HLt8nAwEkuuXen+GvgwCwavbhjyCANOrb32H4IwhgODP/QJqBABJs3f7c99dHAINg+NsggM62bH+Gvx0CEMfwt0UAHZ3b/qeeBWb42yMAUQx/HwTQScm9P8PfDwGYYvhfEEAHatuf4X9DAEJ4lrc/Amjs2u3PfX8OAjDC8P+PABqq+T4/t2L4TyMAAwz/OgJopGT7f/r2q9njYPjPI4CJMfyXEUADCvf+DP91CGBCDP/1CKCy7O3P8JfZZT8ARPz4/L7a19ov/s1nsp3HFaCi7O2/xPBfRgCwRgCVsP3HRAATYvivRwAVKG1/hr8MAcAaAdyI7T82ApgEw78NAdxAaftjGwKYANt/OwLYSGX7M/y3IQBYI4AN2P7zIIBBMfx1EEAhhe3P8NfD6wEK1X4Be83XAqAcV4ACtd+9bcvws/3rIoArKbxvJ8NfHwFcQWH40QYBXNBq+Etvf9j+bRDAGSqbn+FvhwBWqAw/2iKAE1oPf8ntD9u/LQJYUNr8DH97BHCE4fdDAJ3xzK8WAnil9OmMbP9+CCC49XFmH0DPT2dU+EtS/Ms6ALWPJmX792cbAMOPCNMAMoaf2x9NdgGobf4Itn8mqwCyhv/c9mf4c9kEwObHKTYB9MAH1I3HIoDMZ3nXbn/Y/hqmD0DpWd4Dhl/H1AEo3vdDy7QBKAz/qdsftr+WaQPosZVLvwfDr2faACLaRsBtzxymDiDiZVBrD+s1X295+8P21zR9AAe1ItjydRh+XTYBRNweAcM/H6sAIrZHUPLf8Zef47ALIKI8gq3RsP31WQYQ0f63OAz/GGwDiLjuN0SloXD7MxbrAA7Whpxbn/kRwKvlsDP8HgjgyGHoeZbXx939/uG59zdlS2JN75+huALAGgHAGgHAWkoA/K4cp2TMBVcAWEsLgKsAjmXNA1cAWCMAWEsNgNsgROTOQfoVgAi8ZZ//9ACATBIBZG8B5FA47xIBRGgcDPSjcr5lAojQOShoS+k8SwUQoXVwUJ/a+ZULIELvIKEOxfMqGUCE5sHCdqrnUzaACN2DhjLK5zHlJZFb8DLK8SgP/oH0FeDYCAcTb0Y5X8NcAZa4IugZZeiPDRvAASHkG3HwD4YPYIkg2ht54JemCwAoMcwPwUALBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrfwH17qK1BJPkzwAAAABJRU5ErkJggg==">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メガ2枠 択ナビ ＆ 戦績ラボ｜ポケモンチャンピオンズ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Zen+Maru+Gothic:wght@500;700;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root{
     --bg:#0e1014;--bg2:#13161c;--ink:#070809;--panel:#161a21;--panel2:#1b2028;
-    --yellow:#ffd21e;--yellow2:#ffb800;--cyan:#28d6ff;--cyan2:#16b6e6;
+    --amber:#ffb84d;--cyan:#28d6ff;--lime:#b6ff5a;--pink:#ff6ec7;--purple:#b98bff;
     --txt:#eef4f8;--sub:#93a3b0;--line:#2a313c;
-    --red:#ff5247;--green:#5fe39a;--cream:#fff6d6;--purple:#b98bff;
+    --red:#ff5247;--green:#5fe39a;--cream:#fff6d6;--blue:#5b8cff;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
     background:
-      radial-gradient(700px 400px at 6% -8%,rgba(255,210,30,.12),transparent 60%),
-      radial-gradient(680px 420px at 100% 2%,rgba(40,214,255,.12),transparent 60%),
+      radial-gradient(820px 460px at 6% -8%,rgba(255,184,77,.13),transparent 60%),
+      radial-gradient(760px 480px at 100% 4%,rgba(185,139,255,.13),transparent 60%),
       var(--bg);
-    color:var(--txt);font-family:"Outfit","Zen Maru Gothic",system-ui,sans-serif;line-height:1.6;
-    -webkit-tap-highlight-color:transparent;
-    padding-bottom:calc(90px + env(safe-area-inset-bottom));
-    padding-top:env(safe-area-inset-top);
+    color:var(--txt);font-family:"Outfit","Zen Maru Gothic",system-ui,sans-serif;line-height:1.6;overflow-x:hidden;-webkit-tap-highlight-color:transparent;padding-bottom:env(safe-area-inset-bottom);
   }
   body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
-    background-image:radial-gradient(rgba(40,214,255,.10) 1.3px,transparent 1.5px);background-size:18px 18px;}
-  .wrap{max-width:560px;margin:0 auto;padding:0 16px;position:relative;z-index:2}
-
-  header{padding:22px 0 12px;text-align:center}
-  .kick{display:inline-block;font-family:"JetBrains Mono";font-weight:800;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
-    color:var(--ink);background:var(--yellow);padding:6px 13px;border-radius:999px;border:3px solid var(--ink);box-shadow:2px 3px 0 var(--cyan);transform:rotate(-1.4deg);margin-bottom:13px}
-  h1{font-family:"Zen Maru Gothic";font-weight:900;font-size:clamp(21px,5.6vw,28px);color:var(--cream);text-shadow:2px 2px 0 var(--ink),4px 4px 0 rgba(40,214,255,.35);line-height:1.1}
-  h1 .y{color:var(--yellow);-webkit-text-stroke:1.5px var(--ink)} h1 .c{color:var(--cyan);-webkit-text-stroke:1.5px var(--ink)}
-
-  /* install banner */
-  .install{display:none;margin-top:14px;background:var(--panel);border:3px solid var(--cyan);border-radius:15px;box-shadow:3px 4px 0 var(--ink);padding:13px 15px;text-align:left;align-items:center;gap:12px}
-  .install.show{display:flex}
-  .install .txt{font-size:12px;color:#d3dde4;flex:1}
-  .install .txt b{color:var(--cyan)}
-  .install button{font-family:"Zen Maru Gothic";font-weight:800;font-size:13px;padding:9px 14px;border-radius:11px;border:3px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:2px 3px 0 var(--ink);cursor:pointer;white-space:nowrap}
-  .install .close{background:none;border:none;box-shadow:none;color:var(--sub);font-size:18px;padding:0 4px;cursor:pointer}
-
-  .tabs{display:flex;gap:7px;margin:16px 0 6px;position:sticky;top:calc(8px + env(safe-area-inset-top));z-index:5}
-  .tab{flex:1;font-family:"Zen Maru Gothic";font-weight:700;font-size:13px;padding:10px 0;text-align:center;border-radius:12px;border:3px solid var(--ink);background:var(--panel);color:var(--sub);box-shadow:3px 4px 0 var(--ink);cursor:pointer;transition:transform .12s}
-  .tab.on{background:var(--yellow);color:var(--ink)} .tab:active{transform:translate(1px,2px)}
-
-  .view{display:none;padding:14px 0 10px} .view.on{display:block}
-
-  /* reminder card (record tab top) */
-  .remind{background:var(--ink);border:3px solid var(--yellow);border-radius:16px;padding:14px 16px;margin-bottom:14px}
-  .remind .rh{font-family:"Zen Maru Gothic";font-weight:900;color:var(--yellow);font-size:14px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
-  .remind ul{list-style:none}
-  .remind li{font-size:12.5px;color:#dbe6ec;padding:5px 0 5px 22px;position:relative}
-  .remind li::before{content:"▸";position:absolute;left:2px;color:var(--cyan);font-weight:800}
-  .remind li b{color:var(--cream)}
-
-  .mcard{background:var(--panel);border:3px solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:18px;margin-bottom:14px;overflow:hidden}
-  .mcard .mtop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
-  .mcard .mname{font-family:"Zen Maru Gothic";font-weight:900;font-size:16px;color:var(--cream)}
-  .mcard .goal{font-family:"JetBrains Mono";font-weight:700;font-size:11px;color:var(--sub)}
-  .mcard .big{font-family:"JetBrains Mono";font-weight:800;font-size:40px;line-height:1;letter-spacing:-.02em}
-  .mcard .big .u{font-size:18px}
-  .mcard .sub2{font-size:11.5px;color:var(--sub);margin-top:4px}
-  .bar{height:14px;background:var(--bg2);border:2px solid var(--ink);border-radius:8px;overflow:hidden;margin-top:12px;position:relative}
-  .bar .fl{height:100%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
-  .bar .goalmark{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--cream);opacity:.85}
-  .status{display:inline-block;font-family:"JetBrains Mono";font-weight:800;font-size:11px;padding:4px 11px;border-radius:999px;border:2px solid var(--ink);margin-top:11px}
-  .status.ok{background:var(--green);color:var(--ink)} .status.ng{background:var(--red);color:#fff}
-  .recent{font-family:"JetBrains Mono";font-size:10.5px;color:var(--sub);margin-top:9px}
-  .recent b{color:var(--cyan)}
-
-  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-  .sm{background:var(--panel);border:3px solid var(--ink);border-radius:14px;box-shadow:3px 4px 0 var(--ink);padding:13px 8px;text-align:center}
-  .sm .k{font-family:"JetBrains Mono";font-size:9.5px;color:var(--sub);text-transform:uppercase;letter-spacing:.04em}
-  .sm .v{font-family:"JetBrains Mono";font-weight:800;font-size:24px;margin-top:4px;color:var(--cream)}
-  .sm .v.w{color:var(--green)} .sm .v.r{color:var(--cyan)}
-
-  .streak{background:var(--panel);border:3px solid var(--ink);border-radius:14px;box-shadow:3px 4px 0 var(--ink);padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
-  .streak .sl{font-family:"Zen Maru Gothic";font-weight:700;font-size:13px;color:var(--sub)}
-  .streak .sv{font-family:"Zen Maru Gothic";font-weight:900;font-size:18px}
-  .streak .sv.win{color:var(--yellow)} .streak .sv.lose{color:var(--cyan)} .streak .sv.none{color:var(--sub)}
-
-  .secttl{font-family:"Zen Maru Gothic";font-weight:900;font-size:15px;color:var(--cream);margin:20px 0 11px;display:flex;align-items:center;gap:8px}
-  .secttl::before{content:"";width:6px;height:18px;background:var(--cyan);border-radius:3px}
-
-  /* opponent winrate */
-  .opp-row{background:var(--panel);border:3px solid var(--ink);border-radius:13px;box-shadow:3px 4px 0 var(--ink);padding:12px 14px;margin-bottom:10px}
-  .opp-row .ot{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .opp-row .on{font-family:"Zen Maru Gothic";font-weight:700;font-size:14px;color:var(--cream)}
-  .opp-row .ow{font-family:"JetBrains Mono";font-weight:800;font-size:15px}
-  .opp-row .obar{height:10px;background:var(--bg2);border:2px solid var(--ink);border-radius:6px;overflow:hidden}
-  .opp-row .ofl{height:100%}
-  .opp-row .oc{font-family:"JetBrains Mono";font-size:10px;color:var(--sub);margin-top:5px}
-
-  .empty{text-align:center;color:var(--sub);font-size:13px;padding:28px 16px;background:var(--panel);border:3px dashed var(--line);border-radius:16px}
-
-  .frm{background:var(--panel);border:3px solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:18px;margin-bottom:14px}
-  .flabel{font-family:"Zen Maru Gothic";font-weight:700;font-size:14px;color:var(--cream);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
-  .flabel:first-child{margin-top:0}
-  .flabel .ic{width:7px;height:18px;background:var(--cyan);border-radius:3px;display:inline-block}
-  .seg{display:flex;gap:8px}
-  .seg button{flex:1;font-family:"Zen Maru Gothic";font-weight:700;font-size:13.5px;padding:13px 0;border-radius:12px;border:3px solid var(--ink);background:var(--bg2);color:var(--sub);cursor:pointer;transition:transform .1s}
-  .seg button:active{transform:translateY(2px)}
-  .seg button.sel.yes{background:var(--green);color:var(--ink)}
-  .seg button.sel.no{background:var(--red);color:#fff}
-  .seg.wl button.sel.win{background:var(--yellow);color:var(--ink)}
-  .seg.wl button.sel.lose{background:var(--panel2);color:var(--cyan);border-color:var(--cyan)}
-  .hint{font-size:11px;color:var(--sub);margin-top:6px}
-  textarea,input[type=text]{width:100%;background:var(--bg2);border:3px solid var(--ink);border-radius:12px;color:var(--txt);
-    font-family:"Outfit","Zen Maru Gothic",sans-serif;font-size:14px;padding:12px;resize:vertical}
-  textarea{min-height:60px}
-  .save{width:100%;margin-top:18px;font-family:"Zen Maru Gothic";font-weight:900;font-size:16px;padding:15px 0;border-radius:14px;
-    border:3px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:4px 5px 0 var(--ink);cursor:pointer;transition:transform .1s}
-  .save:active{transform:translate(1px,2px);box-shadow:2px 3px 0 var(--ink)}
-  .save:disabled{background:var(--panel2);color:var(--sub);box-shadow:none}
-
-  .lg{background:var(--panel);border:3px solid var(--ink);border-radius:15px;box-shadow:3px 4px 0 var(--ink);padding:14px;margin-bottom:11px}
-  .lg .lh{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
-  .lg .ldate{font-family:"JetBrains Mono";font-size:11px;color:var(--sub)}
-  .lg .res{font-family:"Zen Maru Gothic";font-weight:900;font-size:14px;padding:3px 12px;border-radius:999px;border:2px solid var(--ink)}
-  .lg .res.win{background:var(--yellow);color:var(--ink)} .lg .res.lose{background:var(--panel2);color:var(--cyan)}
-  .lg .tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
-  .lg .t{font-family:"JetBrains Mono";font-weight:700;font-size:10.5px;padding:4px 9px;border-radius:8px;border:2px solid var(--ink)}
-  .t.y{background:var(--green);color:var(--ink)} .t.n{background:var(--red);color:#fff} .t.fok{background:var(--green);color:var(--ink)} .t.fng{background:var(--red);color:#fff}
-  .lg .memo{font-size:12.5px;color:#cdd8df;background:var(--bg2);border-radius:9px;padding:9px 11px;border:2px solid var(--line);margin-top:4px}
-  .lg .del{margin-top:9px;font-family:"JetBrains Mono";font-weight:700;font-size:11px;color:var(--red);background:none;border:2px solid var(--red);border-radius:8px;padding:5px 11px;cursor:pointer}
-
-  .toolrow{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-  .toolrow button{flex:1;min-width:30%;font-family:"JetBrains Mono";font-weight:700;font-size:11px;padding:10px 0;border-radius:11px;border:3px solid var(--ink);background:var(--panel);color:var(--sub);cursor:pointer}
-  .toolrow button.danger{color:var(--red);border-color:var(--red)}
-
-  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(80px);z-index:50;
-    background:var(--green);color:var(--ink);font-family:"Zen Maru Gothic";font-weight:800;font-size:14px;
-    padding:12px 22px;border-radius:14px;border:3px solid var(--ink);box-shadow:3px 4px 0 var(--ink);transition:transform .3s;opacity:0}
+    background-image:radial-gradient(rgba(185,139,255,.10) 1.3px,transparent 1.5px);background-size:18px 18px;}
+  .wrap{max-width:980px;margin:0 auto;padding:0 14px 90px;position:relative;z-index:2}
+  header{padding:24px 0 12px;text-align:center}
+  .kicker{display:inline-block;font-family:"JetBrains Mono";font-weight:800;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink);background:var(--amber);padding:6px 14px;border-radius:999px;border:3px solid var(--ink);box-shadow:3px 4px 0 var(--purple);transform:rotate(-1.4deg);margin-bottom:14px}
+  h1{font-family:"Zen Maru Gothic";font-weight:900;font-size:clamp(24px,5.5vw,42px);line-height:1;color:var(--cream);text-shadow:3px 3px 0 var(--ink),6px 6px 0 rgba(185,139,255,.4)}
+  h1 .a{color:var(--amber);-webkit-text-stroke:2px var(--ink)}
+  h1 .p{color:var(--purple);-webkit-text-stroke:2px var(--ink)}
+  .sub{margin:11px auto 0;color:var(--sub);font-size:13px;max-width:620px}
+  .tabs{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:20px 0 8px;position:sticky;top:0;z-index:20;padding:9px 0;background:linear-gradient(var(--bg),rgba(14,16,20,.85) 80%,transparent);backdrop-filter:blur(4px)}
+  .tab{font-family:"Zen Maru Gothic";font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:11px;background:var(--panel);border:2.5px solid var(--ink);box-shadow:2px 3px 0 var(--ink);cursor:pointer;color:var(--sub);transition:.12s;user-select:none}
+  .tab:hover{transform:translate(-1px,-1px)}
+  .tab.active{background:var(--amber);color:var(--ink);box-shadow:2px 3px 0 var(--purple)}
+  .page{display:none;animation:fade .25s}
+  .page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+  .card{background:var(--panel);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 7px 0 var(--ink);padding:17px;margin:15px 0}
+  .card h2{font-family:"Zen Maru Gothic";font-weight:900;font-size:17px;color:var(--cream);margin-bottom:4px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .card .desc{color:var(--sub);font-size:12.5px;margin-bottom:13px}
+  .tagico{font-family:"JetBrains Mono";font-weight:800;font-size:13px;color:var(--ink);width:30px;height:30px;display:grid;place-items:center;border-radius:9px;border:2.5px solid var(--ink);background:var(--cyan);flex-shrink:0}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px}
+  .pchip{position:relative;background:var(--bg2);border:2.5px solid var(--ink);border-radius:12px;padding:9px 7px;cursor:pointer;transition:.12s;text-align:center;user-select:none}
+  .pchip:hover{transform:translate(-1px,-1px);background:var(--panel2)}
+  .pchip.sel{background:var(--amber);color:var(--ink);box-shadow:3px 3px 0 var(--purple)}
+  .pchip.sel .pt{color:var(--ink)}
+  .pchip .pn{font-family:"Zen Maru Gothic";font-weight:700;font-size:12px;line-height:1.2}
+  .pchip .pt{font-family:"JetBrains Mono";font-size:9px;color:var(--sub);margin-top:3px}
+  .pchip .badge{position:absolute;top:-8px;right:-8px;background:var(--purple);color:var(--ink);font-family:"JetBrains Mono";font-weight:800;font-size:11px;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;border:2.5px solid var(--ink)}
+  .reco{background:linear-gradient(135deg,rgba(255,184,77,.1),rgba(185,139,255,.08));border:3px solid var(--ink);border-radius:16px;padding:15px;margin-top:13px}
+  .recohd{font-family:"Zen Maru Gothic";font-weight:900;font-size:15px;color:var(--cream);margin-bottom:11px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .pickrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+  .pick{flex:1;min-width:115px;background:var(--bg2);border:2.5px solid var(--ink);border-radius:12px;padding:10px;text-align:center}
+  .pick.lead{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber) inset}
+  .pick.mega{border-color:var(--pink);box-shadow:0 0 0 2px var(--pink) inset}
+  .pick .pkn{font-family:"Zen Maru Gothic";font-weight:900;font-size:14px;color:var(--cream)}
+  .pick .megatag{display:inline-block;font-family:"JetBrains Mono";font-weight:800;font-size:9px;padding:2px 7px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:var(--ink);margin-top:5px}
+  .pick .pkr{font-family:"JetBrains Mono";font-weight:800;font-size:11px;margin-top:4px}
+  .pick .pkrole{font-size:10.5px;color:var(--sub);margin-top:5px;line-height:1.4}
+  .scoretag{display:inline-block;font-family:"JetBrains Mono";font-weight:800;font-size:11px;padding:2px 8px;border-radius:999px;border:2px solid var(--ink);margin-top:6px}
+  .adv{background:var(--bg2);border:2.5px solid var(--ink);border-radius:12px;padding:12px;margin-top:6px;font-size:12.5px;line-height:1.7}
+  .adv b{color:var(--amber)} .adv .warn{color:var(--red);font-weight:700} .adv .good{color:var(--green);font-weight:700} .adv .mg{color:var(--pink);font-weight:700}
+  .routes{margin-top:10px}
+  .route{background:var(--bg2);border:2.5px solid var(--ink);border-left-width:6px;border-radius:10px;padding:10px 12px;margin:7px 0;font-size:12.5px}
+  .route.A{border-left-color:var(--amber)} .route.B{border-left-color:var(--pink)} .route.C{border-left-color:var(--purple)}
+  .route .rn{font-family:"Zen Maru Gothic";font-weight:900;color:var(--cream);font-size:13px}
+  .bench{margin-top:11px;font-size:12px;color:var(--sub)}
+  .bench .bp{display:inline-block;background:var(--panel2);border:2px solid var(--line);border-radius:8px;padding:3px 9px;margin:3px 3px 0 0;font-family:"Zen Maru Gothic";font-weight:700;font-size:11.5px;color:var(--txt)}
+  .btn{font-family:"Zen Maru Gothic";font-weight:800;font-size:14px;padding:11px 17px;border-radius:13px;border:3px solid var(--ink);box-shadow:3px 4px 0 var(--ink);cursor:pointer;transition:.1s;background:var(--amber);color:var(--ink)}
+  .btn:hover{transform:translate(-1px,-1px)}
+  .btn:active{transform:translate(2px,3px);box-shadow:1px 1px 0 var(--ink)}
+  .btn.cy{background:var(--cyan)} .btn.gr{background:var(--green)} .btn.rd{background:var(--red);color:#fff} .btn.gh{background:var(--panel);color:var(--txt)} .btn.pk{background:var(--pink);color:var(--ink)} .btn.pu{background:var(--purple);color:var(--ink)}
+  .btn.sm{font-size:12px;padding:8px 13px;box-shadow:2px 3px 0 var(--ink)}
+  .btn.lg{font-size:16px;padding:13px 22px}
+  .btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+  label.fl{display:block;font-family:"Zen Maru Gothic";font-weight:700;font-size:12.5px;color:var(--sub);margin:11px 0 5px}
+  input.fi,select.fi,textarea.fi{width:100%;background:var(--bg2);border:2.5px solid var(--ink);border-radius:11px;padding:10px 12px;color:var(--txt);font-family:"Outfit","Zen Maru Gothic";font-size:14px;font-weight:600}
+  input.fi:focus,select.fi:focus,textarea.fi:focus{outline:none;border-color:var(--cyan)}
+  input.search{font-size:13px;padding:11px 13px}
+  .selbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 4px;font-size:12px;color:var(--sub)}
+  .selbar .selnow{font-family:"JetBrains Mono";font-weight:800;color:var(--amber)}
+  .strat{display:flex;align-items:flex-start;gap:11px;background:var(--bg2);border:2.5px solid var(--ink);border-radius:13px;padding:11px;margin:7px 0;cursor:pointer;transition:.1s;user-select:none}
+  .strat:hover{background:var(--panel2)}
+  .strat.on{background:rgba(95,227,154,.12);border-color:var(--green)}
+  .strat .chk{flex-shrink:0;width:26px;height:26px;border-radius:8px;border:2.5px solid var(--ink);background:var(--panel);display:grid;place-items:center;font-weight:900;font-size:16px;color:transparent;margin-top:1px}
+  .strat.on .chk{background:var(--green);color:var(--ink)}
+  .strat .sx .sname{font-family:"Zen Maru Gothic";font-weight:900;font-size:13.5px;color:var(--cream)}
+  .strat .sx .sdesc{font-size:11px;color:var(--sub);margin-top:3px;line-height:1.5}
+  .strat .stag{font-family:"JetBrains Mono";font-weight:800;font-size:9px;letter-spacing:.05em;padding:2px 7px;border-radius:999px;border:2px solid var(--ink);background:var(--amber);color:var(--ink);margin-left:6px;white-space:nowrap}
+  .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  .mc{position:relative;background:var(--bg2);border:2.5px solid var(--ink);border-radius:11px;padding:9px 6px;text-align:center;cursor:pointer;font-family:"Zen Maru Gothic";font-weight:700;font-size:12px;transition:.1s;user-select:none}
+  .mc:hover{background:var(--panel2)}
+  .mc.on{background:var(--cyan);color:var(--ink);box-shadow:2px 3px 0 var(--ink)}
+  .mc .megadot{position:absolute;top:-7px;right:-7px;font-size:11px;width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);background:var(--pink);display:grid;place-items:center}
+  .seg{display:flex;gap:7px;flex-wrap:wrap}
+  .seg .so{flex:1;min-width:74px;text-align:center;background:var(--bg2);border:2.5px solid var(--ink);border-radius:11px;padding:9px;cursor:pointer;font-family:"Zen Maru Gothic";font-weight:800;font-size:13px;transition:.1s;user-select:none}
+  .seg .so.on{box-shadow:2px 3px 0 var(--ink)}
+  .seg .so.win.on{background:var(--green);color:var(--ink)} .seg .so.lose.on{background:var(--red);color:#fff}
+  .seg .so.gen.on{background:var(--purple);color:var(--ink)}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;margin-top:6px}
+  .sbox{background:var(--bg2);border:2.5px solid var(--ink);border-radius:13px;padding:12px;text-align:center}
+  .sbox .sv{font-family:"JetBrains Mono";font-weight:800;font-size:24px;color:var(--amber);line-height:1}
+  .sbox .sl{font-size:10.5px;color:var(--sub);margin-top:6px;font-weight:600}
+  .bar{height:13px;background:var(--bg2);border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin-top:4px}
+  .bar > i{display:block;height:100%;background:var(--green)}
+  .hist{background:var(--bg2);border:2.5px solid var(--ink);border-radius:12px;padding:11px;margin:8px 0;font-size:12.5px}
+  .hist .ht{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+  .hist .res{font-family:"JetBrains Mono";font-weight:800;font-size:12px;padding:2px 9px;border-radius:999px;border:2px solid var(--ink)}
+  .res.W{background:var(--green);color:var(--ink)} .res.L{background:var(--red);color:#fff}
+  .hist .meta{color:var(--sub);font-size:11px;margin-top:5px;line-height:1.5}
+  .empty{text-align:center;color:var(--sub);font-size:13px;padding:22px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}.pickrow{flex-direction:column}}
+  .note{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.5}
+  .divider{height:2px;background:var(--line);margin:13px 0;border-radius:2px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:var(--ink);font-family:"Zen Maru Gothic";font-weight:800;font-size:13px;padding:11px 20px;border-radius:13px;border:3px solid var(--ink);box-shadow:3px 4px 0 var(--ink);z-index:50;transition:.3s;opacity:0;max-width:90vw;text-align:center}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-
-  .note{font-size:11px;color:var(--sub);text-align:center;margin:18px 0 6px;line-height:1.7}
-  .help{background:var(--panel);border:3px dashed var(--line);border-radius:14px;padding:15px;margin-top:14px;font-size:12px;color:#cdd8df;line-height:1.8}
-  .help b{color:var(--yellow)} .help .step{color:var(--cyan);font-family:"JetBrains Mono";font-weight:700}
-  input[type=file]{display:none}
+  .pill{font-family:"JetBrains Mono";font-weight:800;font-size:10px;padding:2px 8px;border-radius:999px;border:2px solid var(--ink);background:var(--panel2);color:var(--txt)}
+  .formbar{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+  .formbar .fd{width:24px;height:24px;border-radius:7px;border:2px solid var(--ink);display:grid;place-items:center;font-family:"JetBrains Mono";font-weight:800;font-size:11px}
+  .formbar .fd.W{background:var(--green);color:var(--ink)} .formbar .fd.L{background:var(--red);color:#fff}
+  .help h3{font-family:"Zen Maru Gothic";font-weight:900;color:var(--amber);font-size:14px;margin:14px 0 6px}
+  .help p{font-size:12.5px;color:var(--txt);line-height:1.7;margin-bottom:6px}
+  .help .step{background:var(--bg2);border:2.5px solid var(--ink);border-radius:11px;padding:11px;margin:7px 0;font-size:12.5px}
+  .help .step b{color:var(--cyan)}
+  .buildgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+  .bcell{background:var(--panel);border:2px solid var(--ink);border-radius:10px;padding:9px}
+  .blabel{font-family:"JetBrains Mono";font-weight:800;font-size:10px;letter-spacing:.04em;color:var(--sub);margin-bottom:3px}
+  .bval{font-family:"Zen Maru Gothic";font-weight:700;font-size:12.5px;color:var(--cream);line-height:1.4}
+  .bsub{font-size:10.5px;color:var(--sub);margin-top:4px;line-height:1.5}
+  .movelist{list-style:none;margin:4px 0 0;padding:0}
+  .movelist li{background:var(--panel);border:2px solid var(--ink);border-left-width:5px;border-left-color:var(--cyan);border-radius:8px;padding:7px 10px;margin:5px 0;font-size:12px;line-height:1.5}
+  .bbox{background:var(--panel);border:2px solid var(--ink);border-radius:10px;padding:10px;margin-top:8px}
+  .bbox.warn2{border-color:var(--red)}
+  .bval2{font-size:12px;line-height:1.65;color:var(--txt);margin-top:3px}
+  .teamhd{transition:.1s}
+  .teamhd:hover{background:var(--panel2)}
+  .quickwin{display:flex;gap:9px;margin-top:12px}
+  .quickwin .btn{flex:1}
 </style>
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIuODoeOCrDLmnqAg5oqe44OK44OTIO+8hiDmiKbnuL7jg6njg5wiLCAic2hvcnRfbmFtZSI6ICLmip7jg4rjg5MiLCAiZGVzY3JpcHRpb24iOiAi44Od44Kx44Oi44Oz44OB44Oj44Oz44OU44Kq44Oz44K6IOODoeOCrDLmnqDou7jjga7pgbjlh7rliKTmlq3vvIbmiKbnuL7liIbmnpAiLCAic3RhcnRfdXJsIjogIi4iLCAic2NvcGUiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGUxMDE0IiwgInRoZW1lX2NvbG9yIjogIiMwZTEwMTQiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0kxTVRJaUlHaGxhV2RvZEQwaU5URXlJaUIyYVdWM1FtOTRQU0l3SURBZ05URXlJRFV4TWlJK0NqeGtaV1p6UGdvOGJHbHVaV0Z5UjNKaFpHbGxiblFnYVdROUltSm5JaUI0TVQwaU1DSWdlVEU5SWpBaUlIZ3lQU0l4SWlCNU1qMGlNU0krQ2p4emRHOXdJRzltWm5ObGREMGlNQ0lnYzNSdmNDMWpiMnh2Y2owaUl6RmlNakF5T0NJdlBqeHpkRzl3SUc5bVpuTmxkRDBpTVNJZ2MzUnZjQzFqYjJ4dmNqMGlJekJsTVRBeE5DSXZQZ284TDJ4cGJtVmhja2R5WVdScFpXNTBQZ284YkdsdVpXRnlSM0poWkdsbGJuUWdhV1E5SW1KdmJIUWlJSGd4UFNJd0lpQjVNVDBpTUNJZ2VESTlJakFpSUhreVBTSXhJajRLUEhOMGIzQWdiMlptYzJWMFBTSXdJaUJ6ZEc5d0xXTnZiRzl5UFNJalptWmtNakZsSWk4K1BITjBiM0FnYjJabWMyVjBQU0l4SWlCemRHOXdMV052Ykc5eVBTSWpabVppT0RSa0lpOCtDand2YkdsdVpXRnlSM0poWkdsbGJuUStDanhzYVc1bFlYSkhjbUZrYVdWdWRDQnBaRDBpWW05c2RESWlJSGd4UFNJd0lpQjVNVDBpTUNJZ2VESTlJakFpSUhreVBTSXhJajRLUEhOMGIzQWdiMlptYzJWMFBTSXdJaUJ6ZEc5d0xXTnZiRzl5UFNJalpEaGlOR1ptSWk4K1BITjBiM0FnYjJabWMyVjBQU0l4SWlCemRHOXdMV052Ykc5eVBTSWpZams0WW1abUlpOCtDand2YkdsdVpXRnlSM0poWkdsbGJuUStDand2WkdWbWN6NEtQSEpsWTNRZ2QybGtkR2c5SWpVeE1pSWdhR1ZwWjJoMFBTSTFNVElpSUhKNFBTSXhNVElpSUdacGJHdzlJblZ5YkNnalltY3BJaTgrQ2p4eVpXTjBJSGc5SWpFMElpQjVQU0l4TkNJZ2QybGtkR2c5SWpRNE5DSWdhR1ZwWjJoMFBTSTBPRFFpSUhKNFBTSXhNREFpSUdacGJHdzlJbTV2Ym1VaUlITjBjbTlyWlQwaUl6QTNNRGd3T1NJZ2MzUnliMnRsTFhkcFpIUm9QU0l4TUNJdlBnbzhZMmx5WTJ4bElHTjRQU0l4TkRBaUlHTjVQU0l4TlRBaUlISTlJak1pSUdacGJHdzlJaU15T0dRMlptWWlJRzl3WVdOcGRIazlJakF1TlNJdlBnbzhZMmx5WTJ4bElHTjRQU0l6T0RBaUlHTjVQU0l4TWpBaUlISTlJak1pSUdacGJHdzlJaU5pT1RoaVptWWlJRzl3WVdOcGRIazlJakF1TlNJdlBnbzhZMmx5WTJ4bElHTjRQU0kwTVRBaUlHTjVQU0l6TnpBaUlISTlJak1pSUdacGJHdzlJaU5tWm1JNE5HUWlJRzl3WVdOcGRIazlJakF1TkNJdlBnbzhZMmx5WTJ4bElHTjRQU0l4TVRBaUlHTjVQU0l6T1RBaUlISTlJak1pSUdacGJHdzlJaU15T0dRMlptWWlJRzl3WVdOcGRIazlJakF1TkNJdlBnbzhJUzB0SU9lb3N1V211ekh2dklqamdxTGpnN1BqZzVEamc3enZ2SjNqZzZ2amdxdmpnNnJqZ3FydnZJa2dMUzArQ2p4d1lYUm9JR1E5SWsweU5UQWdPVEFnVERFMk1DQXlPREFnVERJeU5TQXlPREFnVERFNU1DQTBNekFnVERNek1DQXlNekFnVERJMU5TQXlNekFnVERNd01DQTVNQ0JhSWdvZ0lHWnBiR3c5SW5WeWJDZ2pZbTlzZENraUlITjBjbTlyWlQwaUl6QTNNRGd3T1NJZ2MzUnliMnRsTFhkcFpIUm9QU0l4TkNJZ2MzUnliMnRsTFd4cGJtVnFiMmx1UFNKeWIzVnVaQ0lnZEhKaGJuTm1iM0p0UFNKMGNtRnVjMnhoZEdVb0xUUTBMREFwSUhKdmRHRjBaU2d0T0NBeU5UWWdNalUyS1NJdlBnbzhJUzB0SU9lb3N1V211ekx2dklqamc1SGpnN3pqZzVmamc2dnZ2SjNqZ3F6amc1YnZ2SW5sallycGdJL21tSTdqZ2FmcGg0M2pnYTNqZ2FZeTVwNmc0NEtTNktHbzU0KytJQzB0UGdvOGNHRjBhQ0JrUFNKTk1qVXdJRGt3SUV3eE5qQWdNamd3SUV3eU1qVWdNamd3SUV3eE9UQWdORE13SUV3ek16QWdNak13SUV3eU5UVWdNak13SUV3ek1EQWdPVEFnV2lJS0lDQm1hV3hzUFNKMWNtd29JMkp2YkhReUtTSWdjM1J5YjJ0bFBTSWpNRGN3T0RBNUlpQnpkSEp2YTJVdGQybGtkR2c5SWpFMElpQnpkSEp2YTJVdGJHbHVaV3B2YVc0OUluSnZkVzVrSWlCdmNHRmphWFI1UFNJd0xqa3lJaUIwY21GdWMyWnZjbTA5SW5SeVlXNXpiR0YwWlNnMk1Dd3hPQ2tnY205MFlYUmxLRGNnTWpVMklESTFOaWtpTHo0S1BDOXpkbWMrIiwgInNpemVzIjogIjUxMng1MTIiLCAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIn0sIHsic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIZHBaSFJvUFNJMU1USWlJR2hsYVdkb2REMGlOVEV5SWlCMmFXVjNRbTk0UFNJd0lEQWdOVEV5SURVeE1pSStDanhrWldaelBnbzhiR2x1WldGeVIzSmhaR2xsYm5RZ2FXUTlJbUpuSWlCNE1UMGlNQ0lnZVRFOUlqQWlJSGd5UFNJeElpQjVNajBpTVNJK0NqeHpkRzl3SUc5bVpuTmxkRDBpTUNJZ2MzUnZjQzFqYjJ4dmNqMGlJekZpTWpBeU9DSXZQanh6ZEc5d0lHOW1abk5sZEQwaU1TSWdjM1J2Y0MxamIyeHZjajBpSXpCbE1UQXhOQ0l2UGdvOEwyeHBibVZoY2tkeVlXUnBaVzUwUGdvOGJHbHVaV0Z5UjNKaFpHbGxiblFnYVdROUltSnZiSFFpSUhneFBTSXdJaUI1TVQwaU1DSWdlREk5SWpBaUlIa3lQU0l4SWo0S1BITjBiM0FnYjJabWMyVjBQU0l3SWlCemRHOXdMV052Ykc5eVBTSWpabVprTWpGbElpOCtQSE4wYjNBZ2IyWm1jMlYwUFNJeElpQnpkRzl3TFdOdmJHOXlQU0lqWm1aaU9EUmtJaTgrQ2p3dmJHbHVaV0Z5UjNKaFpHbGxiblErQ2p4c2FXNWxZWEpIY21Ga2FXVnVkQ0JwWkQwaVltOXNkRElpSUhneFBTSXdJaUI1TVQwaU1DSWdlREk5SWpBaUlIa3lQU0l4SWo0S1BITjBiM0FnYjJabWMyVjBQU0l3SWlCemRHOXdMV052Ykc5eVBTSWpaRGhpTkdabUlpOCtQSE4wYjNBZ2IyWm1jMlYwUFNJeElpQnpkRzl3TFdOdmJHOXlQU0lqWWprNFltWm1JaTgrQ2p3dmJHbHVaV0Z5UjNKaFpHbGxiblErQ2p3dlpHVm1jejRLUEhKbFkzUWdkMmxrZEdnOUlqVXhNaUlnYUdWcFoyaDBQU0kxTVRJaUlISjRQU0l4TVRJaUlHWnBiR3c5SW5WeWJDZ2pZbWNwSWk4K0NqeHlaV04wSUhnOUlqRTBJaUI1UFNJeE5DSWdkMmxrZEdnOUlqUTROQ0lnYUdWcFoyaDBQU0kwT0RRaUlISjRQU0l4TURBaUlHWnBiR3c5SW01dmJtVWlJSE4wY205clpUMGlJekEzTURnd09TSWdjM1J5YjJ0bExYZHBaSFJvUFNJeE1DSXZQZ284WTJseVkyeGxJR040UFNJeE5EQWlJR041UFNJeE5UQWlJSEk5SWpNaUlHWnBiR3c5SWlNeU9HUTJabVlpSUc5d1lXTnBkSGs5SWpBdU5TSXZQZ284WTJseVkyeGxJR040UFNJek9EQWlJR041UFNJeE1qQWlJSEk5SWpNaUlHWnBiR3c5SWlOaU9UaGlabVlpSUc5d1lXTnBkSGs5SWpBdU5TSXZQZ284WTJseVkyeGxJR040UFNJME1UQWlJR041UFNJek56QWlJSEk5SWpNaUlHWnBiR3c5SWlObVptSTROR1FpSUc5d1lXTnBkSGs5SWpBdU5DSXZQZ284WTJseVkyeGxJR040UFNJeE1UQWlJR041UFNJek9UQWlJSEk5SWpNaUlHWnBiR3c5SWlNeU9HUTJabVlpSUc5d1lXTnBkSGs5SWpBdU5DSXZQZ284SVMwdElPZW9zdVdtdXpIdnZJampncUxqZzdQamc1RGpnN3p2dkozamc2dmpncXZqZzZyamdxcnZ2SWtnTFMwK0NqeHdZWFJvSUdROUlrMHlOVEFnT1RBZ1RERTJNQ0F5T0RBZ1RESXlOU0F5T0RBZ1RERTVNQ0EwTXpBZ1RETXpNQ0F5TXpBZ1RESTFOU0F5TXpBZ1RETXdNQ0E1TUNCYUlnb2dJR1pwYkd3OUluVnliQ2dqWW05c2RDa2lJSE4wY205clpUMGlJekEzTURnd09TSWdjM1J5YjJ0bExYZHBaSFJvUFNJeE5DSWdjM1J5YjJ0bExXeHBibVZxYjJsdVBTSnliM1Z1WkNJZ2RISmhibk5tYjNKdFBTSjBjbUZ1YzJ4aGRHVW9MVFEwTERBcElISnZkR0YwWlNndE9DQXlOVFlnTWpVMktTSXZQZ284SVMwdElPZW9zdVdtdXpMdnZJampnNUhqZzd6amc1ZmpnNnZ2dkozamdxempnNWJ2dklubGpZcnBnSS9tbUk3amdhZnBoNDNqZ2EzamdhWXk1cDZnNDRLUzZLR281NCsrSUMwdFBnbzhjR0YwYUNCa1BTSk5NalV3SURrd0lFd3hOakFnTWpnd0lFd3lNalVnTWpnd0lFd3hPVEFnTkRNd0lFd3pNekFnTWpNd0lFd3lOVFVnTWpNd0lFd3pNREFnT1RBZ1dpSUtJQ0JtYVd4c1BTSjFjbXdvSTJKdmJIUXlLU0lnYzNSeWIydGxQU0lqTURjd09EQTVJaUJ6ZEhKdmEyVXRkMmxrZEdnOUlqRTBJaUJ6ZEhKdmEyVXRiR2x1WldwdmFXNDlJbkp2ZFc1a0lpQnZjR0ZqYVhSNVBTSXdMamt5SWlCMGNtRnVjMlp2Y20wOUluUnlZVzV6YkdGMFpTZzJNQ3d4T0NrZ2NtOTBZWFJsS0RjZ01qVTJJREkxTmlraUx6NEtQQzl6ZG1jKyIsICJzaXplcyI6ICIxOTJ4MTkyIiwgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSJ9XX0=">
+<meta name="theme-color" content="#0e1014">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="択ナビ">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzFiMjAyOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBlMTAxNCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImJvbHQiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZkMjFlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZmZiODRkIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0iYm9sdDIiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZDhiNGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjYjk4YmZmIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9InVybCgjYmcpIi8+CjxyZWN0IHg9IjE0IiB5PSIxNCIgd2lkdGg9IjQ4NCIgaGVpZ2h0PSI0ODQiIHJ4PSIxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MDgwOSIgc3Ryb2tlLXdpZHRoPSIxMCIvPgo8Y2lyY2xlIGN4PSIxNDAiIGN5PSIxNTAiIHI9IjMiIGZpbGw9IiMyOGQ2ZmYiIG9wYWNpdHk9IjAuNSIvPgo8Y2lyY2xlIGN4PSIzODAiIGN5PSIxMjAiIHI9IjMiIGZpbGw9IiNiOThiZmYiIG9wYWNpdHk9IjAuNSIvPgo8Y2lyY2xlIGN4PSI0MTAiIGN5PSIzNzAiIHI9IjMiIGZpbGw9IiNmZmI4NGQiIG9wYWNpdHk9IjAuNCIvPgo8Y2lyY2xlIGN4PSIxMTAiIGN5PSIzOTAiIHI9IjMiIGZpbGw9IiMyOGQ2ZmYiIG9wYWNpdHk9IjAuNCIvPgo8IS0tIOeosuWmuzHvvIjjgqLjg7Pjg5Djg7zvvJ3jg6vjgqvjg6rjgqrvvIkgLS0+CjxwYXRoIGQ9Ik0yNTAgOTAgTDE2MCAyODAgTDIyNSAyODAgTDE5MCA0MzAgTDMzMCAyMzAgTDI1NSAyMzAgTDMwMCA5MCBaIgogIGZpbGw9InVybCgjYm9sdCkiIHN0cm9rZT0iIzA3MDgwOSIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQ0LDApIHJvdGF0ZSgtOCAyNTYgMjU2KSIvPgo8IS0tIOeosuWmuzLvvIjjg5Hjg7zjg5fjg6vvvJ3jgqzjg5bvvInljYrpgI/mmI7jgafph43jga3jgaYy5p6g44KS6KGo54++IC0tPgo8cGF0aCBkPSJNMjUwIDkwIEwxNjAgMjgwIEwyMjUgMjgwIEwxOTAgNDMwIEwzMzAgMjMwIEwyNTUgMjMwIEwzMDAgOTAgWiIKICBmaWxsPSJ1cmwoI2JvbHQyKSIgc3Ryb2tlPSIjMDcwODA5IiBzdHJva2Utd2lkdGg9IjE0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBvcGFjaXR5PSIwLjkyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MCwxOCkgcm90YXRlKDcgMjU2IDI1NikiLz4KPC9zdmc+">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzFiMjAyOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBlMTAxNCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImJvbHQiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZkMjFlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZmZiODRkIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0iYm9sdDIiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZDhiNGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjYjk4YmZmIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9InVybCgjYmcpIi8+CjxyZWN0IHg9IjE0IiB5PSIxNCIgd2lkdGg9IjQ4NCIgaGVpZ2h0PSI0ODQiIHJ4PSIxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MDgwOSIgc3Ryb2tlLXdpZHRoPSIxMCIvPgo8Y2lyY2xlIGN4PSIxNDAiIGN5PSIxNTAiIHI9IjMiIGZpbGw9IiMyOGQ2ZmYiIG9wYWNpdHk9IjAuNSIvPgo8Y2lyY2xlIGN4PSIzODAiIGN5PSIxMjAiIHI9IjMiIGZpbGw9IiNiOThiZmYiIG9wYWNpdHk9IjAuNSIvPgo8Y2lyY2xlIGN4PSI0MTAiIGN5PSIzNzAiIHI9IjMiIGZpbGw9IiNmZmI4NGQiIG9wYWNpdHk9IjAuNCIvPgo8Y2lyY2xlIGN4PSIxMTAiIGN5PSIzOTAiIHI9IjMiIGZpbGw9IiMyOGQ2ZmYiIG9wYWNpdHk9IjAuNCIvPgo8IS0tIOeosuWmuzHvvIjjgqLjg7Pjg5Djg7zvvJ3jg6vjgqvjg6rjgqrvvIkgLS0+CjxwYXRoIGQ9Ik0yNTAgOTAgTDE2MCAyODAgTDIyNSAyODAgTDE5MCA0MzAgTDMzMCAyMzAgTDI1NSAyMzAgTDMwMCA5MCBaIgogIGZpbGw9InVybCgjYm9sdCkiIHN0cm9rZT0iIzA3MDgwOSIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQ0LDApIHJvdGF0ZSgtOCAyNTYgMjU2KSIvPgo8IS0tIOeosuWmuzLvvIjjg5Hjg7zjg5fjg6vvvJ3jgqzjg5bvvInljYrpgI/mmI7jgafph43jga3jgaYy5p6g44KS6KGo54++IC0tPgo8cGF0aCBkPSJNMjUwIDkwIEwxNjAgMjgwIEwyMjUgMjgwIEwxOTAgNDMwIEwzMzAgMjMwIEwyNTUgMjMwIEwzMDAgOTAgWiIKICBmaWxsPSJ1cmwoI2JvbHQyKSIgc3Ryb2tlPSIjMDcwODA5IiBzdHJva2Utd2lkdGg9IjE0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBvcGFjaXR5PSIwLjkyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MCwxOCkgcm90YXRlKDcgMjU2IDI1NikiLz4KPC9zdmc+">
 </head>
 <body>
 <div class="wrap">
   <header>
-    <span class="kick">Pokémon Champions ・ 戦績トラッカー</span>
-    <h1><span class="y">メガハッサム</span>×<span class="c">ゲッコウガ</span><br>3指標トラッカー</h1>
-    <div class="install" id="installBar">
-      <div class="txt"><b>ホーム画面に追加</b>してアプリのように使えます</div>
-      <button id="installBtn">追加</button>
-      <button class="close" id="installClose">×</button>
-    </div>
+    <div class="kicker">POKEMON CHAMPIONS / DUAL-MEGA</div>
+    <h1><span class="a">メガ2枠</span> 択ナビ<br>＆ <span class="p">戦績ラボ</span></h1>
+    <div class="sub">ルカリオ＋ガブリアスの「どっちがメガか読ませない」択を軸に、相手6匹から最適選出・メガ判断・勝ち筋を提案。戦績を記録して勝率を分析する。</div>
   </header>
 
   <div class="tabs">
-    <div class="tab on" data-v="dash">📊 ダッシュ</div>
-    <div class="tab" data-v="rec">✏️ 記録</div>
-    <div class="tab" data-v="log">📜 履歴</div>
+    <div class="tab active" data-p="nav">🎯 選出ナビ</div>
+    <div class="tab" data-p="log">📝 戦績</div>
+    <div class="tab" data-p="stats">📊 分析</div>
+    <div class="tab" data-p="pool">📋 相手プール</div>
+    <div class="tab" data-p="team">👥 自軍</div>
+    <div class="tab" data-p="help">❓ 使い方</div>
   </div>
 
-  <!-- DASH -->
-  <section class="view on" id="dash">
-    <div class="summary">
-      <div class="sm"><div class="k">試合数</div><div class="v" id="s-total">0</div></div>
-      <div class="sm"><div class="k">勝率</div><div class="v w" id="s-wr">–</div></div>
-      <div class="sm"><div class="k">勝/負</div><div class="v r" id="s-wl">0/0</div></div>
+  <!-- ===== 選出ナビ ===== -->
+  <section class="page active" id="nav">
+    <div class="card">
+      <h2><span class="tagico">1</span>相手の6匹を選択</h2>
+      <div class="desc">プールから6匹をタップ。番号＝選択順。もう一度タップで解除。検索で絞れます。</div>
+      <input class="fi search" id="navSearch" placeholder="🔍 名前・タイプで絞り込み（例：ガブ / ドラゴン）" oninput="renderNavPool()">
+      <div class="pgrid" id="navPool" style="margin-top:10px"></div>
+      <div class="note" id="navSearchEmpty" style="display:none">該当なし。別のキーワードで試してください。</div>
+      <div class="btnrow">
+        <button class="btn cy lg" onclick="runReco()">⚡ 選出を判定する</button>
+        <button class="btn gh sm" onclick="clearNavSel()">クリア</button>
+      </div>
     </div>
-    <div class="streak" id="streakBox">
-      <span class="sl">現在の連勝/連敗</span><span class="sv none" id="streakVal">–</span>
-    </div>
-    <div id="metrics"></div>
-    <div id="oppSection"></div>
-    <p class="note">※指標と目標値は上達のための自作フレームです（ゲーム内の公式数値ではありません）。<br>記録はこの端末に保存され、次に開いても残ります。</p>
+    <div id="recoOut"></div>
   </section>
 
-  <!-- RECORD -->
-  <section class="view" id="rec">
-    <div class="remind">
-      <div class="rh">⚡ 試合前チェック（最重要）</div>
-      <ul>
-        <li>相手に<b>炎</b>がいないか確認（リザードン/ガオガエン/ヒードラン）</li>
-        <li>炎がいるなら<b>炎受け枠を選出</b>。ハッサムは切り札に温存</li>
-        <li>ゲッコウガは<b>先発で1削り</b>、不利ならクイックターンで損切り</li>
-        <li>剣舞は<b>削ってから</b>。早積み厳禁</li>
-      </ul>
-    </div>
-    <div class="frm">
-      <div class="flabel"><span class="ic"></span>① 展開成功（ゲッコウガが1体削る or 安全に引く）</div>
-      <div class="seg" data-q="deploy">
-        <button data-val="1" class="yes">できた</button>
-        <button data-val="0" class="no">できなかった</button>
+  <!-- ===== 戦績 ===== -->
+  <section class="page" id="log">
+    <div class="card">
+      <h2><span class="tagico" style="background:var(--pink)">2</span>この対戦を記録</h2>
+      <div class="desc">「選出ナビ」で判定すると相手6匹・選出・メガ提案が自動で入ります。足りない所だけ手で。</div>
+
+      <label class="fl">相手6匹（選出ナビから自動連携）</label>
+      <div class="reco" style="margin-top:0;padding:12px"><div class="bench" id="logOppCarryBody" style="margin-top:0"></div></div>
+
+      <div class="divider"></div>
+      <label class="fl">自軍の選出3匹（タップで変更）</label>
+      <div class="mini" id="logMyTeam"></div>
+
+      <div class="divider"></div>
+      <label class="fl">今回メガ化したのは？</label>
+      <div class="seg" id="logMega"></div>
+
+      <div class="divider"></div>
+      <label class="fl">ヒスイゾロアークを出した？</label>
+      <div class="seg" id="logZoro">
+        <div class="so gen" data-v="yes">出した</div>
+        <div class="so" data-v="no">出さない</div>
       </div>
-      <div class="flabel"><span class="ic"></span>② 剣舞着地（ハッサムが剣舞を1回以上積めた）</div>
-      <div class="seg" data-q="sd">
-        <button data-val="1" class="yes">積めた</button>
-        <button data-val="0" class="no">積めなかった</button>
+
+      <div class="divider"></div>
+      <label class="fl">相手6匹のうち、戦闘に出てきた3匹</label>
+      <div class="note" style="margin-top:0">連携された相手6匹が並びます。出てきた3匹をタップ。</div>
+      <div class="pgrid" id="logOppShown" style="margin-top:8px"></div>
+
+      <div class="divider"></div>
+      <h2 style="font-size:15px"><span class="tagico" style="background:var(--amber)">★</span>勝ち筋・必須行動チェック</h2>
+      <div class="desc">この対戦で取れた「強い行動」。後で勝率との相関を見る。</div>
+      <div id="stratList"></div>
+
+      <div class="divider"></div>
+      <div class="row2">
+        <div>
+          <label class="fl">勝敗</label>
+          <div class="seg" id="logResult">
+            <div class="so win" data-v="W">WIN</div>
+            <div class="so lose" data-v="L">LOSE</div>
+          </div>
+        </div>
+        <div><label class="fl">日付</label><input class="fi" id="log_date" type="date"></div>
       </div>
-      <div class="flabel"><span class="ic"></span>③ 炎被弾（ハッサムが炎技を受けた）</div>
-      <div class="seg" data-q="fire">
-        <button data-val="1" class="no">被弾した</button>
-        <button data-val="0" class="yes">受けなかった</button>
+      <label class="fl">勝因 / 敗因メモ（任意）</label>
+      <input class="fi" id="log_note" placeholder="例：ガブメガ読み外して全抜き / あく2枚で詰んだ など">
+
+      <div class="btnrow">
+        <button class="btn gr lg" onclick="saveMatch()">💾 戦績を保存</button>
+        <button class="btn gh sm" onclick="resetLogForm()">フォームをリセット</button>
       </div>
-      <p class="hint">※「受けなかった」が良い結果（緑）。炎被弾率は低いほど◎</p>
-      <div class="flabel"><span class="ic"></span>勝敗</div>
-      <div class="seg wl" data-q="result">
-        <button data-val="win" class="win">勝ち</button>
-        <button data-val="lose" class="lose">負け</button>
-      </div>
-      <div class="flabel"><span class="ic"></span>相手構築タグ（任意）</div>
-      <input type="text" id="opp" placeholder="例：ガブ展開 / 受け回し / リザ入り / 雨パ">
-      <p class="hint">同じタグ名でまとめると、相手構築別の勝率が出ます</p>
-      <div class="flabel"><span class="ic"></span>反省メモ（任意）</div>
-      <textarea id="memo" placeholder="気づき・反省（任意）：例 炎受けを選出し忘れた、剣舞早すぎた…"></textarea>
-      <button class="save" id="saveBtn" disabled>記録する</button>
     </div>
   </section>
 
-  <!-- LOG -->
-  <section class="view" id="log">
-    <div class="toolrow">
-      <button id="exportBtn">⬇ 書き出し</button>
-      <button id="importBtn">⬆ 読み込み</button>
-      <button id="clearBtn" class="danger">🗑 全削除</button>
+  <!-- ===== 分析 ===== -->
+  <section class="page" id="stats">
+    <div class="card">
+      <h2><span class="tagico">📊</span>勝つための分析</h2>
+      <div class="desc">全戦績の集計。直近フォーム・メガ別勝率・戦略相関がコア指標。</div>
+      <div class="stat-grid" id="kpi"></div>
+      <div class="formbar" id="formBar"></div>
+      <div class="divider"></div>
+      <h2 style="font-size:15px">どちらをメガ化すると勝てている？</h2>
+      <div class="desc">メガ選択別の勝率。択の「正解」が数値で見える。</div>
+      <div id="megaStats"></div>
+      <div class="divider"></div>
+      <h2 style="font-size:15px">ヒスイゾロアーク：出す / 出さないの勝率</h2>
+      <div id="zoroStats"></div>
+      <div class="divider"></div>
+      <h2 style="font-size:15px">戦略別：遂行したときの勝率</h2>
+      <div class="desc">遂行時 vs 未遂行時の勝率差(pt)が大きい＝あなたの勝ち筋。</div>
+      <div id="stratStats"></div>
+      <div class="divider"></div>
+      <h2 style="font-size:15px">自軍の組み合わせ別 勝率</h2>
+      <div id="comboStats"></div>
+      <div class="divider"></div>
+      <div class="btnrow">
+        <button class="btn gr" onclick="exportXLSX()">⬇ Excel(分析用)で書き出し</button>
+        <button class="btn cy sm" onclick="exportJSON()">JSONバックアップ</button>
+        <button class="btn gh sm" onclick="document.getElementById('imp').click()">復元</button>
+        <input type="file" id="imp" accept="application/json" style="display:none" onchange="importJSON(event)">
+        <button class="btn rd sm" onclick="wipeMatches()">戦績のみ削除</button>
+      </div>
     </div>
-    <input type="file" id="importFile" accept="application/json">
-    <div id="logList"></div>
-    <div class="help">
-      <b>📲 ホーム画面に追加する方法</b><br>
-      <b style="color:var(--cyan)">iPhone (Safari)：</b> 共有ボタン <span class="step">⬆</span> →「ホーム画面に追加」<br>
-      <b style="color:var(--cyan)">Android (Chrome)：</b> メニュー <span class="step">⋮</span> →「アプリをインストール」または「ホーム画面に追加」<br>
-      <span style="color:var(--sub)">※GitHub Pages 等のhttpsに置くとオフライン動作＆アプリアイコンが有効になります。</span>
+    <div class="card">
+      <h2><span class="tagico">🗂</span>戦績ログ <span class="pill" id="logCount">0</span></h2>
+      <input class="fi search" id="logSearch" placeholder="🔍 相手名・メモで絞り込み" oninput="renderLogList()">
+      <div id="logList" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- ===== 相手プール ===== -->
+  <section class="page" id="pool">
+    <div class="card">
+      <h2><span class="tagico" style="background:var(--lime)">＋</span>相手ポケモンを登録</h2>
+      <div class="desc">当たる相手をプールに溜める。タイプ・脅威メモで判定精度UP。約130匹プリセット済み。</div>
+      <div class="row2">
+        <div><label class="fl">ポケモン名</label><input class="fi" id="np_name" placeholder="例：ガブリアス"></div>
+        <div><label class="fl">タイプ1 / タイプ2</label>
+          <div style="display:flex;gap:7px"><select class="fi" id="np_t1"></select><select class="fi" id="np_t2"></select></div></div>
+      </div>
+      <label class="fl">脅威メモ（任意）</label>
+      <input class="fi" id="np_note" placeholder="例：物理 / 鬼火 / 高速 など">
+      <div class="btnrow"><button class="btn gr" onclick="addPoke()">プールに追加</button></div>
+    </div>
+    <div class="card">
+      <h2><span class="tagico" style="background:var(--purple)">⬆</span>一括取り込み（貼り付け）</h2>
+      <div class="desc">攻略サイト等のリストを貼って一括登録。1行＝1匹。区切りは カンマ/タブ/スペース 自動判定。<b style="color:var(--amber)">名前 タイプ1 タイプ2(任意) メモ(任意)</b>。同名はスキップ。</div>
+      <textarea class="fi" id="bulkInput" rows="6" style="resize:vertical;font-size:13px" placeholder="ガブリアス,ドラゴン,じめん&#10;カバルドン,じめん&#10;ハバタクカミ ゴースト フェアリー"></textarea>
+      <div class="selbar" id="bulkPreview" style="display:none"></div>
+      <div class="btnrow">
+        <button class="btn cy" onclick="previewBulk()">🔍 プレビュー</button>
+        <button class="btn gr" onclick="commitBulk()">⬆ 取り込む</button>
+        <button class="btn gh sm" onclick="document.getElementById('bulkInput').value='';document.getElementById('bulkPreview').style.display='none'">クリア</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2><span class="tagico">📋</span>登録済みプール <span class="pill" id="poolCount">0</span></h2>
+      <div class="desc">脅威メモは編集可、🗑で削除。検索で絞り込み。</div>
+      <input class="fi search" id="poolSearch" placeholder="🔍 名前・タイプで絞り込み" oninput="renderPool()">
+      <div id="poolList" style="margin-top:10px"></div>
+      <div class="btnrow">
+        <button class="btn gh sm" onclick="resetPoolToSeed()">初期データに戻す</button>
+        <button class="btn rd sm" onclick="clearPool()">プールを全削除</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 自軍 ===== -->
+  <section class="page" id="team">
+    <div class="card">
+      <h2><span class="tagico" style="background:var(--pink)">👥</span>自軍パーティ</h2>
+      <div class="desc">ルカリオ＋ガブリアスのメガ2枠軸。各駒の役割と技。メモは編集して育ててOK。</div>
+      <div id="teamBody"></div>
+    </div>
+    <div class="card">
+      <h2><span class="tagico">🧩</span>この構築の狙い</h2>
+      <div class="help" id="conceptBody"></div>
+    </div>
+  </section>
+
+  <!-- ===== 使い方 ===== -->
+  <section class="page" id="help">
+    <div class="card help">
+      <h2><span class="tagico">❓</span>使い方</h2>
+      <div id="helpBody"></div>
     </div>
   </section>
 </div>
-
-<div class="toast" id="toast">保存しました！</div>
-
+<div class="toast" id="toast"></div>
 <script>
-const KEY='msg_tracker_records_v1';
-let records=[];
-const sel={deploy:null,sd:null,fire:null,result:null};
+/* ============================================================
+   ポケモンチャンピオンズ メガ2枠 択ナビ＆戦績ラボ
+   軸：ルカリオ＋ガブリアス（どちらがメガか読ませない択）
+   設計署名：状態を持たず全導出 / localStorage単一キー / 単一HTML / SheetJS出力
+   ============================================================ */
+const LS_KEY='champ_dualmega_v1';
+const TYPES=['ノーマル','ほのお','みず','でんき','くさ','こおり','かくとう','どく','じめん','ひこう','エスパー','むし','いわ','ゴースト','ドラゴン','あく','はがね','フェアリー'];
 
-/* ---- storage (artifact API with localStorage fallback) ---- */
-async function load(){
-  try{
-    if(window.storage && window.storage.get){
-      const r=await window.storage.get(KEY);
-      if(r && r.value){ records=JSON.parse(r.value)||[]; }
+/* ---- 自軍6匹 ---- */
+const MYTEAM={
+  luca:  {name:'ルカリオ', type:['かくとう','はがね'], abil:'てきおうりょく(メガ)', mega:true,
+          moves:['つるぎのまい/わるだくみ','インファイト/はどうだん','バレットパンチ','しんそく/ラスターカノン'],
+          role:'メガ候補①／積んで全抜き', atk:['かくとう','はがね'], build:{nature:'ようき（素早さ↑特攻↓）or いじっぱり（攻撃↑特攻↓）',item:'ルカリオナイト（メガストーン）',ev:'攻撃32 / 素早さ32 / HP2（物理型ぶっぱ）',evNote:'両刀にするなら攻撃・特攻・素早さを散らすが、まずは物理特化が安定。ようきで最速、火力重視なら いじっぱり。',movesDetail:['つるぎのまい：起点で積む主軸。メガの高火力を倍化','インファイト：メイン格闘技。あく・鋼・ノーマル・岩・氷に刺さる','バレットパンチ：先制技。紙耐久を補い上から縛る（テクニシャンではないが一致）','しんそく or ラスターカノン：しんそく=広い先制 / ラスター=フェアリー対策'],play:'後出しメガの軸。ロトムのボルチェン等で安全に着地→剣舞→インファイト/バレパンで全抜き。紙耐久なので上を取られる前に先制技でケアする。相手の鋼受け（メタグロス等）にはインファイトが刺さる。',caution:'炎・地面・格闘が等倍以上。鬼火を打たれると物理が機能停止するので、鬼火持ち（ガオガエン等）の前では無理に居座らない。'}},
+  gab:   {name:'ガブリアス', type:['ドラゴン','じめん'], abil:'すなのちから(メガ)', mega:true,
+          moves:['じしん','げきりん/スケイルショット','ステルスロック','つるぎのまい/だんがいのつるぎ'],
+          role:'メガ候補②／地面制圧・ステロ', atk:['ドラゴン','じめん','いわ'], build:{nature:'ようき（素早さ↑特攻↓）',item:'ガブリアスナイト（メガストーン）／非メガ運用なら こだわりスカーフ・きあいのタスキ等',ev:'攻撃32 / 素早さ32 / HP2',evNote:'基本は攻撃・素早さ全振り。メガ後は素早さ102→高速域に乗る。耐久に寄せるならHP/防御へ。',movesDetail:['じしん：メインの地面技。鋼・電気・炎・毒・岩に刺さる','げきりん or スケイルショット：竜技。スケショは素早さUP＋連続で襷貫通','ステルスロック：起点づくり。ガブは撒き性能も高い','つるぎのまい or だんがいのつるぎ：積むか、外しにくい地面技か'],play:'メガ択のもう一枚。相手がルカリオ警戒で鋼/格闘受けを出したら、こちらをメガ化して地面で蹂躙。素のままでもスカーフ・襷で器用に動け、ステロ撒き役としても優秀。「どっちがメガか」の択の核。',caution:'氷4倍に注意（テツノツツミ・セグレイブの氷技で即落ち）。フェアリー・竜も弱点。相手に氷技が見えたら無理に出さない。'}},
+  zoro:  {name:'ヒスイゾロアーク', type:['ノーマル','ゴースト'], abil:'イリュージョン', mega:false,
+          moves:['シャドーボール','ぶきみなじゅもん','わるだくみ','れいとうビーム/くさむすび'],
+          role:'揺さぶり／化けて択・高速特殊', atk:['ゴースト','こおり'], build:{nature:'おくびょう（素早さ↑攻撃↓）',item:'こだわりメガネ／いのちのたま／とつげきチョッキ等（型で変える）',ev:'特攻32 / 素早さ32 / HP2',evNote:'特殊高速アタッカー。特攻・素早さ全振りで上から殴る。チョッキ型なら耐久に寄せる選択肢も。',movesDetail:['シャドーボール：メインのゴースト技。エスパー・ゴーストに刺さる','ぶきみなじゅもん：高威力ゴースト技（PP少なめ）。一貫を取る決め手','わるだくみ：特攻2段階UP。化けの隙に積めれば制圧','れいとうビーム or くさむすび：竜・地面・水への打点補完'],play:'イリュージョンで味方（ガブ/マスカ推奨）に化けて出す。相手が化け先と思って動いた隙にわるだくみ→特殊技で奇襲。出さない選出も全然アリ。あくまで揺さぶり要員で、依存しない。',caution:'あく技で一撃（ノーマル/ゴーストはあく弱点）。化けがバレると紙耐久で即落ち。先制技にも弱い。パオジアン等のあく＋先制環境では出しにくい。'}},
+  rotom: {name:'ウォッシュロトム', type:['でんき','みず'], abil:'ふゆう', mega:false,
+          moves:['ハイドロポンプ','10まんボルト','ボルトチェンジ','ひかりのかべ/おにび'],
+          role:'受け／対面操作・着地役', atk:['みず','でんき'], build:{nature:'ずぶとい（防御↑攻撃↓）or おくびょう（素早↑攻撃↓）',item:'オボンのみ／たべのこし／こだわりスカーフ',ev:'HP32 / 防御32 / 特防2（受け型）。攻撃的にするなら特攻・素早へ',evNote:'受け・対面操作役ならHP/防御。アタッカー寄りにするなら特攻/素早。役割で大きく変わる。',movesDetail:['ハイドロポンプ or ねっとう：水техник。ねっとうは火傷狙いで対物理が安定','10まんボルト or ボルトチェンジ：電気技。ボルチェンは対面操作＋着地補助','ひかりのかべ or おにび：補助。壁で全体補強 or 鬼火で物理を機能停止','ボルトチェンジ：両軸メガを安全に着地させる核（最重要）'],play:'このパーティの潤滑油。炎・水・飛行を受け、浮遊で地面無効。ボルトチェンジでルカリオ/ガブを有利対面で着地させるのが最大の仕事。鬼火で相手の物理エースを機能停止させる動きも強い。',caution:'草・電気・ゴーストが弱点。耐久型ゆえ崩しは苦手。あく/ゴーストの高火力特殊には脆い。'}},
+  doo:   {name:'アーマーガア', type:['はがね','ひこう'], abil:'ミラーアーマー', mega:false,
+          moves:['ボディプレス','てっぺき','はねやすめ','とんぼがえり/うずしお'],
+          role:'物理受け／要塞化・対面操作・着地役', atk:['かくとう','はがね'], build:{nature:'わんぱく（防御↑特攻↓）or ずぶとい（防御↑攻撃↓）',item:'たべのこし／オボンのみ／とつげきチョッキ',ev:'HP32 / 防御32 / 特防2（物理受け）',evNote:'てっぺき＋ボディプレス型なので防御に全振りが基本。攻撃個体値・補正は不要（ボディプレスは防御参照）。特殊も見るならHP/特防へ。',movesDetail:['ボディプレス：防御を火力に変換するメイン打点。てっぺきと噛み合い、あく・鋼・ノーマル・岩・氷に刺さる','てっぺき：防御2段階UP。物理を受けながらボディプレスの火力も上げる自己完結の核','はねやすめ：HP回復＋使用ターンだけ飛行が消え地面・電気・氷を等倍化する小技も','とんぼがえり or うずしお：とんぼで対面操作しメガを安全着地／うずしおで受けを縛って崩す'],play:'環境の物理アタッカー（ガブ・ガルーラ等）を鋼飛行の耐性で受け止める潤滑油。てっぺきで要塞化→ボディプレスで自己完結の打ち合い、または とんぼがえりでルカリオ/ガブを有利対面に着地させる。10タイプに耐性を持ち弱点は炎・電気・岩の3つのみと少ない。',caution:'炎・電気・岩が弱点（特に炎の特殊アタッカーに脆い）。火力は防御依存なので、ちょうはつで要塞化を止められる・てんねん持ちにはボディプレスの恩恵が薄い点に注意。みがわり等の搦め手にも弱い。'}},
+  meow:  {name:'マスカーニャ', type:['くさ','あく'], abil:'へんげんじざい', mega:false,
+          moves:['トリックフラワー','はたきおとす','とんぼがえり','すりかえ/ちょうはつ'],
+          role:'高速削り／とんぼ・化け先候補', atk:['くさ','あく'], build:{nature:'ようき（素早さ↑特攻↓）',item:'いのちのたま／きあいのタスキ／こだわりスカーフ',ev:'攻撃32 / 素早さ32 / HP2',evNote:'高速物理アタッカー。攻撃・素早全振りで上から削る。タスキで起点役にも。',movesDetail:['トリックフラワー：必中＋急所のメイン草技。受けを許さない','はたきおとす：あく技＋持ち物排除。サーフゴー・対面操作に強い','とんぼがえり：対面操作。ルカリオ/ガブを安全に着地させる','すりかえ or ちょうはつ：すりかえで受け破壊 / 挑発で起点阻止'],play:'高速の削り役＆対面操作役。とんぼがえりで有利対面を作りメガを着地させる。はたきおとすでサーフゴー等の道具を奪う。ゾロアークの化け先候補としても優秀（高速を警戒させる）。',caution:'炎・氷・飛行・虫・フェアリー・毒が弱点と多い。紙耐久で先制技に弱い。へんげんじざいで初手の技タイプに変化する点を意識。'}},
+};
+const MYKEYS=Object.keys(MYTEAM);
+const MEGA_KEYS=MYKEYS.filter(k=>MYTEAM[k].mega); // luca, gab
+
+/* ---- タイプ相性（攻撃→防御） ---- */
+const CHART={
+  ノーマル:{いわ:.5,ゴースト:0,はがね:.5},
+  ほのお:{ほのお:.5,みず:.5,くさ:2,こおり:2,むし:2,いわ:.5,ドラゴン:.5,はがね:2},
+  みず:{ほのお:2,みず:.5,くさ:.5,じめん:2,いわ:2,ドラゴン:.5},
+  でんき:{みず:2,でんき:.5,くさ:.5,じめん:0,ひこう:2,ドラゴン:.5},
+  くさ:{ほのお:.5,みず:2,くさ:.5,どく:.5,じめん:2,ひこう:.5,むし:.5,いわ:2,ドラゴン:.5,はがね:.5},
+  こおり:{ほのお:.5,みず:.5,くさ:2,こおり:.5,じめん:2,ひこう:2,ドラゴン:2,はがね:.5},
+  かくとう:{ノーマル:2,こおり:2,どく:.5,ひこう:.5,エスパー:.5,むし:.5,いわ:2,ゴースト:0,あく:2,はがね:2,フェアリー:.5},
+  どく:{くさ:2,どく:.5,じめん:.5,いわ:.5,ゴースト:.5,はがね:0,フェアリー:2},
+  じめん:{ほのお:2,でんき:2,くさ:.5,どく:2,ひこう:0,むし:.5,いわ:2,はがね:2},
+  ひこう:{でんき:.5,くさ:2,かくとう:2,むし:2,いわ:.5,はがね:.5},
+  エスパー:{かくとう:2,どく:2,エスパー:.5,あく:0,はがね:.5},
+  むし:{ほのお:.5,くさ:2,かくとう:.5,どく:.5,ひこう:.5,エスパー:2,ゴースト:.5,あく:2,はがね:.5,フェアリー:.5},
+  いわ:{ほのお:2,こおり:2,かくとう:.5,じめん:.5,ひこう:2,むし:2,はがね:.5},
+  ゴースト:{ノーマル:0,エスパー:2,ゴースト:2,あく:.5},
+  ドラゴン:{ドラゴン:2,はがね:.5,フェアリー:0},
+  あく:{かくとう:.5,エスパー:2,ゴースト:2,あく:.5},
+  はがね:{ほのお:.5,みず:.5,でんき:.5,こおり:2,いわ:2,はがね:.5,フェアリー:2},
+  フェアリー:{ほのお:.5,かくとう:2,どく:.5,ドラゴン:2,あく:2,はがね:.5},
+};
+function eff(atk,defTypes){let m=1;for(const d of defTypes){if(!d)continue;const v=CHART[atk]&&CHART[atk][d];m*=(v===undefined?1:v);}return m;}
+function incomingMax(selfTypes,atkTypes){let mx=0;for(const a of atkTypes){mx=Math.max(mx,eff(a,selfTypes));}return mx;}
+
+/* ============================================================
+   スコアリング（選出）
+   ============================================================ */
+function scoreMon(key,opps){
+  const me=MYTEAM[key]; let s=0;
+  const detail={off:0,def:0,_super:0,_threat:0,_wall:0};
+  // 軸2匹（メガ候補）はベース加点：選出の中心
+  if(me.mega) s+=8;
+  // ゾロアークは揺さぶり枠で中庸
+  if(key==='zoro') s+=2;
+  // サポートの役割
+  if(key==='rotom') s+=3;  // 着地・受け
+  if(key==='doo') s+=3;    // 物理受け・対面操作・着地役（ロトムと並ぶ潤滑油）
+  if(key==='meow') s+=3;   // 対面操作
+  let hitSuper=0,hitGood=0,threatened=0,wall=0;
+  opps.forEach(o=>{
+    const offMax=Math.max(...me.atk.map(a=>eff(a,o.type)));
+    if(offMax>=2){s+=3;hitSuper++;} else if(offMax>=1){s+=1;hitGood++;} else {s-=1;}
+    const inMax=incomingMax(me.type,o.type);
+    if(inMax>=2){s-=2;threatened++;} else if(inMax<=0.5){s+=2;wall++;}
+    const n=o.note||'';
+    if(/鬼火|おにび/.test(n)&&/物理/.test(myAtkStyle(key))){s-=1.5;}
+    if(/高速|スカーフ|すばやさ/.test(n)&&(key==='luca'||key==='zoro')){s-=1.5;} // 紙耐久が上を取られる
+    if(/物理/.test(n)&&(key==='doo'||key==='rotom')){s+=1.5;}
+    if(/炎|ほのお|リザードン|火力特殊/.test(n)&&(key==='doo')){s-=1.5;} // アーマーガアは炎弱点（特に特殊炎に脆い）
+    if(/トリル|トリックルーム/.test(n)&&(key==='luca'||key==='zoro'||key==='meow')){s-=1.5;} // 高速軸はトリル不利
+  });
+  detail.off=hitSuper*2+hitGood; detail._super=hitSuper; detail._threat=threatened; detail._wall=wall;
+  s+=hitSuper;
+  return {key,score:Math.round(s*10)/10,detail,me};
+}
+function myAtkStyle(key){ return (key==='luca'||key==='gab'||key==='meow')?'物理':'特殊'; } // doo=アーマーガアはボディプレス(防御参照)で鬼火影響なし
+
+/* メガ判断：選ばれた中でメガ候補のうち、相手構成にどちらが強いか */
+function decideMega(picks,opps){
+  const cands=picks.filter(p=>MYTEAM[p.key].mega);
+  if(cands.length===0) return null;
+  if(cands.length===1) return {key:cands[0].key, reason:'選出にメガ候補が1匹のみ。自動的にこちらをメガ化。', scores:{}};
+  // 2匹とも入った場合：相手への有効打＋受け性能で比較
+  const sc={};
+  cands.forEach(c=>{
+    const me=MYTEAM[c.key]; let v=0;
+    opps.forEach(o=>{
+      const off=Math.max(...me.atk.map(a=>eff(a,o.type)));
+      v += off>=2?3: off>=1?1: -1;
+      const inc=incomingMax(me.type,o.type);
+      v += inc>=2?-1.5: inc<=0.5?1.5:0;
+    });
+    sc[c.key]=Math.round(v*10)/10;
+  });
+  const sorted=cands.slice().sort((a,b)=>sc[b.key]-sc[a.key]);
+  const best=sorted[0], second=sorted[1];
+  const diff=sc[best.key]-sc[second.key];
+  let reason;
+  if(diff<=1) reason=`${MYTEAM[best.key].name}と${MYTEAM[second.key].name}は僅差（${sc[best.key]} vs ${sc[second.key]}）。どちらをメガにしても良い＝相手に読ませない択。基本は対面で有利な方を後出しでメガ化。`;
+  else reason=`${MYTEAM[best.key].name}の方が相手構成に刺さる（${sc[best.key]} vs ${sc[second.key]}）。ただし相手はもう片方のメガを警戒するので、あえて読み合いに使うのも有効。`;
+  return {key:best.key, reason, scores:sc, twoMega:true};
+}
+
+/* ゾロアーク化け先サジェスト */
+function zoroDisguise(picks){
+  // ゾロアークが選出にいる場合、化け先は「相手が引きたくなる/警戒する」非ゾロの駒
+  if(!picks.some(p=>p.key==='zoro')) return null;
+  const others=picks.filter(p=>p.key!=='zoro');
+  // 優先度：ガブ(メガ警戒)＞マスカ(高速)＞ロトム＞アーマーガア
+  const order=['gab','meow','rotom','luca','doo'];
+  const best=others.slice().sort((a,b)=>order.indexOf(a.key)-order.indexOf(b.key))[0];
+  return best?best.key:null;
+}
+
+let carry=null;
+function runReco(){
+  const opps=getNavSel();
+  if(opps.length!==6){ toast('相手を6匹選んでください（'+opps.length+'/6）'); return; }
+  const scored=MYKEYS.map(k=>scoreMon(k,opps)).sort((a,b)=>b.score-a.score);
+  const picks=scored.slice(0,3);
+  const bench=scored.slice(3);
+  const mega=decideMega(picks,opps);
+  const zoro=zoroDisguise(picks);
+  renderReco(picks,bench,opps,scored,mega,zoro);
+  // 戦績へ即連携
+  logOpp=opps.map(o=>o.id);
+  logMy=picks.map(p=>p.key);
+  logMega=mega?mega.key:null;
+  logShown=logShown.filter(id=>logOpp.includes(id));
+  renderLogPools();
+}
+
+/* ---- 選出結果の描画 ---- */
+function renderReco(picks,bench,opps,scored,mega,zoro){
+  const colorFor=s=>s>=16?'var(--green)':s>=10?'var(--amber)':s>=4?'var(--cyan)':'var(--red)';
+  let html='<div class="reco"><div class="recohd">⚡ 推奨選出</div><div class="pickrow">';
+  picks.forEach(p=>{
+    const isMega=mega&&mega.key===p.key;
+    html+=`<div class="pick ${isMega?'mega':''}">
+      <div class="pkn">${p.me.name}</div>
+      ${isMega?'<div class="megatag">★ メガ化推奨</div>':(MYTEAM[p.key].mega?'<div class="megatag" style="background:var(--panel2);color:var(--sub)">メガ可</div>':'')}
+      <div class="scoretag" style="border-color:${colorFor(p.score)};color:${colorFor(p.score)}">SCORE ${p.score}</div>
+      <div class="pkrole">${p.me.role}</div></div>`;
+  });
+  html+='</div>';
+  html+='<div class="bench">控え：';
+  bench.forEach(b=>html+=`<span class="bp">${b.me.name} (${b.score})</span>`);
+  html+='</div>';
+  // アドバイス
+  html+='<div class="adv">'+buildAdvice(picks,opps,mega,zoro)+'</div>';
+  // 勝ち筋ルート
+  html+='<div class="routes">'+buildRoutes(picks,mega,zoro)+'</div>';
+  // ワンタップ戦績
+  html+=`<div class="quickwin">
+    <button class="btn gr" onclick="quickWin('W')">✓ この選出で勝った</button>
+    <button class="btn rd" onclick="quickWin('L')">✗ 負けた</button>
+  </div>
+  <div class="note">※ワンタップ記録は「選出・相手・メガ」だけ即保存。出てきた3匹や戦略チェックは後で戦績タブから追記できます。</div>`;
+  html+='</div>';
+  document.getElementById('recoOut').innerHTML=html;
+  document.getElementById('recoOut').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function buildAdvice(picks,opps,mega,zoro){
+  const L=[];
+  L.push(`相手：<b>${opps.map(o=>o.name).join('・')}</b>`);
+  // メガ判断
+  if(mega){
+    if(mega.twoMega){
+      L.push(`<span class="mg">メガ択</span>：${mega.reason}`);
     }else{
-      const v=localStorage.getItem(KEY); if(v) records=JSON.parse(v)||[];
+      L.push(`<span class="mg">メガ</span>：${MYTEAM[mega.key].name}を${mega.reason}`);
     }
-  }catch(e){ try{const v=localStorage.getItem(KEY); if(v) records=JSON.parse(v)||[];}catch(_){ records=[]; } }
-  renderAll();
-}
-async function persist(){
-  try{
-    if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(records)); }
-    else{ localStorage.setItem(KEY, JSON.stringify(records)); }
-  }catch(e){ try{ localStorage.setItem(KEY, JSON.stringify(records)); }catch(_){} }
-}
-
-/* ---- tabs ---- */
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
-    document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
-    t.classList.add('on');
-    document.getElementById(t.dataset.v).classList.add('on');
-    if(t.dataset.v==='dash') renderAll();
-    if(t.dataset.v==='log') renderLog();
-  });
-});
-
-/* ---- segmented ---- */
-document.querySelectorAll('.seg').forEach(seg=>{
-  const q=seg.dataset.q;
-  seg.querySelectorAll('button').forEach(b=>{
-    b.addEventListener('click',()=>{
-      seg.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
-      b.classList.add('sel'); sel[q]=b.dataset.val; checkReady();
-    });
-  });
-});
-function checkReady(){
-  document.getElementById('saveBtn').disabled =
-    !(sel.deploy!==null && sel.sd!==null && sel.fire!==null && sel.result!==null);
-}
-
-/* ---- save ---- */
-document.getElementById('saveBtn').addEventListener('click', async ()=>{
-  records.unshift({
-    id:Date.now(), date:new Date().toISOString(),
-    deploy:+sel.deploy, sd:+sel.sd, fire:+sel.fire, result:sel.result,
-    opp:document.getElementById('opp').value.trim(),
-    memo:document.getElementById('memo').value.trim()
-  });
-  await persist();
-  document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('sel'));
-  sel.deploy=sel.sd=sel.fire=sel.result=null;
-  document.getElementById('opp').value=''; document.getElementById('memo').value='';
-  checkReady(); toast('記録しました！');
-  document.querySelector('.tab[data-v="dash"]').click();
-});
-
-/* ---- calc ---- */
-function calc(list){
-  const n=list.length; if(!n) return null;
-  return {
-    n,
-    deploy:list.filter(r=>r.deploy===1).length/n*100,
-    sd:list.filter(r=>r.sd===1).length/n*100,
-    fire:list.filter(r=>r.fire===1).length/n*100,
-    wins:list.filter(r=>r.result==='win').length,
-    losses:n-list.filter(r=>r.result==='win').length
-  };
-}
-function streak(){
-  if(!records.length) return {type:'none',count:0};
-  const first=records[0].result; let c=0;
-  for(const r of records){ if(r.result===first) c++; else break; }
-  return {type:first,count:c};
-}
-
-/* ---- render ---- */
-function renderAll(){ renderDash(); renderOpp(); }
-function renderDash(){
-  const all=calc(records);
-  document.getElementById('s-total').textContent=all?all.n:0;
-  document.getElementById('s-wr').textContent=all?Math.round(all.wins/all.n*100)+'%':'–';
-  document.getElementById('s-wl').textContent=all?`${all.wins}/${all.losses}`:'0/0';
-
-  const st=streak();
-  const sv=document.getElementById('streakVal');
-  if(st.type==='none'){ sv.textContent='–'; sv.className='sv none'; }
-  else if(st.type==='win'){ sv.textContent=`${st.count}連勝 🔥`; sv.className='sv win'; }
-  else{ sv.textContent=`${st.count}連敗`; sv.className='sv lose'; }
-
-  const recent=calc(records.slice(0,10));
-  const box=document.getElementById('metrics');
-  if(!all){ box.innerHTML='<div class="empty">まだ記録がありません。<br>「✏️ 記録」タブから1試合目を入力しよう。</div>'; return; }
-
-  const defs=[
-    {key:'deploy',name:'展開成功率',goal:70,dir:'up',color:'var(--cyan)',sub:'ゲッコウガが1体削る or 安全に引けた割合'},
-    {key:'sd',name:'剣舞着地率',goal:50,dir:'up',color:'var(--yellow)',sub:'ハッサムが剣舞を1回以上積めた割合'},
-    {key:'fire',name:'炎被弾率',goal:20,dir:'down',color:'var(--cyan)',sub:'炎技を被弾した割合（低いほど◎）'},
-  ];
-  box.innerHTML=defs.map(d=>{
-    const val=all[d.key], v=Math.round(val);
-    const pass=d.dir==='up'?val>=d.goal:val<=d.goal;
-    const fillColor=pass?'var(--green)':(d.dir==='down'?'var(--red)':'var(--yellow2)');
-    const goalLabel=d.dir==='up'?`目標 ${d.goal}%+`:`目標 ${d.goal}%−`;
-    let rec='';
-    if(recent){ const rv=Math.round(recent[d.key]); const rp=d.dir==='up'?recent[d.key]>=d.goal:recent[d.key]<=d.goal;
-      rec=`<div class="recent">直近${recent.n}戦：<b style="color:${rp?'var(--green)':'var(--red)'}">${rv}%</b> ${rp?'達成':'未達'}</div>`; }
-    return `<div class="mcard">
-      <div class="mtop"><span class="mname">${d.name}</span><span class="goal">${goalLabel}</span></div>
-      <div class="big" style="color:${pass?'var(--green)':d.color}">${v}<span class="u">%</span></div>
-      <div class="sub2">${d.sub}</div>
-      <div class="bar"><div class="fl" style="width:${Math.min(100,v)}%;background:${fillColor}"></div><div class="goalmark" style="left:${d.goal}%"></div></div>
-      <span class="status ${pass?'ok':'ng'}">${pass?'✓ 目標達成':'✗ 未達'}</span>
-      ${rec}
-    </div>`;
-  }).join('');
-}
-function renderOpp(){
-  const sec=document.getElementById('oppSection');
-  const groups={};
-  records.forEach(r=>{ if(r.opp){ (groups[r.opp]=groups[r.opp]||[]).push(r); } });
-  const keys=Object.keys(groups);
-  if(!keys.length){ sec.innerHTML=''; return; }
-  keys.sort((a,b)=>groups[b].length-groups[a].length);
-  sec.innerHTML='<div class="secttl">相手構築タグ別の勝率</div>'+keys.map(k=>{
-    const g=groups[k], w=g.filter(r=>r.result==='win').length, wr=Math.round(w/g.length*100);
-    const col=wr>=60?'var(--green)':wr>=40?'var(--yellow)':'var(--red)';
-    return `<div class="opp-row">
-      <div class="ot"><span class="on">${esc(k)}</span><span class="ow" style="color:${col}">${wr}%</span></div>
-      <div class="obar"><div class="ofl" style="width:${wr}%;background:${col}"></div></div>
-      <div class="oc">${g.length}戦 ${w}勝 ${g.length-w}敗</div>
-    </div>`;
-  }).join('');
-}
-function renderLog(){
-  const list=document.getElementById('logList');
-  if(!records.length){ list.innerHTML='<div class="empty">履歴はまだありません。</div>'; return; }
-  list.innerHTML=records.map(r=>{
-    const d=new Date(r.date);
-    const ds=`${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-    const res=r.result==='win'?'<span class="res win">WIN</span>':'<span class="res lose">LOSE</span>';
-    const tags=`<span class="t ${r.deploy?'y':'n'}">展開 ${r.deploy?'○':'×'}</span>`+
-               `<span class="t ${r.sd?'y':'n'}">剣舞 ${r.sd?'○':'×'}</span>`+
-               `<span class="t ${r.fire?'fng':'fok'}">炎 ${r.fire?'被弾':'回避'}</span>`;
-    const opp=r.opp?`<div class="memo"><b style="color:var(--cyan)">相手:</b> ${esc(r.opp)}</div>`:'';
-    const memo=r.memo?`<div class="memo">${esc(r.memo)}</div>`:'';
-    return `<div class="lg"><div class="lh"><span class="ldate">${ds}</span>${res}</div>
-      <div class="tags">${tags}</div>${opp}${memo}
-      <button class="del" data-id="${r.id}">削除</button></div>`;
-  }).join('');
-  list.querySelectorAll('.del').forEach(b=>{
-    b.addEventListener('click', async ()=>{
-      records=records.filter(x=>x.id!=b.dataset.id);
-      await persist(); renderLog(); renderAll(); toast('削除しました');
-    });
-  });
-}
-function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-
-/* ---- tools ---- */
-document.getElementById('exportBtn').addEventListener('click',()=>{
-  const blob=new Blob([JSON.stringify(records,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download='msg-tracker.json'; a.click();
-  URL.revokeObjectURL(url); toast('書き出しました');
-});
-document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
-document.getElementById('importFile').addEventListener('change',e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const rd=new FileReader();
-  rd.onload=async()=>{ try{
-    const data=JSON.parse(rd.result);
-    if(Array.isArray(data)){ records=data; await persist(); renderAll(); renderLog(); toast('読み込みました'); }
-    else toast('形式が不正です');
-  }catch(_){ toast('読み込み失敗'); } };
-  rd.readAsText(f); e.target.value='';
-});
-document.getElementById('clearBtn').addEventListener('click', async ()=>{
-  if(!records.length){ toast('記録がありません'); return; }
-  if(confirm('すべての記録を削除します。よろしいですか？')){
-    records=[]; await persist(); renderLog(); renderAll(); toast('全削除しました');
   }
-});
-
-let toastTimer;
-function toast(msg){
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),1600);
+  // ゾロアーク
+  if(zoro){
+    L.push(`<span class="good">ゾロアーク</span>：${MYTEAM[zoro].name}に化けて出すのが有効。相手は${MYTEAM[zoro].name}と思って動くので、その隙にわるだくみ→特殊で奇襲。化けがバレても残りで勝てる構成なので無理は禁物。`);
+  }else if(picks.some(p=>p.key==='zoro')){
+    L.push(`ゾロアークは最後尾の駒に化けて出ます。`);
+  }
+  // 危険分析
+  const fast=opps.filter(o=>/スカーフ|高速|すばやさ|超高速/.test(o.note||''));
+  if(fast.length&&picks.some(p=>p.key==='luca'||p.key==='zoro')){
+    L.push(`<span class="warn">速度注意</span>：${fast.map(o=>o.name).join('・')}。ルカリオ・ゾロアークは紙耐久で上を取られると即落ち。先制技(しんそく/バレパン)や、ロトム/マスカのとんぼで対面を変えてから積む。`);
+  }
+  const dark=opps.filter(o=>o.type.includes('あく'));
+  if(dark.length>=2){
+    L.push(`<span class="warn">あく多い</span>：${dark.map(o=>o.name).join('・')}。ゾロアークが刺さりにくく、ルカリオの格闘も等倍。ガブの地面・マスカで削る選出を優先。`);
+  }
+  const trick=opps.filter(o=>/トリル|トリックルーム/.test(o.note||''));
+  if(trick.length){
+    L.push(`<span class="warn">トリル警戒</span>：高速軸が裏目。アーマーガア・ロトムで枯らしながら、トリル切れを待つ。`);
+  }
+  // 地面一貫チェック
+  const hasRotom=picks.some(p=>p.key==='rotom');
+  if(!hasRotom){
+    const ground=opps.filter(o=>o.type.includes('じめん'));
+    if(ground.length>=2) L.push(`地面が多い(${ground.map(o=>o.name).join('・')})がロトム非選出。アーマーガアの飛行で地面を無効化して受けるか、ガブのスカーフで上から。`);
+  }
+  return L.map(l=>'・'+l).join('<br>');
 }
 
-/* ---- PWA: dynamic manifest + service worker ---- */
-(function setupPWA(){
-  try{
-    const manifest={
-      name:"メガハッサム×ゲッコウガ 戦績トラッカー",
-      short_name:"戦績トラッカー",
-      start_url:".",
-      scope:".",
-      display:"standalone",
-      orientation:"portrait",
-      background_color:"#0e1014",
-      theme_color:"#0e1014",
-      icons:[
-        {src:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAFd0lEQVR4nO3dMW8TTRSF4RtkKQ49NaJMS8H/ryloKVFqekSBFIrEilm8tmc9M/fMnPfpKL7E3+59727i2L673z88B2DqXfYDADIRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKwRAKztsh9Abb+/fsh+CNPbf/mZ/RCquRv9zXEZ+HwjBzFsAAy+nhFDGCoAhn4co8QwzA/BDP9YRjlf8leAUQ4k1ilfDaSvAAz/HJTPo2wAygcN5VTPp2QAqgcLt1E8r3IBKB4k1KN2fqUCUDs4aEPpPMsEoHRQ0J7K+ZYIQOVgoC+F8y4RAJAlPQCFLYA82ec/NYDs/3loyJyD9CsAkIkAYC0tAG5/cCxrHrgCwFpKAGx/nJIxF1wBYI0AYI0AjDzunrIfgpzuAXD/n+Mw/OoR9J4PrgAGlkOvHkFPBDC5tWEnghcEMLFLQ/64e7IPgQBgHQEBCKn5/jmlQ+0aAQFMaOswO0ZAACJqbf9bh9gtAgKYSK3hdYqAAATU2P61h9blN0QEMIGWgzp7BASQ7Hj7b/kzgB4DOnMEBDCwXoP5/c/HLt8nAwEkuuXen+GvgwCwavbhjyCANOrb32H4IwhgODP/QJqBABJs3f7c99dHAINg+NsggM62bH+Gvx0CEMfwt0UAHZ3b/qeeBWb42yMAUQx/HwTQScm9P8PfDwGYYvhfEEAHatuf4X9DAEJ4lrc/Amjs2u3PfX8OAjDC8P+PABqq+T4/t2L4TyMAAwz/OgJopGT7f/r2q9njYPjPI4CJMfyXEUADCvf+DP91CGBCDP/1CKCy7O3P8JfZZT8ARPz4/L7a19ov/s1nsp3HFaCi7O2/xPBfRgCwRgCVsP3HRAATYvivRwAVKG1/hr8MAcAaAdyI7T82ApgEw78NAdxAaftjGwKYANt/OwLYSGX7M/y3IQBYI4AN2P7zIIBBMfx1EEAhhe3P8NfD6wEK1X4Be83XAqAcV4ACtd+9bcvws/3rIoArKbxvJ8NfHwFcQWH40QYBXNBq+Etvf9j+bRDAGSqbn+FvhwBWqAw/2iKAE1oPf8ntD9u/LQJYUNr8DH97BHCE4fdDAJ3xzK8WAnil9OmMbP9+CCC49XFmH0DPT2dU+EtS/Ms6ALWPJmX792cbAMOPCNMAMoaf2x9NdgGobf4Itn8mqwCyhv/c9mf4c9kEwObHKTYB9MAH1I3HIoDMZ3nXbn/Y/hqmD0DpWd4Dhl/H1AEo3vdDy7QBKAz/qdsftr+WaQPosZVLvwfDr2faACLaRsBtzxymDiDiZVBrD+s1X295+8P21zR9AAe1ItjydRh+XTYBRNweAcM/H6sAIrZHUPLf8Zef47ALIKI8gq3RsP31WQYQ0f63OAz/GGwDiLjuN0SloXD7MxbrAA7Whpxbn/kRwKvlsDP8HgjgyGHoeZbXx939/uG59zdlS2JN75+huALAGgHAGgHAWkoA/K4cp2TMBVcAWEsLgKsAjmXNA1cAWCMAWEsNgNsgROTOQfoVgAi8ZZ//9ACATBIBZG8B5FA47xIBRGgcDPSjcr5lAojQOShoS+k8SwUQoXVwUJ/a+ZULIELvIKEOxfMqGUCE5sHCdqrnUzaACN2DhjLK5zHlJZFb8DLK8SgP/oH0FeDYCAcTb0Y5X8NcAZa4IugZZeiPDRvAASHkG3HwD4YPYIkg2ht54JemCwAoMcwPwUALBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrBABrfwH17qK1BJPkzwAAAABJRU5ErkJggg==",sizes:"192x192",type:"image/png",purpose:"any maskable"},
-        {src:"data:image/png;base64,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",sizes:"512x512",type:"image/png",purpose:"any maskable"}
-      ]
-    };
-    const mblob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
-    const murl=URL.createObjectURL(mblob);
-    const link=document.createElement('link'); link.rel='manifest'; link.href=murl;
-    document.head.appendChild(link);
-  }catch(e){}
+function buildRoutes(picks,mega,zoro){
+  const has=k=>picks.some(p=>p.key===k);
+  let r='<div class="route A"><div class="rn">ルートA：メガルカリオ全抜き</div>';
+  if(has('luca')) r+='ロトムのボルチェン or マスカ・アーマーガアのとんぼで有利対面→ルカリオ着地→剣舞→インファイト/バレパンで抜く。';
+  else r+='今回ルカリオ非選出。代わりにガブで火力を通す。';
+  r+='</div>';
+  r+='<div class="route B"><div class="rn">ルートB：メガガブリアス制圧</div>';
+  if(has('gab')) r+='相手がルカリオ警戒で鋼/格闘受けを出したら、ガブをメガ化→ステロ後に地震/逆鱗で受けごと崩す。砂の力の火力を押し付ける。';
+  else r+='今回ガブ非選出。ルカリオ＋削り役で攻める。';
+  r+='</div>';
+  r+='<div class="route C"><div class="rn">ルートC：ゾロアーク奇襲</div>';
+  if(has('zoro')&&zoro) r+=`${MYTEAM[zoro].name}に化けて相手の行動を釣る→わるだくみ→シャドボ/れいビで一貫。短期決戦で押し切る。`;
+  else r+='今回ゾロアーク非選出 or 化け先なし。正攻法のA/Bで。';
+  r+='</div>';
+  return r;
+}
 
-  if('serviceWorker' in navigator){
-    const swCode=`
-      const C='msg-tracker-v1';
-      self.addEventListener('install',e=>{self.skipWaiting();});
-      self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());});
-      self.addEventListener('fetch',e=>{
+/* ワンタップ戦績（選出ナビから即保存） */
+function quickWin(res){
+  if(logOpp.length!==6||logMy.length!==3){ toast('先に選出を判定してください'); return; }
+  const db=getDB();
+  db.matches.push({
+    id:'m'+Date.now(), date:new Date().toISOString().slice(0,10),
+    opp:logOpp.slice(), oppShown:[], my:logMy.slice(), mega:logMega||null, zoro:null,
+    strat:{}, result:res, note:'(ワンタップ記録)'
+  });
+  save(db);
+  toast(res==='W'?'勝ち、記録しました ✓':'負け、記録しました');
+  renderStats(); renderLogList();
+}
+
+/* ============================================================
+   状態管理
+   ============================================================ */
+function load(){try{return JSON.parse(localStorage.getItem(LS_KEY))||{}}catch(e){return{}}}
+function save(db){localStorage.setItem(LS_KEY,JSON.stringify(db));}
+function getDB(){
+  const db=load();
+  if(!db.pool) db.pool=SEED_POOL();
+  if(!db.matches) db.matches=[];
+  if(!db.strategies) db.strategies=SEED_STRATS();
+  return db;
+}
+function SEED_STRATS(){
+  return [
+    {id:'s1',name:'メガ択を相手に押し付けた',tag:'択',desc:'ルカリオ/ガブのどちらがメガか読ませず、相手の選出・初手を機能停止できたか。'},
+    {id:'s2',name:'メガを正しい方に切れた',tag:'メガ',desc:'相手構成に対し、有利な方をメガ化できたか（後出しメガ含む）。'},
+    {id:'s3',name:'積む隙を作って通した',tag:'積み',desc:'ボルチェン/とんぼ/欠伸で隙を作り、剣舞or悪巧みを安全に通せたか。'},
+    {id:'s4',name:'先制技/上取りで縛った',tag:'速度',desc:'バレパン/しんそく、または素早さ上回りで相手を縛れたか。紙耐久軸の生命線。'},
+    {id:'s5',name:'ゾロアークの揺さぶりが機能',tag:'択',desc:'化けでムーブを釣る/警戒で相手を縛る、が効いたか（出さない判断の成功も含む）。'},
+    {id:'s6',name:'重い相手(あく/高速/トリル)を捌けた',tag:'対応',desc:'苦手枠を削る/受け流す/避ける選出ができたか。'},
+    {id:'s7',name:'選出前に勝ち筋を1本明確化',tag:'プラン',desc:'対戦前に「A/B/Cどれで勝つか」言語化できていたか。'},
+  ];
+}
+function SEED_POOL(){
+  const d=[
+['アーマーガア','ひこう','はがね','物理受け/挑発/羽休め'],
+    ['アシレーヌ','みず','フェアリー','特殊/うたかた'],
+    ['アローラキュウコン','こおり','フェアリー','オーロラベール/高速'],
+    ['イーユイ','ほのお','あく','特殊高火力/わざわい'],
+    ['イダイトウ♂','みず','ゴースト','物理/いかりのまえば'],
+    ['イルカマン','みず','','マイティチェンジ/物理'],
+    ['ウインディ','ほのお','','物理/しんそく/威嚇'],
+    ['ウーラオス(水)','みず','かくとう','物理/連撃/不意打ち'],
+    ['ウーラオス(悪)','あく','かくとう','物理/一撃/連打'],
+    ['ウネルミナモ','みず','ドラゴン','特殊/古代活性'],
+    ['エルフーン','くさ','フェアリー','いたずらごころ/追い風'],
+    ['エンテイ','ほのお','','物理/しんそく/聖なる炎'],
+    ['オーガポン(草)','くさ','','物理/つたこんぼう/高速'],
+    ['オーガポン(炎)','くさ','ほのお','物理/かまどのめん'],
+    ['オーガポン(水)','くさ','みず','物理/いどのめん'],
+    ['オーガポン(岩)','くさ','いわ','物理/いしずえのめん'],
+    ['オーロンゲ','あく','フェアリー','いたずらごころ/壁'],
+    ['オオニューラ','あく','かくとう','物理超火力/れんげき'],
+    ['カイリュー','ドラゴン','ひこう','物理/マルスケ/しんそく'],
+    ['カバルドン','じめん','','起点/ステロ/欠伸/砂'],
+    ['ガオガエン','ほのお','あく','物理/威嚇/鬼火/とんぼ'],
+    ['ガブリアス','ドラゴン','じめん','物理/高速/剣舞/ステロ'],
+    ['キノガッサ','くさ','かくとう','胞子/テクニ/マッハパンチ'],
+    ['キョジオーン','いわ','','物理受け/しおづけ'],
+    ['キラフロル','いわ','どく','特殊/どくびし/まきびし'],
+    ['グレイシア','こおり','','特殊/雪/高火力'],
+    ['グレンアルマ','ほのお','エスパー','特殊/アーマーキャノン'],
+    ['ゲッコウガ','みず','あく','高速/へんげんじざい'],
+    ['コノヨザル','かくとう','ゴースト','物理/ふんどのこぶし'],
+    ['ゴリランダー','くさ','','物理/グラスフィールド/グラスラ'],
+    ['コライドン','かくとう','ドラゴン','物理超火力(伝説)'],
+    ['サーフゴー','はがね','ゴースト','特殊/みがわり/わるだくみ'],
+    ['サザンドラ','あく','ドラゴン','特殊/わるだくみ'],
+    ['サンダー','でんき','ひこう','特殊/暴風/羽休め'],
+    ['サンダース','でんき','','高速/特殊/ボルチェン'],
+    ['シャワーズ','みず','','特殊耐久/再生'],
+    ['ジバコイル','でんき','はがね','特殊/ボルチェン/頑丈'],
+    ['ジャラランガ','ドラゴン','かくとう','スケイルノイズ/特殊'],
+    ['ジュカイン','くさ','','高速/特殊/リーフストーム'],
+    ['スイクン','みず','','特殊耐久/熱湯/吠える'],
+    ['セグレイブ','ドラゴン','こおり','物理超火力/つららおとし'],
+    ['ソウブレイズ','ほのお','ゴースト','物理/むねんのつるぎ'],
+    ['タケルライコ','くさ','でんき','特殊/古代活性/ボルチェン'],
+    ['チオンジェン','くさ','あく','受け/わざわいのおふだ'],
+    ['ディンルー','じめん','あく','物理受け/撒き/地割れ'],
+    ['テツノイサハ','くさ','エスパー','物理/クォークチャージ/剣舞'],
+    ['テツノカイナ','でんき','かくとう','物理高耐久/ドレインパンチ'],
+    ['テツノコウベ','あく','ひこう','特殊/クォークチャージ'],
+    ['テツノツツミ','こおり','みず','特殊超高速/フリーズドライ'],
+    ['テツノブジン','フェアリー','かくとう','物理/ビルドアップ'],
+    ['テツノドクガ','どく','ほのお','特殊/もえあがるいかり'],
+    ['ドオー','どく','じめん','物理受け/てんねん/欠伸'],
+    ['ドドゲザン','あく','はがね','物理/かたきうち/しおづけ'],
+    ['ドラパルト','ドラゴン','ゴースト','物理特殊/超高速/鬼火'],
+    ['トリトドン','みず','じめん','受け/よびみず/自己再生'],
+    ['トルネロス(化身)','ひこう','','特殊/暴風/いたずらごころ'],
+    ['ニンフィア','フェアリー','','特殊/ハイパーボイス/フェアスキン'],
+    ['ヌオー','みず','じめん','物理受け/てんねん/欠伸'],
+    ['ハッサム','むし','はがね','物理/剣舞/バレットパンチ'],
+    ['ハバタクカミ','ゴースト','フェアリー','特殊/超高速/古代活性'],
+    ['パオジアン','あく','こおり','物理超火力/つらら/不意打ち'],
+    ['バンギラス','いわ','あく','物理特殊/砂/竜舞'],
+    ['ヒードラン','ほのお','はがね','特殊/マグマストーム/受け'],
+    ['ファイヤー','ほのお','ひこう','特殊/羽休め/暴風'],
+    ['ブースター','ほのお','','物理/しんそく'],
+    ['ブラッキー','あく','','受け/イカサマ/欠伸/毒'],
+    ['ブリジュラス','でんき','はがね','頑丈/エレキ/じきゅう詰め'],
+    ['ヘイラッシャ','みず','','物理受け/てんねん/欠伸'],
+    ['ペリッパー','みず','ひこう','雨始動/あめふらし'],
+    ['ボーマンダ','ドラゴン','ひこう','物理/威嚇/竜舞'],
+    ['ホウオウ','ほのお','ひこう','物理/再生/聖なる炎'],
+    ['ママンボウ','みず','','特殊受け/再生/てんねん'],
+    ['マスカーニャ','くさ','あく','高速/トリックフラワー/トリック'],
+    ['マリルリ','みず','フェアリー','物理/力持ち/アクアジェット/腹太鼓'],
+    ['ミミッキュ','ゴースト','フェアリー','物理/化けの皮/剣舞/トリル'],
+    ['ミライドン','でんき','ドラゴン','特殊超火力(伝説)'],
+    ['ムクホーク','ノーマル','ひこう','物理/インファイト/命がけ'],
+    ['メタグロス','はがね','エスパー','物理/コメットパンチ/とんぼ'],
+    ['モロバレル','くさ','どく','受け/きのこのほうし/痺れ粉'],
+    ['ヤミラミ','あく','ゴースト','いたずら/鬼火/トリック'],
+    ['ヤドラン','みず','エスパー','物理受け/なまけ/自己再生'],
+    ['ヤバソチャ','くさ','ゴースト','物理受け/おさわり/再生'],
+    ['ライコウ','でんき','','特殊高速/ボルトチェンジ'],
+    ['ライチュウ','でんき','','高速/特殊'],
+    ['ラウドボーン','ほのお','ゴースト','特殊耐久/鬼火/欠伸'],
+    ['ラグラージ','みず','じめん','物理/地震/受け'],
+    ['ランドロス(霊獣)','じめん','ひこう','物理/威嚇/とんぼ/高速'],
+    ['ランドロス(化身)','じめん','ひこう','特殊/威嚇/起点作成'],
+    ['リーフィア','くさ','','物理/葉緑素/剣舞'],
+    ['ルカリオ','かくとう','はがね','物理特殊/適応力/剣舞'],
+    ['レントラー','でんき','','物理/威嚇/かみくだく'],
+    ['ロトム(ウォッシュ)','でんき','みず','受け/ボルチェン/浮遊'],
+    ['ロトム(ヒート)','でんき','ほのお','受け/オーバーヒート/浮遊'],
+    ['ロトム(フロスト)','でんき','こおり','受け/フリーズドライ'],
+    ['ロトム(カット)','でんき','くさ','受け/リーフストーム'],
+    ['ロトム(スピン)','でんき','ひこう','受け/エアスラッシュ'],
+    ['バシャーモ','ほのお','かくとう','物理/加速/とびひざげり'],
+    ['メガアブソル','あく','','物理/マジックミラー/剣舞'],
+    ['メガウインディ','ほのお','','物理/しんそく/いかく'],
+    ['メガエルレイド','エスパー','かくとう','物理/インファイト/剣舞'],
+    ['メガガブリアス','ドラゴン','じめん','物理超火力/すなのちから'],
+    ['メガガルーラ','ノーマル','','物理/おやこあい/グロウパンチ'],
+    ['メガギャラドス','みず','あく','物理/型破り/竜舞'],
+    ['メガクチート','はがね','フェアリー','物理/ちからもち/剣舞/不意打ち'],
+    ['メガゲンガー','ゴースト','どく','特殊/かげふみ/祟り目'],
+    ['メガゲッコウガ','みず','あく','高速/へんげんじざい'],
+    ['メガサーナイト','エスパー','フェアリー','特殊/フェアリースキン/ハイボ'],
+    ['メガスターミー','みず','エスパー','特殊高速/トレース'],
+    ['メガチャーレム','エスパー','かくとう','物理/ヨガパワー/とびひざ'],
+    ['メガデンリュウ','でんき','ドラゴン','特殊/かたやぶり/竜の波動'],
+    ['メガハガネール','はがね','じめん','物理受け/砂嵐/頑丈'],
+    ['メガバクーダ','ほのお','じめん','特殊/ちからずく/噴火'],
+    ['メガバシャーモ','ほのお','かくとう','物理/加速/とびひざ/剣舞'],
+    ['メガバンギラス','いわ','あく','物理/すなおこし/竜舞'],
+    ['メガピジョット','ノーマル','ひこう','特殊/ノーガード/暴風'],
+    ['メガフーディン','エスパー','','特殊超高速/トレース'],
+    ['メガフシギバナ','くさ','どく','特殊耐久/あついしぼう/やどみが'],
+    ['メガフラエッテ','フェアリー','','特殊超火力/フェアリースキン'],
+    ['メガプテラ','いわ','ひこう','物理高速/かたやぶり'],
+    ['メガヘラクロス','むし','かくとう','物理/スキルリンク/ミサイルばり'],
+    ['メガボーマンダ','ドラゴン','ひこう','物理/スカイスキン/竜舞'],
+    ['メガマフォクシー','ほのお','エスパー','特殊/マジシャン'],
+    ['メガミミロップ','ノーマル','かくとう','物理高速/ぎゃくじょう/とびひざ'],
+    ['メガムクホーク','ノーマル','ひこう','物理/天邪鬼/インファイト'],
+    ['メガメタグロス','はがね','エスパー','物理高速/かたやぶり'],
+    ['メガヤミラミ','あく','ゴースト','受け/マジックバウンス'],
+    ['メガライチュウ','でんき','','特殊高速/サーフライダー'],
+    ['メガラグラージ','みず','じめん','物理/すいすい/雨エース'],
+    ['メガリザードンX','ほのお','ドラゴン','物理/かたいツメ/竜舞'],
+    ['メガリザードンY','ほのお','ひこう','特殊/ひでり/高火力'],
+    ['メガルカリオ','かくとう','はがね','物理特殊/てきおうりょく/剣舞'],  ];
+  return d.map((x,i)=>({id:'seed'+i,name:x[0],type:[x[1],x[2]],note:x[3]}));
+}
+function sortedPool(pool){return pool.slice().sort((a,b)=>a.name.localeCompare(b.name,'ja'));}
+function filterPool(pool,q){q=(q||'').trim().toLowerCase();if(!q)return pool;return pool.filter(p=>(p.name+' '+p.type.filter(Boolean).join(' ')+' '+(p.note||'')).toLowerCase().includes(q));}
+
+/* ---- 選出ナビ：プール ---- */
+let navSel=[];
+function renderNavPool(){
+  const db=getDB();
+  const wrap=document.getElementById('navPool');
+  const q=(document.getElementById('navSearch')||{}).value||'';
+  const list=sortedPool(filterPool(db.pool,q));
+  document.getElementById('navSearchEmpty').style.display=list.length?'none':'block';
+  wrap.innerHTML=list.map(p=>{
+    const idx=navSel.indexOf(p.id);
+    return `<div class="pchip ${idx>=0?'sel':''}" onclick="toggleNav('${p.id}')">${idx>=0?`<div class="badge">${idx+1}</div>`:''}<div class="pn">${p.name}</div><div class="pt">${p.type.filter(Boolean).join('/')}</div></div>`;
+  }).join('');
+  let bar=document.getElementById('navSelBar');
+  if(!bar){bar=document.createElement('div');bar.id='navSelBar';bar.className='selbar';wrap.parentNode.insertBefore(bar,wrap.nextSibling);}
+  const selNames=navSel.map(id=>{const p=db.pool.find(x=>x.id===id);return p?p.name:'';}).filter(Boolean);
+  bar.innerHTML=`選択中 <span class="selnow">${navSel.length}/6</span>`+(selNames.length?'：'+selNames.map((n,i)=>`${i+1}.${n}`).join(' / '):'');
+}
+function toggleNav(id){const i=navSel.indexOf(id);if(i>=0)navSel.splice(i,1);else{if(navSel.length>=6){toast('6匹まで');return;}navSel.push(id);}renderNavPool();}
+function clearNavSel(){navSel=[];renderNavPool();document.getElementById('recoOut').innerHTML='';}
+function getNavSel(){const db=getDB();return navSel.map(id=>db.pool.find(p=>p.id===id)).filter(Boolean);}
+
+/* ---- プール管理 ---- */
+function fillTypeSelect(){['np_t1','np_t2'].forEach((id,k)=>{document.getElementById(id).innerHTML=(k===1?'<option value="">（なし）</option>':'')+TYPES.map(t=>`<option>${t}</option>`).join('');});}
+function addPoke(){
+  const name=document.getElementById('np_name').value.trim();
+  if(!name){toast('名前を入力');return;}
+  const db=getDB();
+  db.pool.push({id:'p'+Date.now(),name,type:[document.getElementById('np_t1').value,document.getElementById('np_t2').value],note:document.getElementById('np_note').value.trim()});
+  save(db);
+  document.getElementById('np_name').value='';document.getElementById('np_note').value='';
+  renderPool();renderNavPool();renderLogPools();toast('追加しました');
+}
+function renderPool(){
+  const db=getDB();
+  document.getElementById('poolCount').textContent=db.pool.length;
+  const wrap=document.getElementById('poolList');
+  if(!db.pool.length){wrap.innerHTML='<div class="empty">プールが空です</div>';return;}
+  const q=(document.getElementById('poolSearch')||{}).value||'';
+  const list=sortedPool(filterPool(db.pool,q));
+  if(!list.length){wrap.innerHTML='<div class="empty">該当なし</div>';return;}
+  wrap.innerHTML=list.map(p=>`
+    <div class="hist"><div class="ht">
+      <div><b style="font-family:'Zen Maru Gothic';font-size:14px;color:var(--cream)">${p.name}</b>
+      <span class="pill" style="margin-left:6px">${p.type.filter(Boolean).join('/')||'?'}</span></div>
+      <button class="btn rd sm" onclick="delPoke('${p.id}')">🗑</button>
+    </div>
+    <div class="meta">脅威メモ：<input class="fi" style="margin-top:5px;font-size:12px;padding:7px 9px" value="${(p.note||'').replace(/"/g,'&quot;')}" onchange="editNote('${p.id}',this.value)"></div>
+    </div>`).join('');
+}
+function editNote(id,v){const db=getDB();const p=db.pool.find(x=>x.id===id);if(p){p.note=v;save(db);}}
+function delPoke(id){const db=getDB();db.pool=db.pool.filter(x=>x.id!==id);save(db);navSel=navSel.filter(x=>x!==id);renderPool();renderNavPool();renderLogPools();}
+function resetPoolToSeed(){if(!confirm('プールを初期データ（約130匹）に戻しますか？（手動追加・取り込みは消えます。戦績は残ります）'))return;const db=getDB();db.pool=SEED_POOL();save(db);navSel=[];renderPool();renderNavPool();renderLogPools();toast('初期データに戻しました');}
+function clearPool(){if(!confirm('プールを全削除しますか？（戦績は残ります）'))return;const db=getDB();db.pool=[];save(db);navSel=[];renderPool();renderNavPool();renderLogPools();toast('全削除しました');}
+
+/* ---- 一括取り込み ---- */
+function parseBulk(text){
+  const rows=[];
+  text.split(/\r?\n/).forEach(line=>{
+    const raw=line.trim();if(!raw)return;
+    let cols;
+    if(raw.includes('\t'))cols=raw.split(/\t+/);
+    else if(raw.includes(',')||raw.includes('、')||raw.includes('，'))cols=raw.split(/[,、，]/);
+    else cols=raw.split(/[\s　]+/);
+    cols=cols.map(c=>c.trim()).filter(c=>c!=='');
+    if(!cols.length)return;
+    const name=cols[0];
+    const t1=cols[1]&&TYPES.includes(cols[1])?cols[1]:'';
+    const t2=cols[2]&&TYPES.includes(cols[2])?cols[2]:'';
+    let np=[];
+    if(cols[3])np.push(cols.slice(3).join(' '));
+    if(cols[1]&&!TYPES.includes(cols[1])&&!cols[3])np.push(cols.slice(1).join(' '));
+    rows.push({name,type:[t1,t2],note:np.join(' ').trim()});
+  });
+  return rows;
+}
+function previewBulk(){
+  const rows=parseBulk(document.getElementById('bulkInput').value);
+  const db=getDB();const ex=new Set(db.pool.map(p=>p.name));
+  const neu=rows.filter(r=>!ex.has(r.name));const dup=rows.length-neu.length;const noType=neu.filter(r=>!r.type[0]).length;
+  const el=document.getElementById('bulkPreview');el.style.display='flex';
+  el.innerHTML=`解析 <span class="selnow">${rows.length}</span>行 ／ 新規 <span class="selnow">${neu.length}</span>匹`+(dup?` ／ 重複スキップ ${dup}`:'')+(noType?` ／ <span style="color:var(--red)">型未設定 ${noType}</span>`:'')+(neu.length?'：'+neu.slice(0,8).map(r=>r.name+(r.type[0]?`(${r.type.filter(Boolean).join('/')})`:'(型?)')).join(' / ')+(neu.length>8?' …':''):'');
+}
+function commitBulk(){
+  const rows=parseBulk(document.getElementById('bulkInput').value);
+  if(!rows.length){toast('取り込む行がありません');return;}
+  const db=getDB();const ex=new Set(db.pool.map(p=>p.name));let added=0,ts=Date.now();
+  rows.forEach((r,i)=>{if(ex.has(r.name))return;db.pool.push({id:'b'+(ts+i),name:r.name,type:r.type,note:r.note});ex.add(r.name);added++;});
+  save(db);renderPool();renderNavPool();renderLogPools();
+  toast(`${added}匹を取り込みました（重複${rows.length-added}件スキップ）`);
+  document.getElementById('bulkPreview').style.display='none';
+}
+
+/* ============================================================
+   戦績記録
+   ============================================================ */
+let logOpp=[],logShown=[],logMy=[],logMega=null,logZoro=null,logStrat={},logRes=null;
+function renderLogPools(){
+  const db=getDB();
+  const oppMons=logOpp.map(id=>db.pool.find(p=>p.id===id)).filter(Boolean);
+  const cb=document.getElementById('logOppCarryBody');
+  cb.innerHTML=oppMons.length?oppMons.map((p,i)=>`<span class="bp">${i+1}. ${p.name}</span>`).join(''):'<span style="color:var(--sub);font-size:12px">まだ連携なし。「選出ナビ」で相手6匹を判定するとここに入ります。</span>';
+  // 自軍
+  document.getElementById('logMyTeam').innerHTML=MYKEYS.map(k=>`<div class="mc ${logMy.includes(k)?'on':''}" onclick="logToggleMy('${k}')">${MYTEAM[k].mega?'<div class="megadot">M</div>':''}${MYTEAM[k].name}</div>`).join('');
+  // メガ選択（選出にいるメガ候補のみ）
+  const megaCands=logMy.filter(k=>MYTEAM[k].mega);
+  const megaSeg=document.getElementById('logMega');
+  if(megaCands.length){
+    megaSeg.innerHTML=megaCands.map(k=>`<div class="so ${logMega===k?'on':''}" style="${logMega===k?'background:var(--pink);color:var(--ink)':''}" onclick="logSetMega('${k}')">${MYTEAM[k].name}</div>`).join('')+`<div class="so ${logMega==='none'?'on':''}" style="${logMega==='none'?'background:var(--panel2)':''}" onclick="logSetMega('none')">なし</div>`;
+  }else{
+    megaSeg.innerHTML='<span style="color:var(--sub);font-size:12px">選出にメガ候補（ルカリオ/ガブ）がいません</span>';
+  }
+  // 出てきた3匹
+  document.getElementById('logOppShown').innerHTML=oppMons.length?oppMons.map(p=>{
+    const i=logShown.indexOf(p.id);
+    return `<div class="pchip ${i>=0?'sel':''}" onclick="logToggleShown('${p.id}')">${i>=0?`<div class="badge">${i+1}</div>`:''}<div class="pn">${p.name}</div><div class="pt">${p.type.filter(Boolean).join('/')}</div></div>`;
+  }).join(''):'<div class="empty" style="grid-column:1/-1">「選出ナビ」で相手6匹を判定すると並びます</div>';
+  // 戦略
+  document.getElementById('stratList').innerHTML=db.strategies.map(s=>`<div class="strat ${logStrat[s.id]?'on':''}" onclick="logToggleStrat('${s.id}')"><div class="chk">✓</div><div class="sx"><div class="sname">${s.name}<span class="stag">${s.tag}</span></div><div class="sdesc">${s.desc}</div></div></div>`).join('');
+  // ゾロ・勝敗ボタンの選択状態反映
+  syncSeg('logZoro',logZoro);
+  syncSeg('logResult',logRes);
+}
+function syncSeg(id,val){document.querySelectorAll('#'+id+' .so').forEach(el=>{el.classList.toggle('on',el.dataset.v===val);});}
+function logToggleMy(k){const i=logMy.indexOf(k);if(i>=0){logMy.splice(i,1);if(logMega===k)logMega=null;}else{if(logMy.length>=3){toast('選出は3匹');return;}logMy.push(k);}renderLogPools();}
+function logSetMega(k){logMega=k;renderLogPools();}
+function logToggleShown(id){const i=logShown.indexOf(id);if(i>=0)logShown.splice(i,1);else{if(logShown.length>=3){toast('出てきたのは3匹');return;}logShown.push(id);}renderLogPools();}
+function logToggleStrat(id){logStrat[id]=!logStrat[id];renderLogPools();}
+function setupSegs(){
+  document.querySelectorAll('#logResult .so').forEach(el=>el.onclick=()=>{logRes=el.dataset.v;syncSeg('logResult',logRes);});
+  document.querySelectorAll('#logZoro .so').forEach(el=>el.onclick=()=>{logZoro=el.dataset.v;syncSeg('logZoro',logZoro);});
+}
+function saveMatch(){
+  if(logOpp.length!==6){toast('先に「選出ナビ」で相手6匹を判定してください');return;}
+  if(logMy.length!==3){toast('自軍の選出3匹を選択');return;}
+  if(logShown.length!==3){toast('出てきた相手3匹を選択');return;}
+  if(!logRes){toast('勝敗を選択');return;}
+  const db=getDB();
+  db.matches.push({
+    id:'m'+Date.now(),date:document.getElementById('log_date').value||new Date().toISOString().slice(0,10),
+    opp:logOpp.slice(),oppShown:logShown.slice(),my:logMy.slice(),
+    mega:logMega&&logMega!=='none'?logMega:(logMega==='none'?'none':null),
+    zoro:logZoro,strat:{...logStrat},result:logRes,note:document.getElementById('log_note').value.trim()
+  });
+  save(db);toast('戦績を保存しました ✓');resetLogForm();renderStats();renderLogList();
+}
+function resetLogForm(){
+  logOpp=[];logShown=[];logMy=[];logMega=null;logZoro=null;logStrat={};logRes=null;
+  document.getElementById('log_note').value='';
+  document.getElementById('log_date').value=new Date().toISOString().slice(0,10);
+  renderLogPools();
+}
+
+/* ============================================================
+   分析
+   ============================================================ */
+function nameOf(id){const db=getDB();const p=db.pool.find(x=>x.id===id);return p?p.name:'?';}
+function renderStats(){
+  const db=getDB();const M=db.matches;
+  const n=M.length,w=M.filter(m=>m.result==='W').length;
+  const wr=n?Math.round(w/n*1000)/10:0;
+  // 直近10戦
+  const recent=M.slice(-10);const rw=recent.filter(m=>m.result==='W').length;
+  const rwr=recent.length?Math.round(rw/recent.length*100):0;
+  // 連勝/連敗
+  let streak=0,stype='';for(let i=M.length-1;i>=0;i--){if(i===M.length-1){stype=M[i].result;streak=1;}else if(M[i].result===stype)streak++;else break;}
+  document.getElementById('kpi').innerHTML=`
+    <div class="sbox"><div class="sv">${n}</div><div class="sl">総対戦</div></div>
+    <div class="sbox"><div class="sv" style="color:var(--green)">${w}</div><div class="sl">勝利</div></div>
+    <div class="sbox"><div class="sv" style="color:${wr>=55?'var(--green)':wr>=45?'var(--amber)':'var(--red)'}">${wr}%</div><div class="sl">通算勝率</div></div>
+    <div class="sbox"><div class="sv" style="color:${rwr>=55?'var(--green)':rwr>=45?'var(--amber)':'var(--red)'}">${rwr}%</div><div class="sl">直近10戦</div></div>
+    <div class="sbox"><div class="sv" style="color:${stype==='W'?'var(--green)':'var(--red)'}">${streak?(stype==='W'?streak+'連勝':streak+'連敗'):'—'}</div><div class="sl">現在</div></div>`;
+  document.getElementById('logCount').textContent=n;
+  // フォームバー（直近15）
+  document.getElementById('formBar').innerHTML=M.slice(-15).map(m=>`<div class="fd ${m.result}">${m.result}</div>`).join('')||'';
+
+  // メガ別勝率
+  const megaGroups={luca:[],gab:[],none:[]};
+  M.forEach(m=>{if(m.mega&&megaGroups[m.mega])megaGroups[m.mega].push(m);});
+  const megaRows=[['luca','ルカリオをメガ'],['gab','ガブリアスをメガ'],['none','メガ化なし']].map(([k,label])=>{
+    const g=megaGroups[k];const gw=g.filter(m=>m.result==='W').length;const gwr=g.length?Math.round(gw/g.length*100):null;
+    return {label,n:g.length,wr:gwr};
+  });
+  document.getElementById('megaStats').innerHTML=n?megaRows.map(x=>`
+    <div class="hist"><div class="ht"><b style="font-family:'Zen Maru Gothic';color:var(--cream)">${x.label}</b>
+      <span class="res ${x.wr>=50?'W':'L'}">${x.wr!=null?x.wr+'%':'—'} (${x.n}戦)</span></div>
+      <div class="bar"><i style="width:${x.wr||0}%;background:${x.wr>=55?'var(--green)':x.wr>=45?'var(--amber)':'var(--red)'}"></i></div></div>`).join('')
+    :'<div class="empty">戦績がたまると、どちらのメガが勝てているか見えます</div>';
+
+  // ゾロ
+  const zy=M.filter(m=>m.zoro==='yes'),zn=M.filter(m=>m.zoro==='no');
+  const zyw=zy.filter(m=>m.result==='W').length,znw=zn.filter(m=>m.result==='W').length;
+  document.getElementById('zoroStats').innerHTML=(zy.length||zn.length)?`
+    <div class="hist"><div class="ht"><b style="font-family:'Zen Maru Gothic';color:var(--cream)">出した</b><span class="res ${zy.length&&zyw/zy.length>=.5?'W':'L'}">${zy.length?Math.round(zyw/zy.length*100):0}% (${zy.length}戦)</span></div></div>
+    <div class="hist"><div class="ht"><b style="font-family:'Zen Maru Gothic';color:var(--cream)">出さない</b><span class="res ${zn.length&&znw/zn.length>=.5?'W':'L'}">${zn.length?Math.round(znw/zn.length*100):0}% (${zn.length}戦)</span></div></div>`
+    :'<div class="empty">ゾロアークの使用有無を記録すると比較できます</div>';
+
+  // 戦略別
+  document.getElementById('stratStats').innerHTML=n?db.strategies.map(s=>{
+    const done=M.filter(m=>m.strat&&m.strat[s.id]);const dw=done.filter(m=>m.result==='W').length;
+    const nd=M.filter(m=>!(m.strat&&m.strat[s.id]));const nw=nd.filter(m=>m.result==='W').length;
+    const wr=done.length?Math.round(dw/done.length*100):null;const ndwr=nd.length?Math.round(nw/nd.length*100):null;
+    const lift=(wr!=null&&ndwr!=null)?wr-ndwr:null;
+    return `<div class="hist"><div class="ht"><b style="font-family:'Zen Maru Gothic';color:var(--cream)">${s.name}</b><span class="res ${wr>=50?'W':'L'}">${wr!=null?wr+'%':'—'}</span></div>
+      <div class="bar"><i style="width:${wr||0}%;background:${wr>=55?'var(--green)':wr>=45?'var(--amber)':'var(--red)'}"></i></div>
+      <div class="meta">遂行 ${done.length}戦 ／ 未遂行時 ${ndwr!=null?ndwr+'%':'—'}${lift!=null?` ／ <b style="color:${lift>=0?'var(--green)':'var(--red)'}">差 ${lift>=0?'+':''}${lift}pt</b>`:''}</div></div>`;
+  }).join(''):'<div class="empty">戦績がたまると勝ち筋が可視化されます</div>';
+
+  // コンボ別
+  const combos={};M.forEach(m=>{const k=m.my.slice().sort().join('+');(combos[k]=combos[k]||[]).push(m);});
+  const arr=Object.entries(combos).map(([k,ms])=>({k,n:ms.length,w:ms.filter(m=>m.result==='W').length})).sort((a,b)=>b.n-a.n);
+  document.getElementById('comboStats').innerHTML=arr.length?arr.map(c=>{
+    const wr=Math.round(c.w/c.n*100);const label=c.k.split('+').map(k=>MYTEAM[k]?MYTEAM[k].name:k).join(' + ');
+    return `<div class="hist"><div class="ht"><div style="font-family:'Zen Maru Gothic';font-weight:700;font-size:12px">${label}</div><span class="res ${wr>=50?'W':'L'}">${wr}% (${c.w}/${c.n})</span></div></div>`;
+  }).join(''):'<div class="empty">—</div>';
+}
+function renderLogList(){
+  const db=getDB();let M=db.matches.slice().reverse();
+  const q=(document.getElementById('logSearch')||{}).value.trim().toLowerCase();
+  if(q)M=M.filter(m=>(m.oppShown.map(nameOf).join(' ')+' '+m.opp.map(nameOf).join(' ')+' '+(m.note||'')).toLowerCase().includes(q));
+  const wrap=document.getElementById('logList');
+  if(!M.length){wrap.innerHTML='<div class="empty">該当する戦績がありません</div>';return;}
+  wrap.innerHTML=M.map(m=>{
+    const sc=db.strategies.filter(s=>m.strat&&m.strat[s.id]).length;
+    const megaLabel=m.mega==='none'?'メガなし':(m.mega&&MYTEAM[m.mega]?'M:'+MYTEAM[m.mega].name:'');
+    return `<div class="hist"><div class="ht">
+      <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--sub)">${m.date}</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        ${megaLabel?`<span class="pill" style="background:var(--pink);color:var(--ink)">${megaLabel}</span>`:''}
+        ${m.zoro==='yes'?'<span class="pill" style="background:var(--purple);color:var(--ink)">ゾロ出</span>':''}
+        <span class="pill">戦略${sc}/${db.strategies.length}</span>
+        <span class="res ${m.result}">${m.result==='W'?'WIN':'LOSE'}</span>
+        <button class="btn rd sm" onclick="delMatch('${m.id}')">🗑</button>
+      </div></div>
+      <div class="meta">自軍：<b style="color:var(--cyan)">${m.my.map(k=>MYTEAM[k]?MYTEAM[k].name:k).join('・')}</b><br>
+      ${m.oppShown.length?`相手出：<b>${m.oppShown.map(nameOf).join('・')}</b> <span style="color:var(--sub)">（控え：${m.opp.filter(o=>!m.oppShown.includes(o)).map(nameOf).join('・')}）</span>`:`相手6：${m.opp.map(nameOf).join('・')}`}
+      ${m.note?`<br>📝 ${m.note}`:''}</div></div>`;
+  }).join('');
+}
+function delMatch(id){const db=getDB();db.matches=db.matches.filter(m=>m.id!==id);save(db);renderStats();renderLogList();}
+
+/* ============================================================
+   エクスポート（Excel/JSON）
+   ============================================================ */
+function exportXLSX(){
+  const db=getDB();const M=db.matches;
+  if(!M.length){toast('戦績がありません');return;}
+  const rows=M.map((m,i)=>{
+    const r={
+      No:i+1,日付:m.date,勝敗:m.result==='W'?'勝ち':'負け',
+      メガ化:m.mega==='none'?'なし':(m.mega&&MYTEAM[m.mega]?MYTEAM[m.mega].name:'未記録'),
+      ゾロアーク:m.zoro==='yes'?'出した':(m.zoro==='no'?'出さない':'未記録'),
+      自軍選出:m.my.map(k=>MYTEAM[k]?MYTEAM[k].name:k).join('・'),
+      相手6匹:m.opp.map(nameOf).join('・'),
+      相手出てきた3匹:m.oppShown.map(nameOf).join('・'),
+      メモ:m.note||''
+    };
+    db.strategies.forEach(s=>{r['戦略_'+s.name]=(m.strat&&m.strat[s.id])?1:0;});
+    return r;
+  });
+  const ws=XLSX.utils.json_to_sheet(rows);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'戦績');
+  // 集計シート
+  const n=M.length,w=M.filter(m=>m.result==='W').length;
+  const sum=[
+    {指標:'総対戦数',値:n},{指標:'勝利数',値:w},{指標:'敗北数',値:n-w},{指標:'勝率(%)',値:n?Math.round(w/n*1000)/10:0},
+  ];
+  db.strategies.forEach(s=>{
+    const done=M.filter(m=>m.strat&&m.strat[s.id]);const dw=done.filter(m=>m.result==='W').length;
+    sum.push({指標:'戦略「'+s.name+'」遂行時勝率(%)',値:done.length?Math.round(dw/done.length*100):'-'});
+  });
+  ['luca','gab','none'].forEach(k=>{
+    const g=M.filter(m=>m.mega===k);const gw=g.filter(m=>m.result==='W').length;
+    const lbl=k==='none'?'メガなし':MYTEAM[k].name+'メガ';
+    sum.push({指標:lbl+' 勝率(%)',値:g.length?Math.round(gw/g.length*100):'-'});
+  });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(sum),'集計');
+  XLSX.writeFile(wb,'champ_dualmega_戦績_'+new Date().toISOString().slice(0,10)+'.xlsx');
+  toast('Excelを書き出しました ✓');
+}
+function exportJSON(){const db=getDB();const b=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='champ_dualmega_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();}
+function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{save(JSON.parse(r.result));initAll();toast('復元しました ✓');}catch(err){toast('読み込み失敗');}};r.readAsText(f);}
+function wipeMatches(){if(confirm('戦績のみ全削除しますか？（プール・自軍は残ります）')){const db=getDB();db.matches=[];save(db);renderStats();renderLogList();toast('戦績を削除しました');}}
+
+/* ---- 自軍タブ ---- */
+function renderTeam(){
+  document.getElementById('teamBody').innerHTML=
+    `<div class="note" style="margin-bottom:12px">各ポケモンをタップで育成手引き（性格・持ち物・能力ポイント・技・運用）を開閉。<br>
+    <b style="color:var(--amber)">チャンピオンズ仕様</b>：個体値31固定・Lv50固定で厳選不要。努力値は「能力ポイント」（合計最大66／1能力に最大32）。1ポイント=実数値+1（性格補正なし時）。トレーニング画面でVPを使い振る。</div>`
+    + MYKEYS.map(k=>{
+    const m=MYTEAM[k]; const b=m.build||{};
+    const moves=(b.movesDetail||[]).map(x=>`<li>${x}</li>`).join('');
+    return `<div class="hist" style="padding:0;overflow:hidden">
+      <div class="ht teamhd" onclick="toggleTeam('${k}')" style="cursor:pointer;padding:12px">
+        <div><b style="font-family:'Zen Maru Gothic';font-size:15px;color:var(--cream)">${m.name}</b>
+        <span class="pill" style="margin-left:6px">${m.type.filter(Boolean).join('/')}</span>
+        ${m.mega?'<span class="pill" style="background:var(--pink);color:var(--ink);margin-left:4px">メガ可</span>':''}</div>
+        <span class="pill" id="teamArrow_${k}">▼ 手引き</span>
+      </div>
+      <div class="teamDetail" id="teamDetail_${k}" style="display:none;padding:0 12px 12px">
+        <div class="meta" style="margin-bottom:8px">役割：<b style="color:var(--amber)">${m.role}</b> ／ 特性：${m.abil}</div>
+        <div class="buildgrid">
+          <div class="bcell"><div class="blabel">性格</div><div class="bval">${b.nature||'-'}</div></div>
+          <div class="bcell"><div class="blabel">持ち物</div><div class="bval">${b.item||'-'}</div></div>
+          <div class="bcell" style="grid-column:1/-1"><div class="blabel">能力ポイント配分</div><div class="bval" style="color:var(--cyan)">${b.ev||'-'}</div><div class="bsub">${b.evNote||''}</div></div>
+        </div>
+        <div class="blabel" style="margin-top:10px">技構成</div>
+        <ul class="movelist">${moves}</ul>
+        <div class="bbox"><div class="blabel" style="color:var(--green)">▶ 運用</div><div class="bval2">${b.play||''}</div></div>
+        <div class="bbox warn2"><div class="blabel" style="color:var(--red)">⚠ 注意</div><div class="bval2">${b.caution||''}</div></div>
+      </div></div>`;
+  }).join('');
+  document.getElementById('conceptBody').innerHTML=`
+    <h3>メガ2枠の択</h3><p>ルカリオとガブリアスの両方がメガ化可能。相手は選出画面で「どちらがメガ石持ちか」読めず、受け選出が機能停止する。1試合1匹しかメガ化できない制約を逆手に取る択が核。</p>
+    <h3>ゾロアーク非依存</h3><p>イリュージョンで味方に化けて揺さぶるが、出さなくても残り5匹で勝てる設計。博打にしない。</p>
+    <h3>補完</h3><p>ルカリオの弱点(炎/地面/格闘)はロトム(炎受け・浮遊)・アーマーガア(地面無効)・ガブ(地面役割)で、ガブの弱点(氷/フェアリー/竜)はアーマーガア(フェアリー/竜を半減する鋼。※氷は等倍なので注意)・ロトム・マスカでカバー。地面の一貫はロトムの浮遊とアーマーガアの飛行で締める。</p>
+    <h3>勝ち筋A/B/C</h3><p>A=メガルカリオ全抜き、B=メガガブ制圧、C=ゾロ奇襲。相手選出に応じて選び分ける。</p>`;
+}
+function toggleTeam(k){
+  const d=document.getElementById('teamDetail_'+k);const a=document.getElementById('teamArrow_'+k);
+  const open=d.style.display==='none';
+  d.style.display=open?'block':'none';
+  a.textContent=open?'▲ 閉じる':'▼ 手引き';
+}
+
+/* ---- 使い方タブ ---- */
+function renderHelp(){
+  document.getElementById('helpBody').innerHTML=`
+    <p>このアプリは「メガ2枠軸で勝つための、選出判断＋戦績分析ツール」です。基本の流れは下の3ステップ。</p>
+    <div class="step"><b>STEP 1：選出ナビ</b><br>相手6匹をタップ→「選出を判定」。ハッサム改めルカリオ/ガブを軸に最適3匹、<b>どちらをメガ化すべきか</b>、ゾロアークの化け先、勝ち筋A/B/Cが出ます。</div>
+    <div class="step"><b>STEP 2：対戦後に記録</b><br>勝ったら結果欄の下にある<b>「✓勝った/✗負けた」</b>でワンタップ即記録。じっくり残すなら「戦績」タブで出てきた3匹・メガ・戦略チェックまで入れて保存。</div>
+    <div class="step"><b>STEP 3：分析で振り返る</b><br>「分析」タブで<b>どちらのメガが勝てているか</b>、ゾロを出す/出さないどちらが勝率高いか、どの戦略が勝ち筋かが数値で見えます。Excel書き出しで自分でも分析可。</div>
+    <h3>便利機能</h3>
+    <p>・<b>検索ボックス</b>：相手プールも戦績ログも名前/タイプで絞り込み<br>
+    ・<b>一括取り込み</b>：攻略サイトのリストを貼って相手を大量登録<br>
+    ・<b>直近フォーム</b>：分析タブ上部に直近の勝敗バーと連勝/連敗<br>
+    ・<b>Excel書き出し</b>：戦績＋集計の2シートで吐き出し、自由に分析<br>
+    ・<b>JSONバックアップ/復元</b>：機種変更やデータ移行に</p>
+    <h3>データの安全</h3>
+    <p>すべてこの端末のブラウザ内(localStorage)に保存。外部送信なし。ブラウザのデータを消すと戦績も消えるので、定期的にJSONバックアップ推奨。</p>
+    <h3>判断軸について</h3>
+    <p>選出スコアは「相手6匹への攻撃範囲・受け性能・役割・脅威メモ」から算出した<b>仮説</b>です。正解を断定するものではなく、記録→分析で<b>あなた自身の勝ち筋</b>を数値化するのが本質です。`;
+}
+
+/* ---- toast / タブ / 初期化 ---- */
+let toT;function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toT);toT=setTimeout(()=>t.classList.remove('show'),1900);}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');document.getElementById(t.dataset.p).classList.add('active');
+  if(t.dataset.p==='log')renderLogPools();
+  if(t.dataset.p==='stats'){renderStats();renderLogList();}
+  if(t.dataset.p==='team')renderTeam();
+  if(t.dataset.p==='help')renderHelp();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+function initAll(){getDB();renderNavPool();renderPool();renderLogPools();renderStats();renderLogList();renderTeam();renderHelp();}
+fillTypeSelect();setupSegs();resetLogForm();initAll();
+
+/* ============================================================
+   PWA: Service Worker（インライン）＋ インストール導線
+   ============================================================ */
+(function(){
+  // オフラインキャッシュSW。単一HTMLなので自分自身とフォント/XLSXをキャッシュ。
+  const swCode = `
+    const CACHE='champ-dualmega-v2';
+    // 自分自身（このHTML）を最優先でキャッシュし、完全オフラインでも起動可能にする
+    self.addEventListener('install', e=>{
+      e.waitUntil(
+        caches.open(CACHE).then(c=>c.add(new Request('./',{cache:'reload'})).catch(()=>{}))
+          .then(()=>self.skipWaiting())
+      );
+    });
+    self.addEventListener('activate', e=>{
+      e.waitUntil(
+        caches.keys().then(keys=>Promise.all(
+          keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))   // 旧バージョンのキャッシュを掃除
+        )).then(()=>self.clients.claim())
+      );
+    });
+    self.addEventListener('fetch', e=>{
+      const req=e.request;
+      if(req.method!=='GET') return;
+      // ページ遷移（HTML本体）はネット優先→失敗時キャッシュ→最終フォールバックで './' を返す
+      if(req.mode==='navigate'){
         e.respondWith(
-          caches.open(C).then(cache=>
-            cache.match(e.request).then(hit=>{
-              const net=fetch(e.request).then(res=>{
-                try{ if(e.request.method==='GET' && res && res.status===200) cache.put(e.request,res.clone()); }catch(_){}
-                return res;
-              }).catch(()=>hit);
-              return hit||net;
-            })
-          )
+          fetch(req).then(res=>{
+            const copy=res.clone();
+            caches.open(CACHE).then(c=>c.put(req,copy)).catch(()=>{});
+            return res;
+          }).catch(()=>caches.match(req).then(hit=>hit||caches.match('./')))
         );
-      });`;
+        return;
+      }
+      // その他資産（フォント/XLSX等）は stale-while-revalidate
+      e.respondWith(
+        caches.open(CACHE).then(cache=>
+          cache.match(req).then(hit=>{
+            const net=fetch(req).then(res=>{
+              if(res&&res.status===200&&(res.type==='basic'||res.type==='cors')){ cache.put(req,res.clone()); }
+              return res;
+            }).catch(()=>hit);
+            return hit||net;
+          })
+        )
+      );
+    });
+  `;
+  if('serviceWorker' in navigator){
     try{
-      const swurl=URL.createObjectURL(new Blob([swCode],{type:'text/javascript'}));
-      navigator.serviceWorker.register(swurl).catch(()=>{});
+      const blob=new Blob([swCode],{type:'text/javascript'});
+      const url=URL.createObjectURL(blob);
+      navigator.serviceWorker.register(url).catch(()=>{});
     }catch(e){}
   }
-})();
-
-/* ---- install prompt (Android/Chrome) ---- */
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault(); deferredPrompt=e;
-  if(!sessionStorage.getItem('hideInstall')) document.getElementById('installBar').classList.add('show');
-});
-document.getElementById('installBtn').addEventListener('click', async ()=>{
-  if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
-    document.getElementById('installBar').classList.remove('show'); }
-  else{ toast('共有メニューから「ホーム画面に追加」'); }
-});
-document.getElementById('installClose').addEventListener('click',()=>{
-  document.getElementById('installBar').classList.remove('show'); sessionStorage.setItem('hideInstall','1');
-});
-// iOS hint: show banner if standalone not active and is iOS
-(function(){
-  const isiOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-  const standalone=window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-  if(isiOS && !standalone && !sessionStorage.getItem('hideInstall')){
-    const bar=document.getElementById('installBar');
-    bar.querySelector('.txt').innerHTML='<b>ホーム画面に追加</b>：共有 ⬆ →「ホーム画面に追加」';
-    bar.querySelector('#installBtn').style.display='none';
-    bar.classList.add('show');
+  // インストールプロンプト
+  let deferred=null;
+  window.addEventListener('beforeinstallprompt', e=>{
+    e.preventDefault(); deferred=e; showInstallBtn();
+  });
+  function showInstallBtn(){
+    if(document.getElementById('pwaInstall')) return;
+    const b=document.createElement('button');
+    b.id='pwaInstall'; b.className='btn pu';
+    b.style.cssText='position:fixed;right:14px;bottom:18px;z-index:60;box-shadow:3px 4px 0 var(--ink)';
+    b.textContent='📲 ホームに追加';
+    b.onclick=async()=>{ if(!deferred)return; deferred.prompt(); const r=await deferred.userChoice; deferred=null; b.remove(); if(r&&r.outcome==='accepted')toast('インストールしました ✓'); };
+    document.body.appendChild(b);
+  }
+  window.addEventListener('appinstalled', ()=>{ const b=document.getElementById('pwaInstall'); if(b)b.remove(); });
+  // iOS（beforeinstallprompt非対応）向け：standaloneでなければ案内を一度だけ
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone=window.navigator.standalone||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
+  if(isIOS && !standalone && !localStorage.getItem('iosHintShown')){
+    setTimeout(()=>{ toast('共有→「ホーム画面に追加」でアプリ化できます'); localStorage.setItem('iosHintShown','1'); }, 1500);
   }
 })();
 
-load();
 </script>
 </body>
 </html>
