@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>選出ナビ — レギュMB</title>
+<meta name="description" content="ポケモンチャンピオンズ レギュMB の対トップメタ選出ツール。相手をタップして推奨選出と立ち回りを即確認。">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0a0a0d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="選出ナビ">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Outfit:wght@600;800;900&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0d;--ink2:#141420;--panel:#1b1c27;
+    --yellow:#ffd400;--yellow-soft:#ffe566;
+    --blue:#1f8bff;--blue-soft:#7cc0ff;
+    --white:#f6f7fb;--muted:#8b8d9e;
+    --bad:#ff5470;--bad-soft:#ff8aa0;
+    --line:rgba(255,255,255,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(900px 480px at 85% -8%, rgba(31,139,255,.18), transparent 60%),
+      radial-gradient(700px 480px at -8% 8%, rgba(255,212,0,.09), transparent 55%),
+      var(--ink);
+    color:var(--white);font-family:"Zen Maru Gothic",system-ui,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding-bottom:calc(70px + env(safe-area-inset-bottom));
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 15px}
+
+  /* HEADER */
+  header{position:relative;padding:calc(34px + env(safe-area-inset-top)) 15px 18px;overflow:hidden}
+  .grid{position:absolute;inset:0;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:32px 32px;mask-image:linear-gradient(180deg,#000,transparent 85%);opacity:.45}
+  .hd{position:relative;max-width:640px;margin:0 auto}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-family:"JetBrains Mono",monospace;font-weight:600;
+    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);background:var(--yellow);
+    padding:5px 11px;border-radius:999px;margin-bottom:14px}
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink)}
+  h1{font-family:"Outfit","Zen Maru Gothic",sans-serif;font-weight:900;line-height:.95;letter-spacing:-.02em;
+    font-size:clamp(34px,10vw,56px)}
+  h1 .y{color:var(--yellow)} h1 .b{color:transparent;-webkit-text-stroke:2px var(--blue);paint-order:stroke}
+  .sub{margin-top:11px;color:var(--muted);font-size:14px;max-width:42ch}
+
+  /* MY TEAM strip */
+  .myteam{margin-top:18px;border:1px solid var(--line);border-radius:13px;padding:13px 14px;
+    background:linear-gradient(180deg,rgba(255,212,0,.07),rgba(255,255,255,.02))}
+  .myteam h3{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--yellow);margin-bottom:9px}
+  .myteam .row{display:flex;flex-wrap:wrap;gap:6px}
+  .myteam .m{font-size:12px;font-weight:700;padding:4px 10px;border-radius:7px;
+    background:rgba(255,255,255,.05);border:1px solid var(--line)}
+
+  /* SEARCH */
+  .search{margin-top:18px;position:relative}
+  .search input{width:100%;font-family:"Zen Maru Gothic";font-size:15px;font-weight:500;
+    color:var(--white);background:var(--ink2);border:1px solid var(--line);border-radius:12px;
+    padding:13px 14px 13px 42px;outline:none}
+  .search input::placeholder{color:var(--muted)}
+  .search input:focus{border-color:var(--blue)}
+  .search .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px}
+
+  /* FILTER TABS */
+  .filters{display:flex;gap:7px;overflow-x:auto;margin-top:14px;padding-bottom:2px;
+    -ms-overflow-style:none;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .filters button{flex:0 0 auto;font-family:"Zen Maru Gothic";font-size:12.5px;font-weight:700;
+    color:var(--white);background:transparent;border:1px solid var(--line);border-radius:9px;
+    padding:7px 13px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .filters button.on{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+
+  /* BUTTON GRID */
+  .grid-wrap{margin-top:16px}
+  .sec-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin:18px 0 9px}
+  .btns{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+  @media(min-width:480px){.btns{grid-template-columns:repeat(3,1fr)}}
+  .tbtn{position:relative;text-align:left;cursor:pointer;font-family:"Zen Maru Gothic";
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 13px 12px;
+    color:var(--white);transition:transform .15s,border-color .15s;overflow:hidden}
+  .tbtn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rk)}
+  .tbtn .nm{font-size:14px;font-weight:900;line-height:1.15;letter-spacing:-.01em}
+  .tbtn .ty{font-size:10.5px;color:var(--muted);margin-top:2px;display:block}
+  .tbtn .rk{position:absolute;top:11px;right:11px;font-family:"JetBrains Mono",monospace;
+    font-size:13px;font-weight:600;line-height:1}
+  .tbtn[data-rank="good"]{--rk:var(--blue)} .tbtn[data-rank="good"] .rk{color:var(--blue-soft)}
+  .tbtn[data-rank="ok"]{--rk:var(--yellow)} .tbtn[data-rank="ok"] .rk{color:var(--yellow-soft)}
+  .tbtn[data-rank="bad"]{--rk:var(--bad)} .tbtn[data-rank="bad"] .rk{color:var(--bad-soft)}
+  @media(hover:hover){.tbtn:hover{transform:translateY(-2px);border-color:rgba(255,212,0,.4)}}
+  .tbtn:active{transform:scale(.97)}
+  .noresult{color:var(--muted);font-size:13px;text-align:center;padding:30px 0;display:none}
+
+  /* MODAL */
+  .scrim{position:fixed;inset:0;background:rgba(5,5,9,.78);backdrop-filter:blur(6px);
+    opacity:0;pointer-events:none;transition:opacity .22s;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+  .scrim.open{opacity:1;pointer-events:auto}
+  @media(min-width:560px){.scrim{align-items:center}}
+  .sheet{width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:var(--ink2);
+    border:1px solid var(--line);border-radius:20px 20px 0 0;transform:translateY(24px);transition:transform .26s cubic-bezier(.2,.8,.2,1)}
+  @media(min-width:560px){.sheet{border-radius:20px;transform:translateY(16px) scale(.98)}}
+  .scrim.open .sheet{transform:none}
+  .sheet-grab{width:38px;height:4px;border-radius:99px;background:rgba(255,255,255,.22);margin:10px auto 0}
+  .sheet-hd{padding:14px 18px 14px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px;position:sticky;top:0;background:var(--ink2);z-index:2}
+  .sheet-hd .info{flex:1}
+  .sheet-hd .nm{font-family:"Outfit","Zen Maru Gothic";font-weight:900;font-size:21px;line-height:1.1;letter-spacing:-.01em}
+  .sheet-hd .ty{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .sheet-hd .verdict{flex:0 0 auto;text-align:center;font-family:"JetBrains Mono",monospace;font-weight:600;
+    border-radius:10px;padding:6px 11px;font-size:19px;line-height:1}
+  .sheet-hd .verdict small{display:block;font-size:8px;letter-spacing:.1em;margin-top:3px;font-weight:600}
+  .v-good{background:rgba(31,139,255,.16);color:var(--blue-soft);border:1px solid rgba(31,139,255,.4)}
+  .v-ok{background:rgba(255,212,0,.14);color:var(--yellow-soft);border:1px solid rgba(255,212,0,.4)}
+  .v-bad{background:rgba(255,84,112,.14);color:var(--bad-soft);border:1px solid rgba(255,84,112,.4)}
+  .sheet-hd .x{flex:0 0 auto;width:32px;height:32px;border-radius:9px;border:1px solid var(--line);
+    background:transparent;color:var(--white);font-size:18px;cursor:pointer;line-height:1}
+  .sheet-bd{padding:16px 18px 24px}
+  .threat{font-size:13px;color:var(--white);margin-bottom:16px}
+  .threat b{color:var(--yellow);font-weight:700}
+
+  .pick-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--blue-soft);margin-bottom:10px}
+  .picks{display:grid;gap:8px;margin-bottom:8px}
+  .pick{display:flex;align-items:center;gap:11px;background:rgba(31,139,255,.06);
+    border:1px solid rgba(31,139,255,.24);border-radius:12px;padding:10px 12px}
+  .pick .slot{flex:0 0 auto;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.08em;
+    font-weight:600;color:var(--ink);background:var(--blue-soft);border-radius:6px;padding:4px 7px;text-transform:uppercase;min-width:62px;text-align:center}
+  .pick .pm{font-size:14px;font-weight:900}
+  .pick .pm small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:1px}
+
+  .avoid-row{margin-top:13px;background:rgba(255,84,112,.05);border:1px solid rgba(255,84,112,.22);
+    border-radius:12px;padding:11px 13px}
+  .avoid-row .l{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--bad-soft);margin-bottom:6px;font-weight:600}
+  .avoid-row .mons{display:flex;flex-wrap:wrap;gap:5px}
+  .avoid-row .mon{font-size:12px;font-weight:700;padding:3px 9px;border-radius:7px;
+    background:rgba(255,255,255,.05);border:1px solid var(--line)}
+
+  .play{margin-top:14px;font-size:13px;padding:12px 14px;border-radius:12px;
+    background:rgba(255,212,0,.06);border:1px dashed rgba(255,212,0,.35)}
+  .play .l{font-weight:900;color:var(--yellow);font-size:12px;display:block;margin-bottom:4px;font-family:"JetBrains Mono",monospace;letter-spacing:.06em}
+  .watch{margin-top:11px;font-size:12px;color:var(--muted);padding-left:20px;position:relative}
+  .watch::before{content:"⚠";position:absolute;left:0;color:var(--yellow)}
+
+  footer{margin-top:34px;text-align:center;color:var(--muted);font-size:10.5px;
+    font-family:"JetBrains Mono",monospace;letter-spacing:.05em;line-height:1.7}
+  footer span{display:block;max-width:48ch;margin:6px auto 0}
+  :focus-visible{outline:3px solid var(--yellow);outline-offset:2px;border-radius:8px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="grid"></div>
+  <div class="hd">
+    <span class="eyebrow">Pokémon Champions / レギュMB</span>
+    <h1>選出<span class="y">ナビ</span></h1>
+    <p class="sub">相手のメガ・天候・厄介な積みをタップ → こちらの推奨選出と立ち回りが即出る。</p>
+    <div class="myteam">
+      <h3>// 自分のパーティ（固定）</h3>
+      <div class="row">
+        <span class="m">メガリザードンY</span><span class="m">ガブリアス</span><span class="m">ブリジュラス</span>
+        <span class="m">カバルドン</span><span class="m">ミミッキュ</span><span class="m" style="border-color:rgba(255,212,0,.5)">ラウドボーン</span>
+      </div>
+    </div>
+    <div class="search">
+      <span class="ic">⌕</span>
+      <input id="q" type="text" placeholder="相手のポケモン名で検索…（例：ラグラージ）" autocomplete="off">
+    </div>
+    <div class="filters" id="filters">
+      <button data-f="all" class="on">すべて</button>
+      <button data-f="good">◎有利</button>
+      <button data-f="ok">○戦える</button>
+      <button data-f="bad">△✕難関</button>
+      <button data-f="weather">天候パ</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid-wrap" id="grid"></div>
+  <p class="noresult" id="noresult">該当なし。別の名前で検索してみてください。</p>
+
+  <footer>
+    POKÉMON CHAMPIONS — 選出ナビ / レギュMB シングル
+    <span>相性評価（◎○△✕）と選出は解析に基づく見立てであり、対戦実績による立証ではありません。S実数・調整値はゲーム内ツールで最終確定を推奨。</span>
+  </footer>
+</div>
+
+<!-- MODAL -->
+<div class="scrim" id="scrim">
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true">
+    <div class="sheet-grab"></div>
+    <div class="sheet-hd">
+      <div class="info">
+        <div class="nm" id="m-nm"></div>
+        <div class="ty" id="m-ty"></div>
+      </div>
+      <div class="verdict" id="m-vd"></div>
+      <button class="x" id="m-x" aria-label="閉じる">×</button>
+    </div>
+    <div class="sheet-bd">
+      <p class="threat" id="m-threat"></p>
+      <div class="pick-lbl">▲ 推奨選出</div>
+      <div class="picks" id="m-picks"></div>
+      <div class="avoid-row" id="m-avoid-row">
+        <div class="l">▼ 出してはいけない</div>
+        <div class="mons" id="m-avoid"></div>
+      </div>
+      <div class="play"><span class="l">立ち回りの核</span><span id="m-play"></span></div>
+      <p class="watch" id="m-watch"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== DATA =====
+   slots: 配列。slotラベルとポケモン＋一言。
+   rank: good/ok/bad。 cat: mega/weather/setup */
+const DATA = [
+  {id:"ragulaji", nm:"メガラグラージ", ty:"雨・すいすい物理エース", cat:"mega", rank:"good", vd:"◎",
+   threat:"雨でS2倍・攻撃150の物理。<b>くさ4倍</b>、晴れにすれば水半減＋すいすい不発。",
+   picks:[
+     {slot:"先発", pm:"ガブリアス", note:"ステロ＋様子見"},
+     {slot:"メイン", pm:"メガリザードンY", note:"晴れ上書きで雨を消す→草で4倍"},
+     {slot:"保険", pm:"カバルドン", note:"砂で再上書き＋あくび"}
+   ],
+   avoid:["ガブの居座り"],
+   play:"リザードンYで晴れ上書き→すいすい停止＆水半減→草4倍。雨を撒き直されても同ターンにメガし直して上書き返し。",
+   watch:"ウェーブタックルでカバルドンが落ちる。れいとうパンチでガブが4倍。受け過信禁物。"},
+
+  {id:"metagross", nm:"メガメタグロス", ty:"かたいツメ物理エース", cat:"mega", rank:"good", vd:"◎",
+   threat:"A145/B150/S110。技4つ完結なので<b>炎+地面の2体で受け分担</b>が刺さる。",
+   picks:[
+     {slot:"メイン", pm:"メガリザードンY", note:"上から炎で弱点"},
+     {slot:"受け", pm:"カバルドン", note:"物理受け→地震"},
+     {slot:"様子見", pm:"ガブリアス", note:"とんぼ感覚で技を確認"}
+   ],
+   avoid:["ミミッキュ"],
+   play:"リザで上から炎＋カバルドンで物理受け→地震。打点の違う2体で分担し、片方が弱点突かれても もう片方に打点が無い状況を作る。",
+   watch:"かみなりパンチ持ちはリザ・カバ両方を削る。初手は無理にメガを切らず1回技を見てから。"},
+
+  {id:"raichu", nm:"メガライチュウ Y/X", ty:"高速電気アタッカー", cat:"mega", rank:"good", vd:"◎",
+   threat:"YはノーガードでんじほうでS130、Xは物理。共通で<b>地面が完封</b>、物理耐久が紙。",
+   picks:[
+     {slot:"軸", pm:"カバルドン", note:"電気無効→地震でY/X両対応"},
+     {slot:"先発", pm:"ガブリアス", note:"電気透かし＋ステロ"},
+     {slot:"詰め", pm:"ミミッキュ", note:"かげうちで脆い耐久を割る"}
+   ],
+   avoid:["ブリジュラス→Y","リザードンY"],
+   play:"カバ/ガブで電気を透かして地震。ステロ＋先制で紙耐久を割る。姿だけで判断せず地面で受ける。",
+   watch:"ブリジュラスはX有利／Yのきあいだま4倍で即死。同じライチュウでも受けが真逆。"},
+
+  {id:"fushigibana", nm:"メガフシギバナ", ty:"あついしぼう・受けサイクル", cat:"mega", rank:"ok", vd:"○",
+   threat:"こうごうせい＋やどりぎで詰ませる耐久。<b>炎4倍</b>だが、短期決着しないと向こうのペース。",
+   picks:[
+     {slot:"メイン", pm:"メガリザードンY", note:"炎4倍で一気に割る"},
+     {slot:"先発", pm:"ガブリアス", note:"上から圧＋ステロ"},
+     {slot:"様子見", pm:"ミミッキュ", note:"削り＋詰めの保険"}
+   ],
+   avoid:["ブリジュラス","カバルドン"],
+   play:"受け合わず、リザの炎4倍で短期決着。サイクルに付き合うと回復で負ける。あついしぼうでも晴れ込みなら押し切れる。",
+   watch:"ねむりごな型。リザを通す前にマスカ的な引き役で引っ込めさせ、隙を作ってメガを切る。"},
+
+  {id:"lucario", nm:"メガルカリオ", ty:"てきおうりょく積みエース", cat:"setup", rank:"bad", vd:"△",
+   threat:"A145/C140/S112。<b>物理型と特殊型が判別不能</b>。等倍でも積めば全抜き。最難関の一角。",
+   picks:[
+     {slot:"メイン", pm:"メガリザードンY", note:"HP満タンで上から炎"},
+     {slot:"受け", pm:"ミミッキュ", note:"しんそく無効＋ばけのかわ"},
+     {slot:"蓋", pm:"ラウドボーン", note:"てんねんで積みを無効化"}
+   ],
+   avoid:["ブリジュラス"],
+   play:"HP満タンのリザで上から炎＋ミミでしんそく透かし。ラウドボーンのてんねんで積みを腐らせるのが新しい解。積ませる前にステロ。",
+   watch:"物理読みカバ→特殊きあいだまの択負けが起きる。ラウドボーンを温存して積み対面に当てる。"},
+
+  {id:"starmie", nm:"メガスターミー", ty:"ちからもち物理（見た目詐欺）", cat:"mega", rank:"good", vd:"◎",
+   threat:"特殊に見えて中身は物理高速エース。<b>ブリジュラスが天敵</b>で有効打を持たれない。",
+   picks:[
+     {slot:"軸", pm:"ブリジュラス", note:"打点を消して居座る"},
+     {slot:"受け", pm:"カバルドン", note:"物理受けの二番手"},
+     {slot:"詰め", pm:"ミミッキュ", note:"かげうちで先制処理"}
+   ],
+   avoid:["リザードンY"],
+   play:"ブリジュラスを置いてスターミーの打点を消す。有利対面を作らせない側に回る。",
+   watch:"スターミー使いはブリジュラス対策をセットで連れてくる。裏の崩し役を先に処理。"},
+
+  {id:"utsubot", nm:"メガウツボット", ty:"両刀・とびだすなかみ", cat:"mega", rank:"ok", vd:"○",
+   threat:"A125/C135両刀＋ちからをすいとる。<b>倒すと残HP分の道連れ</b>でこちらを削る。炎4倍。",
+   picks:[
+     {slot:"メイン", pm:"メガリザードンY", note:"HP満タンで炎4倍一撃"},
+     {slot:"受け", pm:"ブリジュラス", note:"草毒を半減して居座る"},
+     {slot:"保険", pm:"ミミッキュ", note:"ふいうち＆道連れを透かす"}
+   ],
+   avoid:["ガブの居座り","カバルドン"],
+   play:"削り合わずHP満タンのリザで炎4倍一撃。受けるならブリジュラスで草毒を透かし、リザは他の重要メガに温存。",
+   watch:"道連れでリザが削られる。なるべくブリジュラスで受けるのが構築全体の勝率を上げる。"},
+
+  {id:"kamex", nm:"メガカメックス", ty:"からをやぶる積みエース", cat:"setup", rank:"ok", vd:"○",
+   threat:"メガランチャー波動で全抜き。だが<b>積む前S78と遅く、積み後は耐久DOWN</b>＝先制で縛れる。",
+   picks:[
+     {slot:"本命", pm:"ミミッキュ", note:"ばけのかわ→かげうちで縛る"},
+     {slot:"流し", pm:"ブリジュラス", note:"積む前に水半減で後出し"},
+     {slot:"蓋", pm:"ラウドボーン", note:"てんねんで積みを無効化"}
+   ],
+   avoid:["リザードンY","カバルドン"],
+   play:"積ませない＋積まれてもミミのかげうちで縛る。ラウドボーンならてんねんでからをやぶるを腐らせる。ステロ→削り→先制。",
+   watch:"はどうだん(格闘)はブリジュラスに刺さる。受けるなら積む前。"},
+
+  {id:"kairyu", nm:"メガカイリュー", ty:"マルスケ＋広範囲特殊", cat:"mega", rank:"ok", vd:"△○",
+   threat:"C145、マルスケで1発耐えて反撃＋しんそく。<b>ステロが入れば中の下、入らなければ最上位</b>。",
+   picks:[
+     {slot:"起点", pm:"ガブリアス", note:"初手ステロでマルスケ無効化"},
+     {slot:"詰め", pm:"ミミッキュ", note:"しんそく無効＋フェアリーで縛る"},
+     {slot:"受け", pm:"ブリジュラス", note:"炎を持たない型限定で氷竜半減"}
+   ],
+   avoid:["リザードンY","ガブの対面"],
+   play:"ガブの初手ステロでマルスケ無効化→上から/先制を透かして詰める。これが全て。",
+   watch:"だいもんじ持ちはブリジュラスに刺さる。氷連続技が無いのでステロが通らないと事故りやすい。"},
+
+  {id:"mimilop", nm:"メガミミロップ", ty:"きもったまS135高速物理", cat:"mega", rank:"good", vd:"◎",
+   threat:"ゴーストすら透かすノマ格闘＋いかく無効。だが<b>フェアリーに有効打が無く物理受けで止まる</b>。",
+   picks:[
+     {slot:"本命", pm:"ミミッキュ", note:"ばけのかわ＋じゃれつくで弱点"},
+     {slot:"受け", pm:"カバルドン", note:"物理受けで完封＋あくび"},
+     {slot:"蓋", pm:"ラウドボーン", note:"格闘半減＋物理受け"}
+   ],
+   avoid:["ガブリアス","ブリジュラス"],
+   play:"フェアリー(ミミ)で弱点＋物理受け(カバ/ラウド)の二重の壁。ミミロップが最も苦手とする2軸が揃う。",
+   watch:"本体より「とんボルサイクル(ロトム等)」が本命。裏の崩し役を先に処理。"},
+
+  {id:"hassam", nm:"メガハッサム", ty:"剣舞テクニシャン先制", cat:"setup", rank:"good", vd:"◎",
+   threat:"剣舞→強化バレットパンチで全抜き。だが<b>炎4倍が一枚岩</b>でリザが確定対策。",
+   picks:[
+     {slot:"メイン", pm:"メガリザードンY", note:"積む前にHP満タンで炎4倍"},
+     {slot:"受け", pm:"ブリジュラス", note:"じきゅうりょくで剣舞ごと受け切る"},
+     {slot:"保険", pm:"カバルドン", note:"物理受けの二番手"}
+   ],
+   avoid:["ミミッキュ"],
+   play:"積む前にリザの炎4倍で焼く。積まれたらブリジュラスのじきゅうりょくで受け切る。",
+   watch:"でんこうせっか採用型はステロ後のリザを先制で縛る。インファイトはブリジュラスに刺さる。"},
+
+  {id:"kuchiit", nm:"メガクチート", ty:"ちからもち＋ふいうち要塞", cat:"setup", rank:"ok", vd:"○",
+   threat:"B125要塞＋ふいうちで全抜き。炎・地面は2倍止まり。<b>「ふいうちを半減できるか」が弱点突き以上に重要</b>。",
+   picks:[
+     {slot:"メイン", pm:"メガリザードンY", note:"炎で上から（いわなだれ注意）"},
+     {slot:"受け", pm:"カバルドン", note:"地震＋あくびで積み拒否"},
+     {slot:"削り", pm:"ガブリアス", note:"ステロでHPを削る"}
+   ],
+   avoid:["ミミッキュ","ブリジュラス"],
+   play:"カバのあくびで積みを拒否＋ステロで削り、リザはトドメ専用に。受けに頼り切らない。",
+   watch:"いわなだれ持ちはリザを岩4倍で奇襲。確証が無ければリザを安易に切らない。"},
+
+  {id:"gengar", nm:"メガゲンガー", ty:"かげふみ・盤面破壊", cat:"mega", rank:"ok", vd:"△",
+   threat:"かげふみで逃がさず、おにび/催眠/滅び/道連れで搦める。<b>「倒せるか」より「縛られて損しないか」</b>が論点。",
+   picks:[
+     {slot:"必須", pm:"ミミッキュ", note:"かげふみ無効＋かげうちで縛る"},
+     {slot:"先置き", pm:"カバルドン", note:"メガ前に当てて地震"},
+     {slot:"削り", pm:"ガブリアス", note:"削れたゲンガーに地震"}
+   ],
+   avoid:["ブリジュラス（縛られ）"],
+   play:"ミミッキュは必ず選出。かげふみを無視して動け、かげうちで脆いゲンガーを縛る。",
+   watch:"受け駒がかげふみで縛られ1体道連れにされるのが負け筋。カバは後出し不可＝初手から。"},
+
+  {id:"floette", nm:"メガフラエッテ", ty:"フェアリーオーラ瞑想エース", cat:"setup", rank:"bad", vd:"✕",
+   threat:"C155＋特防148で<b>特殊が一切通らない＝物理でしか倒せない</b>。瞑想で全抜き。最難関。",
+   picks:[
+     {slot:"本命", pm:"ブリジュラス", note:"鋼半減＋ラスターカノン（積む前に）"},
+     {slot:"蓋", pm:"ラウドボーン", note:"てんねん＋フレアソングでみがわり貫通"},
+     {slot:"削り", pm:"ガブリアス", note:"ステロでブリジュの負担減"}
+   ],
+   avoid:["ミミッキュ","カバルドン"],
+   play:"ブリジュラスで鋼半減＋ラスターカノン。瞑想を積まれる前に当てる。ラウドボーンのてんねんで瞑想を無効化＋フレアソングでみがわりを貫く。",
+   watch:"サイコキネシス/はめつのひかりでブリジュ貫通も。ブリジュを温存し、消耗させると回答が薄くなる。"},
+
+  /* === WEATHER === */
+  {id:"rain", nm:"雨パ", ty:"ペリッパー＋メガラグラージ軸", cat:"weather", rank:"good", vd:"◎",
+   threat:"あめふらし→すいすいラグラージで殴り、ブリジュラスで草受け＋裏も固める構築単位の圧力。",
+   picks:[
+     {slot:"先発", pm:"ガブリアス", note:"ステロ＋様子見"},
+     {slot:"軸", pm:"メガリザードンY", note:"晴れ上書きで雨を消す"},
+     {slot:"保険", pm:"カバルドン", note:"砂で再上書き"}
+   ],
+   avoid:["ガブの居座り"],
+   play:"リザで晴れ上書き→すいすい停止＆水半減。交代→メガの順なので、雨を撒き直されても同ターンにメガし直して上書き返し。",
+   watch:"ウェーブタックルでカバが落ちる。れいとうパンチでガブが4倍。裏のラグラージ受けを削ってからリザを切る。"},
+
+  {id:"sand", nm:"砂パ", ty:"バンギラス＋ドリュウズ軸", cat:"weather", rank:"bad", vd:"△✕",
+   threat:"砂で岩の特防1.5倍＝特殊に滅法強い。<b>リザは岩4倍で出せない</b>＝主軸が機能しない数少ない相手。",
+   picks:[
+     {slot:"軸", pm:"カバルドン", note:"地震＋砂上書き＋あくび"},
+     {slot:"削り", pm:"ガブリアス", note:"ステロ（れいとうパンチ注意）"},
+     {slot:"詰め", pm:"ミミッキュ", note:"ばけのかわ＋かげうち"}
+   ],
+   avoid:["リザードンY（岩4倍）"],
+   play:"カバの地震でバンギ弱点＋砂上書き＋あくびで時間を稼ぐ。ステロ＋削りで処理。リザは原則出さない。",
+   watch:"本来の答えは格闘枠。6枠目をローブシンにすればバンギ4倍を突けて対砂が一段堅くなる（ラウドボーン構成では消耗戦）。"}
+];
+
+/* ===== RENDER ===== */
+const grid = document.getElementById('grid');
+const noresult = document.getElementById('noresult');
+const rankWord = {good:"◎",ok:"○",bad:"△"};
+
+function group(list){
+  // category order
+  const order=[["mega","メガシンカ"],["setup","積み・搦め手"],["weather","天候パ"]];
+  return order.map(([c,label])=>({label, items:list.filter(d=>d.cat===c)})).filter(g=>g.items.length);
+}
+
+function render(list){
+  grid.innerHTML="";
+  if(!list.length){noresult.style.display="block";return}
+  noresult.style.display="none";
+  group(list).forEach(g=>{
+    const lbl=document.createElement('div');
+    lbl.className="sec-lbl";lbl.textContent="// "+g.label;
+    grid.appendChild(lbl);
+    const box=document.createElement('div');box.className="btns";
+    g.items.forEach(d=>{
+      const b=document.createElement('button');
+      b.className="tbtn";b.setAttribute('data-rank',d.rank);
+      b.innerHTML=`<span class="rk">${d.vd}</span><span class="nm">${d.nm}</span><span class="ty">${d.ty}</span>`;
+      b.onclick=()=>openSheet(d);
+      box.appendChild(b);
+    });
+    grid.appendChild(box);
+  });
+}
+
+/* ===== MODAL ===== */
+const scrim=document.getElementById('scrim');
+const sheet=document.getElementById('sheet');
+function openSheet(d){
+  document.getElementById('m-nm').textContent=d.nm;
+  document.getElementById('m-ty').textContent=d.ty;
+  const vd=document.getElementById('m-vd');
+  vd.innerHTML=`${d.vd}<small>${d.rank==="good"?"有利":d.rank==="ok"?"戦える":"難関"}</small>`;
+  vd.className="verdict "+(d.rank==="good"?"v-good":d.rank==="ok"?"v-ok":"v-bad");
+  document.getElementById('m-threat').innerHTML=d.threat;
+  const picks=document.getElementById('m-picks');picks.innerHTML="";
+  d.picks.forEach(p=>{
+    const el=document.createElement('div');el.className="pick";
+    el.innerHTML=`<span class="slot">${p.slot}</span><span class="pm">${p.pm}<small>${p.note}</small></span>`;
+    picks.appendChild(el);
+  });
+  const avoidRow=document.getElementById('m-avoid-row');
+  const avoid=document.getElementById('m-avoid');avoid.innerHTML="";
+  if(d.avoid&&d.avoid.length){avoidRow.style.display="block";d.avoid.forEach(a=>{const s=document.createElement('span');s.className="mon";s.textContent=a;avoid.appendChild(s)})}
+  else{avoidRow.style.display="none"}
+  document.getElementById('m-play').textContent=d.play;
+  document.getElementById('m-watch').textContent=d.watch;
+  scrim.classList.add('open');
+  document.body.style.overflow="hidden";
+}
+function closeSheet(){scrim.classList.remove('open');document.body.style.overflow=""}
+document.getElementById('m-x').onclick=closeSheet;
+scrim.onclick=e=>{if(e.target===scrim)closeSheet()};
+document.addEventListener('keydown',e=>{if(e.key==="Escape")closeSheet()});
+
+/* ===== SEARCH + FILTER ===== */
+let activeFilter="all";
+const q=document.getElementById('q');
+function apply(){
+  const term=q.value.trim();
+  let list=DATA;
+  if(activeFilter==="weather")list=list.filter(d=>d.cat==="weather");
+  else if(activeFilter!=="all")list=list.filter(d=>d.rank===activeFilter);
+  if(term)list=list.filter(d=>d.nm.includes(term)||d.ty.includes(term));
+  render(list);
+}
+q.addEventListener('input',apply);
+document.querySelectorAll('#filters button').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#filters button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');activeFilter=btn.dataset.f;apply();
+  };
+});
+
+render(DATA);
+
+/* ===== PWA: Service Worker 登録 ===== */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch((err) => {
+      console.warn("SW登録に失敗:", err);
+    });
+  });
+}
+</script>
+</body>
+</html>

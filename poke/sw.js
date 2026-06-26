@@ -1,0 +1,57 @@
+/* 選出ナビ — Service Worker */
+const CACHE = "senshutsu-navi-v1";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-192-maskable.png",
+  "./icon-512-maskable.png",
+  "./apple-touch-icon.png"
+];
+
+// インストール時：本体一式をキャッシュ
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting())
+  );
+});
+
+// 有効化時：古いキャッシュを掃除
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+// 取得時：cache-first（オフラインでも開ける）。
+// HTMLナビゲーションはネット優先→失敗時キャッシュ（更新を取り込みやすく）
+self.addEventListener("fetch", (e) => {
+  const req = e.request;
+  if (req.method !== "GET") return;
+
+  if (req.mode === "navigate") {
+    e.respondWith(
+      fetch(req).then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put("./index.html", copy));
+        return res;
+      }).catch(() => caches.match("./index.html").then((r) => r || caches.match("./")))
+    );
+    return;
+  }
+
+  e.respondWith(
+    caches.match(req).then((cached) =>
+      cached || fetch(req).then((res) => {
+        // Googleフォント等の同一/別オリジンも取れたらキャッシュ
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+        return res;
+      }).catch(() => cached)
+    )
+  );
+});
