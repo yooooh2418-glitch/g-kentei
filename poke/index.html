@@ -60,7 +60,47 @@
     color:var(--yellow);margin-bottom:9px}
   .myteam .row{display:flex;flex-wrap:wrap;gap:6px}
   .myteam .m{font-size:12px;font-weight:700;padding:4px 10px;border-radius:7px;
-    background:rgba(255,255,255,.05);border:1px solid var(--line)}
+    background:rgba(255,255,255,.05);border:1px solid var(--line);
+    cursor:pointer;color:var(--white);font-family:"Zen Maru Gothic";transition:.15s}
+  .myteam .m:active{transform:scale(.95)}
+  @media(hover:hover){.myteam .m:hover{border-color:var(--yellow);background:rgba(255,212,0,.1)}}
+  .myteam .hint{font-size:10.5px;color:var(--muted);margin-top:8px}
+  .myteam .hint b{color:var(--yellow-soft)}
+
+  /* 育成モーダル内 */
+  .build-sec{margin-bottom:14px}
+  .build-grid{display:grid;grid-template-columns:auto 1fr;gap:7px 12px;font-size:13px;align-items:baseline}
+  .build-grid dt{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--blue-soft);white-space:nowrap;padding-top:1px}
+  .build-grid dd{color:var(--white);font-weight:500}
+  .build-moves{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .build-moves .mv{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:8px;
+    background:rgba(31,139,255,.08);border:1px solid rgba(31,139,255,.25)}
+  .build-moves .mv.opt{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--muted);font-weight:500}
+  .ev-box{margin-top:6px;background:rgba(255,212,0,.05);border:1px dashed rgba(255,212,0,.3);
+    border-radius:10px;padding:10px 12px}
+  .ev-box .evrow{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:5px}
+  .ev-box .evrow:last-child{margin-bottom:0}
+  .ev-box .evk{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--yellow-soft);min-width:74px}
+  .ev-box .evv{color:var(--white);font-weight:700}
+  .ev-box .evnote{font-size:11px;color:var(--muted);margin-left:4px;font-weight:400}
+  .myinput-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin:14px 0 8px}
+  .myinput{width:100%;font-family:"Zen Maru Gothic";font-size:13px;color:var(--white);
+    background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+    resize:vertical;min-height:70px;outline:none;line-height:1.7}
+  .myinput:focus{border-color:var(--yellow)}
+  .myinput::placeholder{color:var(--muted)}
+  .save-row{display:flex;gap:8px;margin-top:8px;align-items:center}
+  .save-btn{font-family:"Zen Maru Gothic";font-size:12.5px;font-weight:700;cursor:pointer;
+    color:var(--ink);background:var(--yellow);border:none;border-radius:9px;padding:9px 16px}
+  .save-btn:active{transform:scale(.96)}
+  .save-msg{font-size:11.5px;color:var(--blue-soft);opacity:0;transition:opacity .2s}
+  .save-msg.show{opacity:1}
+  .role-pill{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;
+    letter-spacing:.06em;color:var(--ink);background:var(--yellow-soft);border-radius:6px;
+    padding:3px 9px;margin-bottom:10px;font-weight:600}
+  .disc-mini{font-size:11px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid var(--line);line-height:1.6}
 
   /* SEARCH */
   .search{margin-top:18px;position:relative}
@@ -167,11 +207,12 @@
     <h1>選出<span class="y">ナビ</span></h1>
     <p class="sub">相手のメガ・天候・厄介な積みをタップ → こちらの推奨選出と立ち回りが即出る。</p>
     <div class="myteam">
-      <h3>// 自分のパーティ（固定）</h3>
+      <h3>// 自分のパーティ（タップで育成情報）</h3>
       <div class="row">
-        <span class="m">メガリザードンY</span><span class="m">ガブリアス</span><span class="m">ブリジュラス</span>
-        <span class="m">カバルドン</span><span class="m">ミミッキュ</span><span class="m" style="border-color:rgba(255,212,0,.5)">ラウドボーン</span>
+        <button class="m" data-build="rizadon">メガリザードンY</button><button class="m" data-build="gaburias">ガブリアス</button><button class="m" data-build="brijuras">ブリジュラス</button>
+        <button class="m" data-build="kabarudon">カバルドン</button><button class="m" data-build="mimikkyu">ミミッキュ</button><button class="m" data-build="loudbone" style="border-color:rgba(255,212,0,.5)">ラウドボーン</button>
       </div>
+      <p class="hint">各ポケモンをタップ → <b>役割・性格・持ち物・技・努力値の目安</b>と、自分の実値メモ欄が開きます。</p>
     </div>
     <div class="search">
       <span class="ic">⌕</span>
@@ -219,6 +260,45 @@
       </div>
       <div class="play"><span class="l">立ち回りの核</span><span id="m-play"></span></div>
       <p class="watch" id="m-watch"></p>
+    </div>
+  </div>
+</div>
+
+<!-- BUILD MODAL（自分のパーティ育成情報） -->
+<div class="scrim" id="bscrim">
+  <div class="sheet" id="bsheet" role="dialog" aria-modal="true">
+    <div class="sheet-grab"></div>
+    <div class="sheet-hd">
+      <div class="info">
+        <div class="nm" id="b-nm"></div>
+        <div class="ty" id="b-ty"></div>
+      </div>
+      <button class="x" id="b-x" aria-label="閉じる">×</button>
+    </div>
+    <div class="sheet-bd">
+      <span class="role-pill" id="b-role"></span>
+      <div class="build-sec">
+        <dl class="build-grid">
+          <dt>性格</dt><dd id="b-nature"></dd>
+          <dt>持ち物</dt><dd id="b-item"></dd>
+          <dt>特性</dt><dd id="b-ability"></dd>
+        </dl>
+      </div>
+      <div class="build-sec">
+        <dt style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-soft);margin-bottom:7px">技構成</dt>
+        <div class="build-moves" id="b-moves"></div>
+      </div>
+      <div class="build-sec">
+        <dt style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow-soft);margin-bottom:7px">努力値の目安</dt>
+        <div class="ev-box" id="b-ev"></div>
+      </div>
+      <div class="myinput-lbl">// 自分の実値メモ（端末に保存）</div>
+      <textarea class="myinput" id="b-memo" placeholder="例：H252 B156 D100 / 実数値 H207-B150… / 個体値・調整のねらいなど自由に記録"></textarea>
+      <div class="save-row">
+        <button class="save-btn" id="b-save">メモを保存</button>
+        <span class="save-msg" id="b-savemsg">保存しました ✓</span>
+      </div>
+      <p class="disc-mini" id="b-disc"></p>
     </div>
   </div>
 </div>
@@ -487,6 +567,145 @@ document.querySelectorAll('#filters button').forEach(btn=>{
 });
 
 render(DATA);
+
+/* ===== 自分のパーティ 育成データ ===== */
+const BUILDS = {
+  rizadon:{
+    nm:"メガリザードンY", ty:"ほのお・ひこう / メガストーン:リザードナイトY",
+    role:"攻めの軸・晴れエース",
+    nature:"おくびょう（S↑A↓）／火力重視ならひかえめ（C↑A↓）",
+    item:"リザードナイトY（メガストーン）",
+    ability:"ひでり（場に出ると晴れ）",
+    moves:[["オーバーヒート",1],["かえんほうしゃ",1],["ソーラービーム",1],["ニトロチャージ",1],["りゅうのはどう",0],["きあいだま",0]],
+    ev:[
+      ["特攻","252","火力を最大化"],
+      ["素早さ","252","100族の上を取りに行く"],
+      ["HorB余り","4",""]
+    ],
+    disc:"晴れ前提の特殊エース。岩4倍＋ステロで出し入れに弱いので、相手のステロ・天候上書き役を確認してから動く。オーバーヒートは撃ち逃げ、居座るならかえんほうしゃ。きあいだまは対バンギ用のピンポメタ。"
+  },
+  gaburias:{
+    nm:"ガブリアス", ty:"ドラゴン・じめん",
+    role:"起点作り・タスキ展開",
+    nature:"ようき（S↑C↓）が基本。火力重視でいじっぱり（A↑C↓）も",
+    item:"きあいのタスキ（行動保証／使用率最上位）",
+    ability:"さめはだ（接触で相手を削る・タスキ潰し）",
+    moves:[["じしん",1],["げきりん",1],["ステルスロック",1],["がんせきふうじ",1],["つるぎのまい",0],["どくづき",0],["スケイルショット",0]],
+    ev:[
+      ["攻撃","252","一致技の火力"],
+      ["素早さ","252","最速102族で中速を抜く"],
+      ["HP余り","4",""]
+    ],
+    disc:"先発ステロ＋がんせきふうじで後続を補助する起点役。氷4倍＋連続技(つららばり/トリプルアクセル)が天敵なのでタスキ過信は禁物。エースで使うならステロをつるぎのまいに替える型もある。"
+  },
+  brijuras:{
+    nm:"ブリジュラス", ty:"はがね・ドラゴン",
+    role:"鋼の受け・対特殊・起点作り",
+    nature:"ずぶとい（B↑A↓）で物理受け特化／火力ならひかえめ（C↑）",
+    item:"たべのこし（場持ち）／しろいハーブ（りゅうせいぐん始動）も有力",
+    ability:"じきゅうりょく（物理を受けるとB上昇）",
+    moves:[["ラスターカノン",1],["りゅうせいぐん",1],["ステルスロック",1],["でんじは",1],["ドラゴンテール",0],["ミラーコート",0],["10まんボルト",0]],
+    ev:[
+      ["HP","252","総合耐久の底上げ"],
+      ["防御","252","じきゅうりょくと噛み合わせ要塞化"],
+      ["特攻余り","4","または用途でC寄せ"]
+    ],
+    disc:"10タイプ半減＋じきゅうりょくで物理を要塞化。弱点は特防65で、格闘・地面の一致特殊（ルカリオのはどうだん等）に一撃で崩される。フラエッテ・スターミーへの本命受け。温存管理が勝敗を分ける。"
+  },
+  kabarudon:{
+    nm:"カバルドン", ty:"じめん",
+    role:"物理受け・砂始動・対面操作",
+    nature:"わんぱく（B↑C↓）が定番／特殊も見るならしんちょう（D↑C↓）",
+    item:"オボンのみ（回復量大）／たべのこし・さらさらいわも",
+    ability:"すなおこし（砂展開・天候上書き）",
+    moves:[["じしん",1],["ステルスロック",1],["あくび",1],["ふきとばし",1],["なまける",0],["がんせきふうじ",0],["こおりのキバ",0]],
+    ev:[
+      ["HP","252","物理受けの土台"],
+      ["防御","252","わんぱくで物理特化"],
+      ["特防余り","4","または D寄せのHD型も"]
+    ],
+    disc:"ステロ＋あくびで相手を流しながら削る起点役。砂でリザードンの晴れを上書きできるので天候合戦の保険にも。水・草の特殊弱点で上から崩される。ちょうはつ＋地面無効のアーマーガア等が天敵。"
+  },
+  mimikkyu:{
+    nm:"ミミッキュ", ty:"ゴースト・フェアリー",
+    role:"積みエース止め・先制の蓋",
+    nature:"ようき（S↑C↓）／いじっぱり（A↑）も火力択",
+    item:"いのちのたま（火力補完）／ラムのみ（状態異常ケア）も",
+    ability:"ばけのかわ（1回行動保証）",
+    moves:[["じゃれつく",1],["かげうち",1],["つるぎのまい",1],["シャドークロー",1],["ウッドハンマー",0],["ドレインパンチ",0],["のろい",0]],
+    ev:[
+      ["攻撃","252","つるぎのまいの火力"],
+      ["素早さ","252","96族として上を取る"],
+      ["HP","4","※命の珠なら10n-1調整推奨"]
+    ],
+    disc:"ばけのかわで確実に1回動け、かげうちで先制を取れる唯一無二のストッパー。ゴースト+フェアリーは全ポケに等倍以上。バレットパンチ(鋼先制)持ちには注意。ウッドハンマーは対メガラグラージ用に有効。"
+  },
+  loudbone:{
+    nm:"ラウドボーン", ty:"ほのお・ゴースト",
+    role:"積み全般の蓋・てんねん受け",
+    nature:"ずぶとい（B↑A↓）で物理受け／特殊見るならおだやか（D↑）",
+    item:"たべのこし（居座り）／オボンのみ（対面寄り）",
+    ability:"てんねん（相手の能力上昇を無視）",
+    moves:[["フレアソング",1],["なまける",1],["おにび",1],["あくび",1],["シャドーボール",0],["みがわり",0]],
+    ev:[
+      ["HP","252","てんねん受けの土台（目安H104相当に厚く）"],
+      ["防御","252","物理受け特化"],
+      ["特防余り","4","または D寄せで両受けも"]
+    ],
+    disc:"初期環境で2体のみのてんねん持ち。ルカリオ・フラエッテ・カメックスの積みを無視して受け、フレアソング（みがわり貫通＋C上昇）で押し返す。弱点5つと多く、特殊高火力には脆い。サイクル前提で使う駒。"
+  }
+};
+
+/* ===== 育成モーダル 開閉 ===== */
+const bscrim=document.getElementById('bscrim');
+function openBuild(key){
+  const b=BUILDS[key]; if(!b) return;
+  document.getElementById('b-nm').textContent=b.nm;
+  document.getElementById('b-ty').textContent=b.ty;
+  document.getElementById('b-role').textContent=b.role;
+  document.getElementById('b-nature').textContent=b.nature;
+  document.getElementById('b-item').textContent=b.item;
+  document.getElementById('b-ability').textContent=b.ability;
+  const mv=document.getElementById('b-moves'); mv.innerHTML="";
+  b.moves.forEach(([name,core])=>{
+    const s=document.createElement('span');
+    s.className="mv"+(core?"":" opt");
+    s.textContent=(core?"":"／")+name;
+    mv.appendChild(s);
+  });
+  const ev=document.getElementById('b-ev'); ev.innerHTML="";
+  b.ev.forEach(([k,v,note])=>{
+    const row=document.createElement('div'); row.className="evrow";
+    row.innerHTML=`<span class="evk">${k}</span><span class="evv">${v}</span>${note?`<span class="evnote">${note}</span>`:""}`;
+    ev.appendChild(row);
+  });
+  document.getElementById('b-disc').textContent="※ "+b.disc+" これは標準的なテンプレに基づく目安で、対戦実績による立証ではありません。S実数・調整はゲーム内ツールで最終確定を。";
+  // メモ復元
+  const memo=document.getElementById('b-memo');
+  try{ memo.value=localStorage.getItem("ev_memo_"+key)||""; }catch(e){ memo.value=""; }
+  document.getElementById('b-savemsg').classList.remove('show');
+  // 保存ボタン
+  const saveBtn=document.getElementById('b-save');
+  saveBtn.onclick=()=>{
+    try{
+      localStorage.setItem("ev_memo_"+key, memo.value);
+      const msg=document.getElementById('b-savemsg');
+      msg.classList.add('show');
+      setTimeout(()=>msg.classList.remove('show'),1800);
+    }catch(e){
+      alert("この環境では保存できません（プライベートモード等）。");
+    }
+  };
+  bscrim.classList.add('open');
+  document.body.style.overflow="hidden";
+}
+function closeBuild(){bscrim.classList.remove('open');document.body.style.overflow=""}
+document.getElementById('b-x').onclick=closeBuild;
+bscrim.onclick=e=>{if(e.target===bscrim)closeBuild()};
+document.querySelectorAll('.myteam .m').forEach(btn=>{
+  btn.onclick=()=>openBuild(btn.dataset.build);
+});
+document.addEventListener('keydown',e=>{if(e.key==="Escape")closeBuild()});
 
 /* ===== PWA: Service Worker 登録 ===== */
 if ("serviceWorker" in navigator) {
